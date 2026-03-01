@@ -19,7 +19,7 @@
 
 ## Overview
 
-This repository implements the complete theoretical and empirical framework for studying how **renormalization-group (RG) theory** — the physics formalism describing scale transformations — maps onto the **depth architecture** of deep neural networks. Three core hypotheses are validated:
+This repository implements the complete theoretical and empirical framework for studying how **renormalization-group (RG) theory** the physics formalism describing scale transformations maps onto the **depth architecture** of deep neural networks. Three core hypotheses are validated:
 
 | Hypothesis | Statement | Primary Metric |
 |:---:|---|---|
@@ -149,7 +149,7 @@ bash scripts/setup_environment.sh --cpu-only  # CPU
 
 ## Reviewer Fast-Track (≤ 5 Minutes)
 
-Full experiments (L=1000, FSS analysis) require 48–72 hours on 80 GB VRAM. The fast-track system runs the complete pipeline at reduced scale — depth=10, width=64, 2 epochs — on any hardware including CPU-only machines. All outputs are tagged `[FAST_TRACK_UNVERIFIED]`.
+Full experiments (L=1000, FSS analysis) require 48–72 hours on 80 GB VRAM. The fast-track system runs the complete pipeline at reduced scale depth=10, width=64, 2 epochs on any hardware including CPU-only machines. All outputs are tagged `[FAST_TRACK_UNVERIFIED]`.
 
 ```bash
 # Smoke test — validates imports, device detection, seed registry, forward/backward pass (< 1 min)
@@ -200,7 +200,7 @@ make reproduce_figures_from_checkpoints
 
 ## Containerization
 
-Containers freeze the exact environment — OS, Python version, PyTorch, and all libraries — ensuring the code runs identically in 2026 and 2028.
+Containers freeze the exact environment OS, Python version, PyTorch, and all libraries ensuring the code runs identically in 2026 and 2028.
 
 ```bash
 # Docker — GPU
@@ -247,7 +247,7 @@ make validate             # Determinism verification + hypothesis validation
 
 The following mechanisms guarantee bit-exact reproducibility across different machines, operating systems, and runs.
 
-**Determinism.** All random number generators — Python `random`, NumPy, PyTorch CPU, PyTorch CUDA — are seeded from a single master seed managed by `SeedRegistry`, a thread-safe Singleton that prevents any module from calling `random.seed()` independently.
+**Determinism.** All random number generators Python `random`, NumPy, PyTorch CPU, PyTorch CUDA are seeded from a single master seed managed by `SeedRegistry`, a thread-safe Singleton that prevents any module from calling `random.seed()` independently.
 
 **Hardware portability.** `DeviceManager` auto-selects CUDA → MPS → CPU. No `.cuda()` calls are hardcoded anywhere in the codebase.
 
