@@ -67,5 +67,3 @@ temp/
 # Environment files
 .env
 .envrc
-audit_reports/
-*.tmp

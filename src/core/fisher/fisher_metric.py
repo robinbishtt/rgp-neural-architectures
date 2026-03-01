@@ -1,7 +1,7 @@
 """
 src/core/fisher_metric.py
 
-Fisher Information Geometry  layer-wise metric computation.
+Fisher Information Geometry — layer-wise metric computation.
 
 G^(k) = J_k G^(k-1) J_kᵀ  (pushforward)
 """

@@ -1,7 +1,7 @@
 """
 src/architectures/rg_net/rg_net_shallow.py
 
-RGNetShallow  L=10-50 configuration for rapid prototyping.
+RGNetShallow — L=10-50 configuration for rapid prototyping.
 """
 from __future__ import annotations
 from src.architectures.rg_net.rg_net import RGNet

@@ -1,4 +1,4 @@
-"""src/architectures/rg_net  RG-Net architecture family."""
+"""src/architectures/rg_net — RG-Net architecture family."""
 
 from src.architectures.rg_net.rg_net import RGNet
 from src.architectures.rg_net.rg_net_shallow import RGNetShallow

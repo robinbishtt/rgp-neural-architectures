@@ -124,7 +124,7 @@ class TimeoutHandler:
         """Return True if we should stop now (within buffer of deadline)."""
         remaining = self._deadline - time.time()
         if remaining <= buffer_seconds:
-            logger.warning("%.0f s to deadline  saving checkpoint.", remaining)
+            logger.warning("%.0f s to deadline — saving checkpoint.", remaining)
             if self._checkpoint_manager is not None:
                 self._checkpoint_manager.save()
             return True

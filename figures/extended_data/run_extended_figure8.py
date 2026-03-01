@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure8.py
 
-Extended Data Figure 8  Random Matrix Theory Bulk Statistics
+Extended Data Figure 8 — Random Matrix Theory Bulk Statistics
 
 
 Random matrix theory validation for wide-network Jacobian spectra:

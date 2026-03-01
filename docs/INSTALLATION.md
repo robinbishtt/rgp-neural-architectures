@@ -14,7 +14,7 @@
 
 ```bash
 # 1. Clone the repository
-git clone https://github.com/robinbisht/rgp-neural-architectures
+git clone https://github.com/robinbishtt/rgp-neural-architectures
 cd rgp-neural-architectures
 
 # 2. Create and activate a virtual environment

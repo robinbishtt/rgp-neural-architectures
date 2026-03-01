@@ -1,4 +1,4 @@
-"""tests/scaling/test_exponential_decay.py  xi(k) decay with R² > 0.95."""
+"""tests/scaling/test_exponential_decay.py — xi(k) decay with R² > 0.95."""
 import numpy as np
 from src.core.correlation.estimators import ExponentialDecayFitter
 

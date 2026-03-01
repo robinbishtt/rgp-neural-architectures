@@ -46,24 +46,6 @@ help:
 	@echo "    make test_spectral      Spectral / RMT tests"
 	@echo "    make validate           Full validation suite"
 	@echo ""
-	@echo "  Audit (structured JSON trail):"
-	@echo "    make audit                   Full audit - all suites + study scripts"
-	@echo "    make audit_tests             All 8 pytest suites only"
-	@echo "    make audit_studies           All 5 study/figure suites only"
-	@echo "    make audit_unit              tests/unit only"
-	@echo "    make audit_integration       tests/integration only"
-	@echo "    make audit_stability         tests/stability only"
-	@echo "    make audit_ablation          tests/ablation only"
-	@echo "    make audit_robustness        tests/robustness only"
-	@echo "    make audit_scaling           tests/scaling only"
-	@echo "    make audit_spectral          tests/spectral only"
-	@echo "    make audit_validation        tests/validation only"
-	@echo "    make audit_h1                H1 experiment scripts only"
-	@echo "    make audit_h2                H2 experiment scripts only"
-	@echo "    make audit_h3                H3 experiment scripts only"
-	@echo "    make audit_figures_extended  Extended Data figures only"
-	@echo "    make audit_figures_manuscript Manuscript figures only"
-	@echo ""
 	@echo "  Code quality:"
 	@echo "    make lint               flake8 + isort check"
 	@echo "    make format             black + isort format"
@@ -206,92 +188,6 @@ format:
 .PHONY: typecheck
 typecheck:
 	mypy src/ --ignore-missing-imports
-
-# ---------------------------------------------------------------------------
-# Audit — structured JSON trail
-# ---------------------------------------------------------------------------
-# Full audit (all pytest suites + all study/figure scripts):
-#   make audit
-#
-# Tests only (8 pytest suites, no study scripts):
-#   make audit_tests
-#
-# Study/figure scripts only (no pytest):
-#   make audit_studies
-#
-# Per-suite (pytest):
-#   make audit_unit | audit_integration | audit_stability | audit_ablation
-#   make audit_robustness | audit_scaling | audit_spectral | audit_validation
-#
-# Per-suite (study):
-#   make audit_h1 | audit_h2 | audit_h3
-#   make audit_figures_extended | audit_figures_manuscript
-
-.PHONY: audit
-audit:
-	$(PYTHON) audit/run_audit.py --seed 42
-
-.PHONY: audit_tests
-audit_tests:
-	$(PYTHON) audit/run_audit.py --tests-only --seed 42
-
-.PHONY: audit_studies
-audit_studies:
-	$(PYTHON) audit/run_audit.py --studies-only --seed 42
-
-# --- Per pytest suite -------------------------------------------------------
-.PHONY: audit_unit
-audit_unit:
-	$(PYTHON) audit/run_suite.py unit --seed 42
-
-.PHONY: audit_integration
-audit_integration:
-	$(PYTHON) audit/run_suite.py integration --seed 42
-
-.PHONY: audit_stability
-audit_stability:
-	$(PYTHON) audit/run_suite.py stability --seed 42
-
-.PHONY: audit_ablation
-audit_ablation:
-	$(PYTHON) audit/run_suite.py ablation --seed 42
-
-.PHONY: audit_robustness
-audit_robustness:
-	$(PYTHON) audit/run_suite.py robustness --seed 42
-
-.PHONY: audit_scaling
-audit_scaling:
-	$(PYTHON) audit/run_suite.py scaling --seed 42
-
-.PHONY: audit_spectral
-audit_spectral:
-	$(PYTHON) audit/run_suite.py spectral --seed 42
-
-.PHONY: audit_validation
-audit_validation:
-	$(PYTHON) audit/run_suite.py validation --seed 42
-
-# --- Per study suite --------------------------------------------------------
-.PHONY: audit_h1
-audit_h1:
-	$(PYTHON) audit/run_suite.py h1_scale_correspondence --seed 42
-
-.PHONY: audit_h2
-audit_h2:
-	$(PYTHON) audit/run_suite.py h2_depth_scaling --seed 42
-
-.PHONY: audit_h3
-audit_h3:
-	$(PYTHON) audit/run_suite.py h3_multiscale_generalization --seed 42
-
-.PHONY: audit_figures_extended
-audit_figures_extended:
-	$(PYTHON) audit/run_suite.py figures_extended_data --seed 42
-
-.PHONY: audit_figures_manuscript
-audit_figures_manuscript:
-	$(PYTHON) audit/run_suite.py figures_manuscript --seed 42
 
 # ---------------------------------------------------------------------------
 # Cleanup

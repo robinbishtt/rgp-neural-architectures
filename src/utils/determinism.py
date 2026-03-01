@@ -1,7 +1,7 @@
 """
 src/utils/determinism.py
 
-Global determinism configuration  applies torch deterministic mode,
+Global determinism configuration — applies torch deterministic mode,
 environment variables, and validates reproducibility.
 """
 

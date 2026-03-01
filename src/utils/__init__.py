@@ -1,4 +1,4 @@
-"""src/utils  Infrastructure Cross-Layer utilities."""
+"""src/utils — Infrastructure Cross-Layer utilities."""
 
 from src.utils.seed_registry import SeedRegistry
 from src.utils.device_manager import DeviceManager

@@ -1,7 +1,7 @@
 """
 src/architectures/rg_net/rg_net_variable_width.py
 
-RGNetVariableWidth  non-uniform width for information bottleneck studies.
+RGNetVariableWidth — non-uniform width for information bottleneck studies.
 """
 from __future__ import annotations
 from typing import List

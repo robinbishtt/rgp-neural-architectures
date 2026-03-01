@@ -29,8 +29,8 @@ Tests performed
 Outputs
 -------
 results/h2/statistical_analysis/
-    h2_statistical_results.json    all test statistics + p-values
-    h2_bootstrap_ci.npz            bootstrap distribution of α
+    h2_statistical_results.json   — all test statistics + p-values
+    h2_bootstrap_ci.npz           — bootstrap distribution of α
 
 Usage
 -----
@@ -55,7 +55,7 @@ sys.path.insert(0, str(_ROOT))
 logger = logging.getLogger("h2_statistical_analysis")
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s  %(message)s",
+    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 
@@ -206,7 +206,7 @@ def run(fast_track: bool = False) -> None:
         xi_values = np.array(data["xi_values"])
         l_min     = np.array(data["l_min_means"])
     else:
-        logger.info("H2 results not found  generating synthetic data.")
+        logger.info("H2 results not found — generating synthetic data.")
         xi_values, l_min = _generate_synthetic_h2_data(cfg)
 
     # --- 1. Log-scale OLS fit ---

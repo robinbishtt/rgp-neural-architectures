@@ -1,7 +1,7 @@
 """
 src/architectures/rg_net/rg_net_multiscale.py
 
-RGNetMultiScale  explicit multi-scale feature fusion.
+RGNetMultiScale — explicit multi-scale feature fusion.
 """
 from __future__ import annotations
 from typing import List

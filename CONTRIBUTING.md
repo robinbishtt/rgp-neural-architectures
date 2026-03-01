@@ -77,7 +77,7 @@ Every new module that involves randomness **must** obtain its seed from `SeedReg
 from src.utils.seed_registry import SeedRegistry
 rng = np.random.default_rng(SeedRegistry.get_instance().get_worker_seed(worker_id=0))
 
-# Incorrect  breaks global determinism
+# Incorrect — breaks global determinism
 np.random.seed(42)
 ```
 

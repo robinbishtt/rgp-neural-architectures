@@ -1,4 +1,4 @@
-"""src/core/jacobian  Jacobian computation strategies."""
+"""src/core/jacobian — Jacobian computation strategies."""
 
 from src.core.jacobian.jacobian import (
     AutogradJacobian, JVPJacobian, VJPJacobian,

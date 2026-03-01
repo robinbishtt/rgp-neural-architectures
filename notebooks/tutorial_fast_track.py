@@ -9,7 +9,7 @@ Usage:
     # or convert to Jupyter: jupytext --to notebook tutorial_fast_track.py
 """
 # %% [markdown]
-# # RGP Neural Architectures  Fast-Track Tutorial
+# # RGP Neural Architectures — Fast-Track Tutorial
 #
 # This tutorial demonstrates the core claims of the RGP framework:
 #

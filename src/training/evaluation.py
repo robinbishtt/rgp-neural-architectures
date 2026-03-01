@@ -9,10 +9,10 @@ are always performed deterministically: the SeedRegistry is consulted
 to ensure identical data ordering across runs.
 
 Evaluation modes:
-    ``standard``      accuracy + cross-entropy loss on a single DataLoader
-    ``hypothesis``    adds per-layer correlation length measurement for H1
-    ``ood``           evaluates on both in-distribution and OOD loaders (H3)
-    ``scaling``       returns minimum depth to reach target accuracy (H2)
+    ``standard``     — accuracy + cross-entropy loss on a single DataLoader
+    ``hypothesis``   — adds per-layer correlation length measurement for H1
+    ``ood``          — evaluates on both in-distribution and OOD loaders (H3)
+    ``scaling``      — returns minimum depth to reach target accuracy (H2)
 """
 from __future__ import annotations
 

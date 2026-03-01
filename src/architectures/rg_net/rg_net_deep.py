@@ -1,7 +1,7 @@
 """
 src/architectures/rg_net/rg_net_deep.py
 
-RGNetDeep  L=500 configuration for depth scaling studies.
+RGNetDeep — L=500 configuration for depth scaling studies.
 """
 from __future__ import annotations
 from src.architectures.rg_net.rg_net import RGNet

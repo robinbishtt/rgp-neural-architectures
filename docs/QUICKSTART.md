@@ -117,7 +117,7 @@ Outputs are written to `results/h1/`, `results/h2/`, `results/h3/`, and figures 
 Full experiments require a GPU with at least 24 GB VRAM for the standard configuration (L=100). See the [hardware requirements table](../README.md#hardware-requirements) in the main README for the full breakdown.
 
 ```bash
-# Complete pipeline  trains all experiments and generates all figures
+# Complete pipeline — trains all experiments and generates all figures
 make reproduce_all
 
 # Individual experiments

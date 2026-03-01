@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure11.py
 
-Extended Data Figure 11  OOD Generalization Under Continuous Correlation Shift
+Extended Data Figure 11 — OOD Generalization Under Continuous Correlation Shift
 
 
 OOD generalisation under continuous correlation structure shift:
