@@ -107,7 +107,7 @@ def test_pearson_correlation_with_xi(
 def run_statistical_tests(analysis_file: Path, output_path: Path) -> Dict:
     """Load analysis results and run full statistical test battery."""
     if not analysis_file.exists():
-        logger.error("Analysis file not found: %s — run analyze_correlation_decay.py first.")
+        logger.error("Analysis file not found: %s  run analyze_correlation_decay.py first.")
         raise FileNotFoundError(str(analysis_file))
 
     with open(analysis_file) as fh:

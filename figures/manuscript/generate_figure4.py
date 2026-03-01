@@ -1,10 +1,10 @@
 """
 figures/manuscript/generate_figure4.py
 
-Figure 4 — H2: Depth Scaling Law Validation
+Figure 4  H2: Depth Scaling Law Validation
 
 Panel layout:
-  a) L_min vs log(ξ_data) across correlation lengths — linear fit
+  a) L_min vs log(ξ_data) across correlation lengths  linear fit
   b) AIC comparison: logarithmic vs linear vs power-law models
   c) Accuracy vs depth L for multiple ξ_data values (threshold crossing)
 
@@ -125,7 +125,7 @@ def _load_h2_results(results_dir: Path) -> Optional[Dict]:
 
 
 # ---------------------------------------------------------------------------
-# Panel (a) — L_min vs log(ξ_data)
+# Panel (a)  L_min vs log(ξ_data)
 # ---------------------------------------------------------------------------
 
 def _panel_lmin_scaling(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
@@ -162,7 +162,7 @@ def _panel_lmin_scaling(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (b) — AIC model comparison
+# Panel (b)  AIC model comparison
 # ---------------------------------------------------------------------------
 
 def _panel_aic_comparison(ax: plt.Axes, data: Dict) -> None:
@@ -191,7 +191,7 @@ def _panel_aic_comparison(ax: plt.Axes, data: Dict) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (c) — Accuracy vs depth for multiple ξ
+# Panel (c)  Accuracy vs depth for multiple ξ
 # ---------------------------------------------------------------------------
 
 def _panel_acc_vs_depth(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
@@ -229,7 +229,7 @@ def generate(
 
     data = _load_h2_results(Path(results_dir))
     if data is None:
-        print("H2 results not found — using synthetic data.")
+        print("H2 results not found  using synthetic data.")
         data = _synthetic_h2_data(fast_track=fast_track)
 
     fig, axes = plt.subplots(1, 3, figsize=(DOUBLE_COL_WIDTH, 3.3))

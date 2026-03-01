@@ -1,7 +1,7 @@
 """
 figures/manuscript/generate_figure1.py
 
-Figure 1 — Conceptual Framework
+Figure 1  Conceptual Framework
 
 Panel layout:
   a) Six-layer architectural hierarchy (schematic)
@@ -37,7 +37,7 @@ from figures.styles.font_config import (
 
 
 # ---------------------------------------------------------------------------
-# Panel (a) — Six-layer hierarchy schematic
+# Panel (a)  Six-layer hierarchy schematic
 # ---------------------------------------------------------------------------
 
 _TIER_LABELS = [
@@ -50,12 +50,12 @@ _TIER_LABELS = [
 ]
 
 _TIER_COLORS = [
-    "#4878CF",   # blue  — Nervous System
-    "#6ACC65",   # green — Engine Room
-    "#D65F5F",   # red   — Audit Bureau
-    "#B47CC7",   # purple — Command Center
-    "#C4AD66",   # gold  — Publication Machine
-    "#77BEDB",   # sky   — ICL
+    "#4878CF",   # blue   Nervous System
+    "#6ACC65",   # green  Engine Room
+    "#D65F5F",   # red    Audit Bureau
+    "#B47CC7",   # purple  Command Center
+    "#C4AD66",   # gold   Publication Machine
+    "#77BEDB",   # sky    ICL
 ]
 
 
@@ -98,7 +98,7 @@ def _draw_tier_diagram(ax: plt.Axes) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (b) — RG coarse-graining cartoon
+# Panel (b)  RG coarse-graining cartoon
 # ---------------------------------------------------------------------------
 
 def _draw_rg_cartoon(ax: plt.Axes) -> None:
@@ -135,7 +135,7 @@ def _draw_rg_cartoon(ax: plt.Axes) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (c) — ξ(k) decay schematic
+# Panel (c)  ξ(k) decay schematic
 # ---------------------------------------------------------------------------
 
 def _draw_xi_decay(ax: plt.Axes) -> None:

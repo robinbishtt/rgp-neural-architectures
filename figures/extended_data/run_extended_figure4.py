@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure4.py
 
-Extended Data Figure 4 — Finite-Size Scaling Data Collapse
+Extended Data Figure 4  Finite-Size Scaling Data Collapse
 
   a) Raw accuracy vs width (before collapse) for multiple ξ values
   b) Collapsed data: (L−L_c)·W^{1/ν} vs accuracy

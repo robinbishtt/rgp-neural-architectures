@@ -5,18 +5,18 @@ Cryptographic integrity primitives for audit report sealing.
 
 Provides three capabilities:
 
-  1. HashChain   — SHA-256 block-hash chaining in the style described
+  1. HashChain    SHA-256 block-hash chaining in the style described
                    in the audit schema (block_sha256 + previous_hash
                    hashed together to produce chain_hash).  Modifying
                    any block's content breaks all subsequent chain_hash
                    values and invalidates the tip.
 
-  2. ReportSigner — Optional Ed25519 digital signature over the chain
+  2. ReportSigner  Optional Ed25519 digital signature over the chain
                    tip hash.  Signing requires cryptography>=41.0 to be
                    installed; the signer degrades gracefully when absent,
                    leaving integrity.signature as null.
 
-  3. ManifestBuilder — Walks a directory tree and records SHA-256 and
+  3. ManifestBuilder  Walks a directory tree and records SHA-256 and
                    size for every file, producing the manifest block
                    required by the schema's integrity section.
 
@@ -292,7 +292,7 @@ class ReportSigner:
         except ImportError:
             return False, "cryptography package not installed"
         except InvalidSignature:
-            return False, "signature verification failed — report may have been tampered with"
+            return False, "signature verification failed  report may have been tampered with"
         except Exception as exc:
             return False, f"verification error: {exc}"
 

@@ -102,7 +102,7 @@ class TestHypothesisH1:
 
         # Simple test: bulk eigenvalues should have correct range
         assert len(ev_bulk) > 0.8 * n, (
-            "Too few eigenvalues in MP bulk — RMT correspondence failure."
+            "Too few eigenvalues in MP bulk  RMT correspondence failure."
         )
 
     def test_chi1_criticality_parameter_near_unity(self):
@@ -124,5 +124,5 @@ class TestHypothesisH1:
         chi1      = sigma_w2_critical * integral
 
         assert abs(chi1 - 1.0) < 0.05, (
-            f"chi1 = {chi1:.4f} at critical init — expected ~1.0."
+            f"chi1 = {chi1:.4f} at critical init  expected ~1.0."
         )

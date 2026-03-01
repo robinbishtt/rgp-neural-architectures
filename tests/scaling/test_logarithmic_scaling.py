@@ -1,4 +1,4 @@
-"""tests/scaling/test_logarithmic_scaling.py — L_min ~ log(xi) with slope ~ k_c."""
+"""tests/scaling/test_logarithmic_scaling.py  L_min ~ log(xi) with slope ~ k_c."""
 import numpy as np
 from scipy.optimize import curve_fit
 

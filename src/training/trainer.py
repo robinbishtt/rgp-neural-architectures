@@ -120,7 +120,7 @@ class Trainer:
 
             if epoch % self.cfg.log_interval == 0:
                 logger.info(
-                    "Epoch %d/%d — train_loss=%.4f val_loss=%.4f val_acc=%.4f",
+                    "Epoch %d/%d  train_loss=%.4f val_loss=%.4f val_acc=%.4f",
                     epoch, self.cfg.n_epochs, train_loss, val_loss, val_acc,
                 )
                 if self.telemetry:

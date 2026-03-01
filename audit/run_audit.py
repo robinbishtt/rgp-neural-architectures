@@ -11,7 +11,7 @@ One command to orchestrate the complete RGP audit trail:
 
 Usage
 -----
-    # Full audit — all tests + all study scripts:
+    # Full audit  all tests + all study scripts:
     python audit/run_audit.py
 
     # Tests only (no study scripts):
@@ -52,7 +52,7 @@ from audit.runner import AuditRunner
 def _build_parser() -> argparse.ArgumentParser:
     p = argparse.ArgumentParser(
         prog        = "python audit/run_audit.py",
-        description = "RGP Neural Architectures — master audit orchestrator.",
+        description = "RGP Neural Architectures  master audit orchestrator.",
         formatter_class = argparse.RawDescriptionHelpFormatter,
         epilog      = __doc__,
     )

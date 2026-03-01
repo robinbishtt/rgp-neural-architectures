@@ -1,4 +1,4 @@
-"""src/scaling — Finite-size scaling analysis engine."""
+"""src/scaling  Finite-size scaling analysis engine."""
 
 from src.scaling.fss_analysis import FSSFitter
 from src.scaling.critical_exponents import CriticalExponentExtractor, CriticalExponentResult

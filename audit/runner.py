@@ -9,25 +9,25 @@ chain via audit/integrity.py, and writes the result atomically to disk.
 
 Section population by this module:
 
-  1. provenance          — git, seed_registry, hardware, data_checksums
+  1. provenance           git, seed_registry, hardware, data_checksums
                            (data_checksums populated if DataAuditor is importable;
                            empty list otherwise).
 
-  2. orchestration       — wall_start_ns/wall_end_ns, dag_trace (one node
+  2. orchestration        wall_start_ns/wall_end_ns, dag_trace (one node
                            per suite and per case with nanosecond timestamps),
                            checkpoint_events (empty unless a study script emits
                            a structured checkpoint-event line on stdout).
 
-  3. math_telemetry      — empty arrays.  This section is populated by the
+  3. math_telemetry       empty arrays.  This section is populated by the
                            experiment and training scripts themselves, not by the
                            test runner.  The schema shape is defined; the runner
                            writes the empty arrays so the JSON is always valid.
 
-  4. hardware_forensics  — static peak_vram_bytes from torch.cuda at run end;
+  4. hardware_forensics   static peak_vram_bytes from torch.cuda at run end;
                            vram_micro_log and kernel_latency_log are empty arrays
                            (populated at training time by the experiment pipeline).
 
-  5. integrity           — full SHA-256 hash chain over all six sections,
+  5. integrity            full SHA-256 hash chain over all six sections,
                            optional Ed25519 signature, and repository manifest.
 
 Robustness guarantees
@@ -155,7 +155,7 @@ def _parse_pytest_json(
             call_info  = test.get("call", {}) or {}
             setup_info = test.get("setup", {}) or {}
 
-            # Duration — prefer the call phase.
+            # Duration  prefer the call phase.
             duration_s  = call_info.get("duration", setup_info.get("duration", 0.0))
             duration_ns = int(duration_s * 1e9)
 
@@ -433,7 +433,7 @@ class AuditRunner:
             "integrity":        integrity,
         }
 
-        # Soft schema validation — never crashes the runner.
+        # Soft schema validation  never crashes the runner.
         valid, schema_errs = AuditSchema.validate_soft(report)
         if not valid:
             report["integrity"]["schema_warnings"] = schema_errs

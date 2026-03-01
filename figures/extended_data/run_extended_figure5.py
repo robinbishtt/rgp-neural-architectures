@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure5.py
 
-Extended Data Figure 5 — Lyapunov Spectrum Diagnostics
+Extended Data Figure 5  Lyapunov Spectrum Diagnostics
 
   a) Full Lyapunov spectrum at three initialisation regimes
   b) Lyapunov sum (entropy production) vs depth

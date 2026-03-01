@@ -21,9 +21,9 @@ class DeviceManager:
     Singleton managing hardware device selection and tensor placement.
 
     Priority order:
-        1. CUDA  — NVIDIA GPUs (RTX, A100, H100)
-        2. MPS   — Apple Silicon (M1/M2/M3)
-        3. CPU   — Universal fallback
+        1. CUDA   NVIDIA GPUs (RTX, A100, H100)
+        2. MPS    Apple Silicon (M1/M2/M3)
+        3. CPU    Universal fallback
 
     Usage
     -----

@@ -130,7 +130,7 @@ class CheckpointVerifier:
                     f"metadata.json missing from {ckpt_dir}. "
                     "Cannot verify checkpoint integrity."
                 )
-            logger.warning("metadata.json not found — skipping hash verification.")
+            logger.warning("metadata.json not found  skipping hash verification.")
             return
 
         with open(meta_path) as f:
@@ -195,7 +195,7 @@ class CheckpointVerifier:
             expected_sample = meta.get("rng_verification_sample")
 
         if expected_sample is None:
-            logger.debug("No RNG verification sample recorded — skipping RNG check.")
+            logger.debug("No RNG verification sample recorded  skipping RNG check.")
             return
 
         # Temporarily restore torch RNG state

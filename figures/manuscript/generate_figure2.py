@@ -1,7 +1,7 @@
 """
 figures/manuscript/generate_figure2.py
 
-Figure 2 — RG Layer Mechanics
+Figure 2  RG Layer Mechanics
 
 Panel layout:
   a) Single RG-layer forward computation: h^(k) = σ(W_k g_k h^(k-1) + b_k)
@@ -53,7 +53,7 @@ def _mp_pdf(lam: np.ndarray, beta: float, sigma2: float = 1.0) -> np.ndarray:
 
 
 # ---------------------------------------------------------------------------
-# Panel (a) — Single-layer forward computation schematic
+# Panel (a)  Single-layer forward computation schematic
 # ---------------------------------------------------------------------------
 
 def _draw_layer_schematic(ax: plt.Axes) -> None:
@@ -98,7 +98,7 @@ def _draw_layer_schematic(ax: plt.Axes) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (b) — Fisher metric pushforward across layers
+# Panel (b)  Fisher metric pushforward across layers
 # ---------------------------------------------------------------------------
 
 def _draw_fisher_pushforward(ax: plt.Axes) -> None:
@@ -138,7 +138,7 @@ def _draw_fisher_pushforward(ax: plt.Axes) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (c) — Eigenvalue spectrum evolution (MP convergence)
+# Panel (c)  Eigenvalue spectrum evolution (MP convergence)
 # ---------------------------------------------------------------------------
 
 def _draw_spectrum_evolution(ax: plt.Axes) -> None:

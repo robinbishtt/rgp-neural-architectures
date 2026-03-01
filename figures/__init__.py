@@ -1,5 +1,5 @@
 """
-figures — Publication-quality figure generation pipeline.
+figures  Publication-quality figure generation pipeline.
 
 Sub-packages
 ------------

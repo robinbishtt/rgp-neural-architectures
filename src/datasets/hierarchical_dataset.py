@@ -4,10 +4,10 @@ src/datasets/hierarchical_dataset.py
 Hierarchical dataset generators with tunable correlation structure.
 
 Datasets:
-  HierarchicalGaussianDataset  — nested Gaussian clusters mimicking RG structure
-  IIDGaussianDataset           — IID baseline for H3 comparison
-  CorrelatedDataset            — tunable correlation length ξ_data
-  OODDataset                   — out-of-distribution shift for generalisation tests
+  HierarchicalGaussianDataset   nested Gaussian clusters mimicking RG structure
+  IIDGaussianDataset            IID baseline for H3 comparison
+  CorrelatedDataset             tunable correlation length ξ_data
+  OODDataset                    out-of-distribution shift for generalisation tests
 """
 
 from __future__ import annotations
@@ -89,7 +89,7 @@ class HierarchicalGaussianDataset(Dataset):
 
 
 class IIDGaussianDataset(Dataset):
-    """IID baseline — no correlation structure."""
+    """IID baseline  no correlation structure."""
 
     def __init__(self, cfg: DatasetConfig) -> None:
         rng = np.random.default_rng(cfg.seed)

@@ -7,7 +7,7 @@ Runs a single named suite and emits a JSON report.  Designed so that the
 Audit Bureau (or any external reviewer) can execute exactly one folder's
 worth of tests in isolation, without touching the rest of the codebase.
 
-Usage — pytest suites
+Usage  pytest suites
 ---------------------
     python audit/run_suite.py unit
     python audit/run_suite.py integration
@@ -18,7 +18,7 @@ Usage — pytest suites
     python audit/run_suite.py spectral
     python audit/run_suite.py validation
 
-Usage — study / figure suites
+Usage  study / figure suites
 ------------------------------
     python audit/run_suite.py h1_scale_correspondence
     python audit/run_suite.py h2_depth_scaling

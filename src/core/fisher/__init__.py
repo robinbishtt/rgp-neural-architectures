@@ -1,4 +1,4 @@
-"""src/core/fisher — Fisher Information Geometry module."""
+"""src/core/fisher  Fisher Information Geometry module."""
 
 from src.core.fisher.fisher_metric import FisherMetric
 from src.core.fisher.eigenvalue_analyzer import FisherEigenvalueAnalyzer, EigenvalueAnalysisResult

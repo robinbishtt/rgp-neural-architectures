@@ -1,7 +1,7 @@
 """
 tests/spectral/test_level_spacing.py
 
-Nearest-neighbour level spacing distribution — universality class identification.
+Nearest-neighbour level spacing distribution  universality class identification.
 GOE unfolded spacings follow Wigner surmise: P(s) = (pi/2) s exp(-pi s^2/4).
 """
 
@@ -78,7 +78,7 @@ class TestLevelSpacing:
         ev = _goe_eigenvalues(400)
         spacings = _unfold_eigenvalues(ev)
         fraction_near_zero = (spacings < 0.1).mean()
-        # Under Wigner surmise, P(s<0.1) ≈ 0.008 — much less than Poisson (P=1-e^{-0.1}≈0.1)
+        # Under Wigner surmise, P(s<0.1) ≈ 0.008  much less than Poisson (P=1-e^{-0.1}≈0.1)
         assert fraction_near_zero < 0.05, (
             f"Level repulsion violated: {fraction_near_zero:.1%} of spacings < 0.1."
         )

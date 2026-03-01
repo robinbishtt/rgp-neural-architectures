@@ -1,7 +1,7 @@
 """
 figures/manuscript/generate_figure5.py
 
-Figure 5 — H3: Architectural Advantage (Comparative Performance)
+Figure 5  H3: Architectural Advantage (Comparative Performance)
 
 Panel layout:
   a) Accuracy bar chart: RG-Net vs baselines (IID + hierarchical data)
@@ -110,7 +110,7 @@ def _load_h3_results(results_dir: Path) -> Optional[Dict]:
 
 
 # ---------------------------------------------------------------------------
-# Panel (a) — Accuracy bar chart
+# Panel (a)  Accuracy bar chart
 # ---------------------------------------------------------------------------
 
 def _panel_accuracy_bars(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
@@ -162,7 +162,7 @@ def _panel_accuracy_bars(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (b) — OOD generalisation
+# Panel (b)  OOD generalisation
 # ---------------------------------------------------------------------------
 
 def _panel_ood_generalisation(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
@@ -185,7 +185,7 @@ def _panel_ood_generalisation(ax: plt.Axes, data: Dict, fast_track: bool) -> Non
 
 
 # ---------------------------------------------------------------------------
-# Panel (c) — Significance heatmap
+# Panel (c)  Significance heatmap
 # ---------------------------------------------------------------------------
 
 def _panel_significance_heatmap(ax: plt.Axes, data: Dict) -> None:
@@ -283,7 +283,7 @@ def generate(
 
     data = _load_h3_results(Path(results_dir))
     if data is None:
-        print("H3 results not found — using synthetic data.")
+        print("H3 results not found  using synthetic data.")
         data = _synthetic_h3_data(fast_track=fast_track)
 
     fig, axes = plt.subplots(1, 3, figsize=(DOUBLE_COL_WIDTH, 3.3))
