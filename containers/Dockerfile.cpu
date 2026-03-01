@@ -1,0 +1,106 @@
+# =============================================================================
+# RGP Neural Architectures — CPU-Only Docker Image
+# Base: python:3.9.18-slim-bullseye
+#
+# Use this image on machines without NVIDIA GPUs (MacBook, CI, code review).
+# All experiments supported but significantly slower. Fast-track recommended.
+#
+# Build:
+#   docker build -t rgp-neural:cpu -f containers/Dockerfile.cpu .
+#
+# Run (fast-track, CPU):
+#   docker run -v $(pwd)/results:/workspace/results \
+#              rgp-neural:cpu make reproduce_fast
+#
+# Run (unit tests only):
+#   docker run rgp-neural:cpu make test_unit
+# =============================================================================
+
+FROM python:3.9.18-slim-bullseye
+
+LABEL maintainer="RGP Neural Architectures"
+LABEL description="CPU-only reproducibility container — no GPU required"
+LABEL python="3.9.18"
+LABEL variant="cpu"
+
+# ---------------------------------------------------------------------------
+# System environment
+# ---------------------------------------------------------------------------
+ENV DEBIAN_FRONTEND=noninteractive \
+    TZ=UTC \
+    LANG=C.UTF-8 \
+    LC_ALL=C.UTF-8 \
+    PYTHONDONTWRITEBYTECODE=1 \
+    PYTHONUNBUFFERED=1 \
+    PIP_NO_CACHE_DIR=1 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1
+
+# ---------------------------------------------------------------------------
+# System dependencies (minimal for CPU-only)
+# ---------------------------------------------------------------------------
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        wget \
+        curl \
+        ca-certificates \
+        libhdf5-dev \
+        libhdf5-serial-dev \
+        libblas-dev \
+        liblapack-dev \
+        gfortran \
+        pkg-config \
+        make \
+    && rm -rf /var/lib/apt/lists/*
+
+# ---------------------------------------------------------------------------
+# Workspace
+# ---------------------------------------------------------------------------
+WORKDIR /workspace
+
+# ---------------------------------------------------------------------------
+# PyTorch CPU build
+# ---------------------------------------------------------------------------
+RUN pip install \
+        torch==2.0.1+cpu \
+        torchvision==0.15.2+cpu \
+        torchaudio==2.0.2+cpu \
+        --index-url https://download.pytorch.org/whl/cpu
+
+# ---------------------------------------------------------------------------
+# Python dependencies
+# ---------------------------------------------------------------------------
+COPY requirements.txt /workspace/requirements.txt
+RUN pip install -r /workspace/requirements.txt
+
+# ---------------------------------------------------------------------------
+# Source code
+# ---------------------------------------------------------------------------
+COPY . /workspace/
+
+RUN pip install -e ".[dev]"
+
+# ---------------------------------------------------------------------------
+# Result directories
+# ---------------------------------------------------------------------------
+RUN mkdir -p /workspace/results/h1 \
+             /workspace/results/h2 \
+             /workspace/results/h3 \
+             /workspace/results/fss \
+             /workspace/figures/out \
+             /workspace/checkpoints \
+             /workspace/logs \
+             /workspace/data
+
+# ---------------------------------------------------------------------------
+# Smoke test
+# ---------------------------------------------------------------------------
+RUN python -c "import torch; print('PyTorch:', torch.__version__); \
+               assert not torch.cuda.is_available(), 'CUDA should not be available in CPU image'; \
+               print('CPU-only image validated.')"
+
+# ---------------------------------------------------------------------------
+# Entry point
+# ---------------------------------------------------------------------------
+ENTRYPOINT ["/bin/bash", "-c"]
+CMD ["make verify_pipeline"]

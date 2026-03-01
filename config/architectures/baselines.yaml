@@ -1,0 +1,40 @@
+# Baseline architecture configurations for fair comparison
+
+baselines:
+
+  resnet:
+    name: resnet_baseline
+    n_blocks: 6
+    width: 512
+    activation: relu
+    use_batch_norm: true
+
+  densenet:
+    name: densenet_baseline
+    growth_rate: 32
+    n_dense_blocks: 4
+    width: 512
+    activation: relu
+
+  mlp:
+    name: mlp_baseline
+    depth: 10
+    width: 512
+    activation: relu
+    use_batch_norm: false
+
+  vgg:
+    name: vgg_baseline
+    n_blocks: 5
+    width: 512
+    activation: relu
+    use_batch_norm: true
+
+comparison:
+  seed: 42
+  n_trials: 5
+  train_epochs: 100
+  datasets:
+    - hierarchical_mnist
+    - hierarchical_cifar
+    - synthetic_hierarchy
