@@ -7,7 +7,7 @@
 [![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-blue.svg)](https://www.python.org/)
 [![PyTorch 2.0](https://img.shields.io/badge/pytorch-2.0.1-orange.svg)](https://pytorch.org/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18822434.svg)](https://doi.org/10.5281/zenodo.18822434)
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18822812.svg)](https://doi.org/10.5281/zenodo.18822434)
 [![Tests](https://img.shields.io/badge/tests-100%2B%20files-brightgreen.svg)](#testing)
 [![Docker](https://img.shields.io/badge/container-Docker%20%7C%20Singularity-2496ED.svg)](#containerization)
 
