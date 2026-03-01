@@ -4,13 +4,13 @@ src/architectures/rg_net/rg_net.py
 RG-Net architecture variants.
 
 Variants:
-  RGNetShallow    — L=2-5   layers (baseline)
-  RGNetStandard   — L=10-50 layers (main experiments)
-  RGNetDeep       — L=50-200 layers (scaling study)
-  RGNetUltraDeep  — L=200-1000 layers (extreme depth, gradient checkpointing)
-  RGNetVariableWidth — width schedule adapts to ξ_data
-  RGNetMultiScale — parallel streams at multiple resolutions
-  RGNetResidual   — skip connections every D_skip layers
+  RGNetShallow     L=2-5   layers (baseline)
+  RGNetStandard    L=10-50 layers (main experiments)
+  RGNetDeep        L=50-200 layers (scaling study)
+  RGNetUltraDeep   L=200-1000 layers (extreme depth, gradient checkpointing)
+  RGNetVariableWidth  width schedule adapts to ξ_data
+  RGNetMultiScale  parallel streams at multiple resolutions
+  RGNetResidual    skip connections every D_skip layers
 """
 
 from __future__ import annotations

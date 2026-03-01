@@ -90,7 +90,7 @@ class TestDistributionShift:
                 probs  = F.softmax(logits, dim=-1)
                 entropy = -(probs * probs.log()).sum(dim=-1).mean().item()
 
-            assert entropy > 0.0, f"Zero entropy at correlation={corr} — model collapsed."
+            assert entropy > 0.0, f"Zero entropy at correlation={corr}  model collapsed."
             assert entropy <= max_entropy + 1e-4, (
                 f"Entropy {entropy:.4f} > max={max_entropy:.4f} at correlation={corr}."
             )

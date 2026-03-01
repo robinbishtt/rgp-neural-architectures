@@ -1,5 +1,5 @@
 # =============================================================================
-# RGP Neural Architectures — Docker Compose
+# RGP Neural Architectures  Docker Compose
 #
 # Usage:
 #   docker-compose run gpu make reproduce_fast

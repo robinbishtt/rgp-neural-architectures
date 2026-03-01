@@ -5,25 +5,25 @@ JSON Schema (Draft 2020-12) for RGP audit reports.
 
 Five structural sections covering the complete scientific audit trail:
 
-  1. provenance          — Immutable foundation: exact git commit hash,
+  1. provenance           Immutable foundation: exact git commit hash,
                            SeedRegistry master seed, and DataAuditor-generated
                            SHA-256 checksums for every input dataset.
 
-  2. orchestration       — Temporal and DAG execution logs at nanosecond
+  2. orchestration        Temporal and DAG execution logs at nanosecond
                            resolution, plus interrupt/recovery event log for
                            checkpoint-based restarts.
 
-  3. math_telemetry      — High-resolution mathematical measurements:
+  3. math_telemetry       High-resolution mathematical measurements:
                            full layer-wise SVD spectra (not just mean), Lyapunov
                            spectrum evolution across training, Fisher metric
                            condition number and rank stability, and RG operator
                            information flow coefficients.
 
-  4. hardware_forensics  — Dynamic hardware measurements: per-layer VRAM
+  4. hardware_forensics   Dynamic hardware measurements: per-layer VRAM
                            byte-count allocation log and per-kernel compute
                            latency records for O(N) scaling verification.
 
-  5. integrity           — Cryptographic seal: SHA-256 hash-chain linking
+  5. integrity            Cryptographic seal: SHA-256 hash-chain linking
                            every section to all preceding sections, optional
                            digital signature over the chain tip, and a
                            file-level manifest for repository state.
@@ -42,13 +42,13 @@ import json
 from typing import Any, Dict, List, Tuple
 
 # ---------------------------------------------------------------------------
-# $defs — reusable sub-definitions
+# $defs  reusable sub-definitions
 # ---------------------------------------------------------------------------
 
 _DEFS: Dict[str, Any] = {
 
     # ------------------------------------------------------------------ #
-    # Section 1 — data identity                                           #
+    # Section 1  data identity                                           #
     # ------------------------------------------------------------------ #
 
     "data_identity": {
@@ -94,15 +94,15 @@ _DEFS: Dict[str, Any] = {
     },
 
     # ------------------------------------------------------------------ #
-    # Section 2 — DAG node and checkpoint event                          #
+    # Section 2  DAG node and checkpoint event                          #
     # ------------------------------------------------------------------ #
 
     "dag_node": {
         "type": "object",
         "description": (
-            "A single node in the workflow DAG.  Every major execution unit — "
+            "A single node in the workflow DAG.  Every major execution unit  "
             "suite, script, training phase, RG transformation pass, data checksum "
-            "verification — emits one node record with nanosecond-resolution "
+            "verification  emits one node record with nanosecond-resolution "
             "start and end timestamps.  parent_node_id enables full DAG reconstruction."
         ),
         "required": ["node_id", "node_type", "started_ns", "ended_ns", "status"],
@@ -204,15 +204,15 @@ _DEFS: Dict[str, Any] = {
     },
 
     # ------------------------------------------------------------------ #
-    # Section 3 — mathematical telemetry                                  #
+    # Section 3  mathematical telemetry                                  #
     # ------------------------------------------------------------------ #
 
     "spectral_snapshot": {
         "type": "object",
         "description": (
             "Full singular value spectrum rho(lambda) of one layer's weight matrix "
-            "at one training step.  The complete distribution is required — not just "
-            "the mean — to enable Marchenko-Pastur fitting, Wigner semicircle "
+            "at one training step.  The complete distribution is required  not just "
+            "the mean  to enable Marchenko-Pastur fitting, Wigner semicircle "
             "verification, and Tracy-Widom edge detection in post-processing."
         ),
         "required": ["layer_idx", "step", "singular_values"],
@@ -303,7 +303,7 @@ _DEFS: Dict[str, Any] = {
             },
             "max_lyapunov_exponent": {
                 "type": "number",
-                "description": "lambda_1 — the leading Lyapunov exponent.",
+                "description": "lambda_1  the leading Lyapunov exponent.",
             },
             "kaplan_yorke_dimension": {
                 "type": ["number", "null"],
@@ -314,7 +314,7 @@ _DEFS: Dict[str, Any] = {
             },
             "sum_positive_exponents": {
                 "type": "number",
-                "description": "Sum of all positive exponents — measures information production rate.",
+                "description": "Sum of all positive exponents  measures information production rate.",
             },
             "regime": {
                 "type": "string",
@@ -447,7 +447,7 @@ _DEFS: Dict[str, Any] = {
     },
 
     # ------------------------------------------------------------------ #
-    # Section 4 — hardware forensics                                      #
+    # Section 4  hardware forensics                                      #
     # ------------------------------------------------------------------ #
 
     "vram_alloc_event": {
@@ -528,7 +528,7 @@ _DEFS: Dict[str, Any] = {
     },
 
     # ------------------------------------------------------------------ #
-    # Section 5 — cryptographic integrity                                 #
+    # Section 5  cryptographic integrity                                 #
     # ------------------------------------------------------------------ #
 
     "block_hash_record": {
@@ -538,7 +538,7 @@ _DEFS: Dict[str, Any] = {
             "over (block_name + block_content_json + previous_hash).  "
             "Modifying any value in any earlier block changes that block's sha256, "
             "which changes its chain_hash, which then does not match the next "
-            "block's previous_hash — invalidating the entire chain tip."
+            "block's previous_hash  invalidating the entire chain tip."
         ),
         "required": [
             "block_index", "block_name",
@@ -724,7 +724,7 @@ _SCHEMA: Dict[str, Any] = {
         },
 
         # ==================================================================
-        # SECTION 1 — Immutable Foundation
+        # SECTION 1  Immutable Foundation
         # ==================================================================
         "provenance": {
             "type": "object",
@@ -837,7 +837,7 @@ _SCHEMA: Dict[str, Any] = {
         },
 
         # ==================================================================
-        # SECTION 2 — Temporal & Orchestration Logs
+        # SECTION 2  Temporal & Orchestration Logs
         # ==================================================================
         "orchestration": {
             "type": "object",
@@ -884,7 +884,7 @@ _SCHEMA: Dict[str, Any] = {
         },
 
         # ==================================================================
-        # SECTION 3 — High-Resolution Mathematical Telemetry
+        # SECTION 3  High-Resolution Mathematical Telemetry
         # ==================================================================
         "math_telemetry": {
             "type": "object",
@@ -960,7 +960,7 @@ _SCHEMA: Dict[str, Any] = {
         },
 
         # ==================================================================
-        # SECTION 4 — Hardware Forensics
+        # SECTION 4  Hardware Forensics
         # ==================================================================
         "hardware_forensics": {
             "type": "object",
@@ -1046,7 +1046,7 @@ _SCHEMA: Dict[str, Any] = {
         },
 
         # ==================================================================
-        # SECTION 5 — Cryptographic Integrity Seal
+        # SECTION 5  Cryptographic Integrity Seal
         # ==================================================================
         "integrity": {
             "type": "object",
@@ -1065,7 +1065,7 @@ _SCHEMA: Dict[str, Any] = {
                     "description": (
                         "Ordered chain of block hash records.  Genesis block (index 0) "
                         "hashes provenance.  Subsequent blocks hash orchestration, "
-                        "math_telemetry, hardware_forensics, suites, summary — in that "
+                        "math_telemetry, hardware_forensics, suites, summary  in that "
                         "order.  Minimum 6 blocks required."
                     ),
                     "items": {"$ref": "#/$defs/block_hash_record"},

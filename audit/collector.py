@@ -5,9 +5,9 @@ Environment provenance collector.
 
 Gathers three categories of audit evidence at the start of every run:
 
-  1. Git state   — commit hash, branch, dirty-flag, tags
-  2. Hardware    — device type, GPU specs or CPU specs, Python/Torch versions
-  3. Seed state  — SeedRegistry snapshot confirming deterministic configuration
+  1. Git state    commit hash, branch, dirty-flag, tags
+  2. Hardware     device type, GPU specs or CPU specs, Python/Torch versions
+  3. Seed state   SeedRegistry snapshot confirming deterministic configuration
 
 All methods return plain dicts that slot directly into the JSON report
 produced by AuditRunner.  No external package beyond the standard library

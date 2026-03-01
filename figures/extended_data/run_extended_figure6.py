@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure6.py
 
-Extended Data Figure 6 — Perturbation Growth Analysis
+Extended Data Figure 6  Perturbation Growth Analysis
 
   a) Input perturbation δh vs layer k (three regimes)
   b) Mean-field sensitivity dh^(k)/dh^(0) norm vs depth

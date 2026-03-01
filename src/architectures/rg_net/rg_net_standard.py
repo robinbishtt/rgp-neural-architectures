@@ -1,7 +1,7 @@
 """
 src/architectures/rg_net/rg_net_standard.py
 
-RGNetStandard — L=100 configuration for main experiments.
+RGNetStandard  L=100 configuration for main experiments.
 """
 from __future__ import annotations
 from src.architectures.rg_net.rg_net import RGNet

@@ -1,7 +1,7 @@
 """
 figures/generate_all.py
 
-Master figure generation script — generates all manuscript and extended
+Master figure generation script  generates all manuscript and extended
 data figures in sequence. Supports fast-track mode for rapid verification.
 
 Usage
@@ -183,7 +183,7 @@ def generate_all(
 
     header = "FAST-TRACK MODE [FAST_TRACK_UNVERIFIED]" if fast_track else "FULL QUALITY MODE"
     print(f"\n{'='*60}")
-    print(f"  RGP Figure Pipeline — {header}")
+    print(f"  RGP Figure Pipeline  {header}")
     print(f"  Generating {len(to_generate)} figure(s)")
     print(f"  Output: {out.resolve()}")
     print(f"{'='*60}")

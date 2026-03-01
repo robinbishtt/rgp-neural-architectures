@@ -1,7 +1,7 @@
 """
 src/utils/seed_registry.py
 
-Global Determinism Controller — Singleton managing all random seeds.
+Global Determinism Controller  Singleton managing all random seeds.
 
 In a 340+ file system, any single call to random.seed() at the wrong time
 corrupts the L_min ~ log(xi_data) data collapse. This module ensures that

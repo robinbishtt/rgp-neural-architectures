@@ -1,1 +1,1 @@
-"""RGP Neural Architectures — source package."""
+"""RGP Neural Architectures  source package."""

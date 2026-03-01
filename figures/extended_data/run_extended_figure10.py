@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure10.py
 
-Extended Data Figure 10 — Ablation: RG Operator Contribution
+Extended Data Figure 10  Ablation: RG Operator Contribution
 
 
 Ablation study: contribution of individual RG operator components:

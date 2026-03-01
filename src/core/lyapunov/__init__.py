@@ -1,4 +1,4 @@
-"""src/core/lyapunov — Lyapunov spectrum via QR algorithms."""
+"""src/core/lyapunov  Lyapunov spectrum via QR algorithms."""
 
 from src.core.lyapunov.lyapunov import (
     StandardQRAlgorithm, AdaptiveQRAlgorithm,

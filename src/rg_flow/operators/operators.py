@@ -1,7 +1,7 @@
 """
 src/rg_flow/operators/operators.py
 
-RG Flow Operators — transformations implementing h^(k) = σ(W_k g_k(h^(k-1)) + b_k).
+RG Flow Operators  transformations implementing h^(k) = σ(W_k g_k(h^(k-1)) + b_k).
 
 Implements:
   - StandardRGOperator

@@ -1,4 +1,4 @@
-"""src/checkpoint — Checkpoint and persistence architecture."""
+"""src/checkpoint  Checkpoint and persistence architecture."""
 
 from src.checkpoint.checkpoint_manager import CheckpointManager
 from src.checkpoint.model_serializer import ModelStateSerializer

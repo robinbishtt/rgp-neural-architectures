@@ -1,4 +1,4 @@
-"""src/datasets/loaders — Deterministic, distributed, cached, and streaming loaders."""
+"""src/datasets/loaders  Deterministic, distributed, cached, and streaming loaders."""
 
 from src.datasets.loaders.deterministic_loader import DeterministicDataLoader
 from src.datasets.loaders.distributed_loader import DistributedDataLoader

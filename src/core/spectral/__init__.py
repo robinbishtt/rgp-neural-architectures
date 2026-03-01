@@ -1,4 +1,4 @@
-"""src/core/spectral — Random Matrix Theory spectral distributions."""
+"""src/core/spectral  Random Matrix Theory spectral distributions."""
 
 from src.core.spectral.spectral import (
     MarchenkoPasturDistribution,

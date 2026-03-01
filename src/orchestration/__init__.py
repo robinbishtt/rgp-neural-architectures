@@ -1,4 +1,4 @@
-"""src/orchestration — Workflow orchestration via DAG execution."""
+"""src/orchestration  Workflow orchestration via DAG execution."""
 
 from src.orchestration.dag_executor import DAGExecutor, Task
 from src.orchestration.pipeline import build_full_pipeline, build_fast_track_pipeline

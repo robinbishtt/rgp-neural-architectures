@@ -88,7 +88,7 @@ class RGNetTemplate(nn.Module, abc.ABC):
         """Standard forward pass returning logits."""
 
     # ------------------------------------------------------------------
-    # Optional overrides — default implementations provided
+    # Optional overrides  default implementations provided
     # ------------------------------------------------------------------
 
     def forward_with_activations(

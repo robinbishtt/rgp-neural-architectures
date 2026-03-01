@@ -1,5 +1,5 @@
 """
-src/core — Mathematical and physics foundations (Tier 1: Nervous System).
+src/core  Mathematical and physics foundations (Tier 1: Nervous System).
 
 Submodules
 ----------
