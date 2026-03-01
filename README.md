@@ -37,7 +37,7 @@ The codebase is organized as a six-tier architecture (≈ 250 files) covering ma
 rgp_neural_architectures/
 │
 ├── src/                            Source code
-│   ├── core/                         Tier 1 — Mathematical foundations
+│   ├── core/                         Tier 1  Mathematical foundations
 │   │   ├── fisher/                     Fisher information geometry
 │   │   ├── jacobian/                   Jacobian analysis (autograd, JVP, VJP, finite-diff, symbolic)
 │   │   ├── spectral/                   Random matrix theory (Marchenko-Pastur, Wigner, Tracy-Widom)
@@ -45,7 +45,7 @@ rgp_neural_architectures/
 │   │   └── lyapunov/                   Lyapunov spectrum via Benettin QR algorithm
 │   ├── rg_flow/operators/              RG operators (standard, residual, attention, wavelet, learned)
 │   ├── proofs/                         Symbolic SymPy verification of Theorems 1–3
-│   ├── architectures/                Tier 2 — Neural architectures
+│   ├── architectures/                Tier 2  Neural architectures
 │   │   ├── rg_net/                     RG-Net (shallow / standard / deep / ultra-deep / variable-width / multi-scale)
 │   │   └── baselines/                  ResNet, DenseNet, MLP, VGG baselines
 │   ├── training/                       Training infrastructure
@@ -53,7 +53,7 @@ rgp_neural_architectures/
 │   ├── scaling/                        Finite-size scaling analysis, critical exponent extraction
 │   ├── datasets/                       Hierarchical dataset generators
 │   │   └── loaders/                    Deterministic, distributed, cached, streaming data loaders
-│   ├── utils/                        ICL — Infrastructure Cross-Layer
+│   ├── utils/                        ICL  Infrastructure Cross-Layer
 │   │   ├── seed_registry.py            Global determinism controller (Singleton)
 │   │   ├── device_manager.py           Hardware-agnostic CUDA / MPS / CPU detection
 │   │   ├── error_handler.py            OOM, NaN, and checkpoint-resume recovery
@@ -63,12 +63,12 @@ rgp_neural_architectures/
 │   ├── orchestration/                  DAG executor and Hydra configuration management
 │   └── provenance/                     SHA-256 data integrity verification
 │
-├── experiments/                    Tier 5 — Experimental pipelines
+├── experiments/                    Tier 5  Experimental pipelines
 │   ├── h1_scale_correspondence/
 │   ├── h2_depth_scaling/
 │   └── h3_multiscale_generalization/
 │
-├── tests/                          Tier 3 — 100+ test files across 8 categories
+├── tests/                          Tier 3  100+ test files across 8 categories
 │   ├── unit/                         Core mathematics correctness
 │   ├── integration/                  End-to-end pipeline tests
 │   ├── stability/                    Gradient stability and critical initialization
@@ -152,7 +152,7 @@ bash scripts/setup_environment.sh --cpu-only  # CPU
 Full experiments (L=1000, FSS analysis) require 48–72 hours on 80 GB VRAM. The fast-track system runs the complete pipeline at reduced scale depth=10, width=64, 2 epochs on any hardware including CPU-only machines. All outputs are tagged `[FAST_TRACK_UNVERIFIED]`.
 
 ```bash
-# Smoke test — validates imports, device detection, seed registry, forward/backward pass (< 1 min)
+# Smoke test  validates imports, device detection, seed registry, forward/backward pass (< 1 min)
 make verify_pipeline
 
 # Full fast-track: H1 + H2 + H3 + all figures (3–5 min, synthetic data)
@@ -169,7 +169,7 @@ make reproduce_fast_h3
 ## Full Reproduction
 
 ```bash
-# Complete pipeline — data generation, training, evaluation, figures
+# Complete pipeline  data generation, training, evaluation, figures
 make reproduce_all          # 24–72 hours on RTX 3090
 
 # Individual experiments
@@ -203,19 +203,19 @@ make reproduce_figures_from_checkpoints
 Containers freeze the exact environment OS, Python version, PyTorch, and all libraries ensuring the code runs identically in 2026 and 2028.
 
 ```bash
-# Docker — GPU
+# Docker  GPU
 docker build -t rgp-neural:latest -f containers/Dockerfile .
 docker run --gpus all \
     -v $(pwd)/data:/workspace/data \
     -v $(pwd)/results:/workspace/results \
     rgp-neural:latest make reproduce_fast
 
-# Docker — CPU only
+# Docker  CPU only
 docker build -t rgp-neural:cpu -f containers/Dockerfile.cpu .
 docker run -v $(pwd)/results:/workspace/results \
     rgp-neural:cpu make verify_pipeline
 
-# Singularity / Apptainer — HPC clusters (SLURM / PBS / LSF)
+# Singularity / Apptainer  HPC clusters (SLURM / PBS / LSF)
 bash containers/singularity_build.sh --fakeroot
 singularity run --nv rgp-neural.sif make reproduce_fast
 

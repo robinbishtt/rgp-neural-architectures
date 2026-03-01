@@ -13,7 +13,7 @@ provided in `audit/example_report.json`.
 ## Quick start
 
 ```bash
-# Full audit — all pytest suites + all experiment/figure scripts
+# Full audit  all pytest suites + all experiment/figure scripts
 python audit/run_audit.py
 
 # Tests only

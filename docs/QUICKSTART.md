@@ -18,7 +18,7 @@ Confirm you have the following before starting.
 
 ---
 
-## Step 1 — Clone the Repository
+## Step 1  Clone the Repository
 
 ```bash
 git clone https://github.com/robinbishtt/rgp-neural-architectures.git
@@ -27,7 +27,7 @@ cd rgp-neural-architectures
 
 ---
 
-## Step 2 — Install Dependencies
+## Step 2  Install Dependencies
 
 Choose the installation path that matches your hardware.
 
@@ -62,7 +62,7 @@ bash scripts/setup_environment.sh --cpu-only  # CPU
 
 ---
 
-## Step 3 — Verify the Pipeline (< 60 Seconds)
+## Step 3  Verify the Pipeline (< 60 Seconds)
 
 Run the smoke test before anything else. This validates seven properties: all imports resolve, device detection works, the seed registry initializes correctly, a model forward and backward pass completes without NaN, a checkpoint round-trip is bit-exact, the Marchenko-Pastur distribution fits synthetic eigenvalue data, and the exponential decay fitter converges on synthetic correlation lengths.
 
@@ -94,9 +94,9 @@ If any check fails, see the [Troubleshooting](#troubleshooting) section below.
 
 ---
 
-## Step 4 — Run the Fast-Track Pipeline (3–5 Minutes)
+## Step 4  Run the Fast-Track Pipeline (3–5 Minutes)
 
-The fast-track pipeline runs all three hypotheses at reduced scale — depth=10, width=64, 2 epochs — using synthetic data. All outputs are tagged `[FAST_TRACK_UNVERIFIED]` and are intended for pipeline verification only, not for scientific conclusions.
+The fast-track pipeline runs all three hypotheses at reduced scale  depth=10, width=64, 2 epochs  using synthetic data. All outputs are tagged `[FAST_TRACK_UNVERIFIED]` and are intended for pipeline verification only, not for scientific conclusions.
 
 ```bash
 # All three hypotheses
@@ -112,12 +112,12 @@ Outputs are written to `results/h1/`, `results/h2/`, `results/h3/`, and figures 
 
 ---
 
-## Step 5 — Run Full Experiments (GPU Required)
+## Step 5  Run Full Experiments (GPU Required)
 
 Full experiments require a GPU with at least 24 GB VRAM for the standard configuration (L=100). See the [hardware requirements table](../README.md#hardware-requirements) in the main README for the full breakdown.
 
 ```bash
-# Complete pipeline — trains all experiments and generates all figures
+# Complete pipeline  trains all experiments and generates all figures
 make reproduce_all
 
 # Individual experiments
@@ -176,7 +176,7 @@ The `Makefile` is the primary interface for all common operations.
 
 | Target | Description | Estimated Time |
 |---|---|---|
-| `make verify_pipeline` | Smoke test — 7 checks | < 1 min |
+| `make verify_pipeline` | Smoke test  7 checks | < 1 min |
 | `make reproduce_fast` | Fast-track all hypotheses + figures | 3–5 min |
 | `make reproduce_fast_h1` | Fast-track H1 only | 1–2 min |
 | `make reproduce_fast_h2` | Fast-track H2 only | 1–2 min |
@@ -223,7 +223,7 @@ Fast-track figures are placeholders generated from synthetic data. They confirm 
 
 Once the pipeline is verified and experiments are running, the following documents provide deeper reference material.
 
-- [ARCHITECTURE.md](ARCHITECTURE.md) — full six-tier design rationale and module descriptions.
-- [REPRODUCIBILITY.md](REPRODUCIBILITY.md) — detailed explanation of every determinism and integrity mechanism.
-- [DATASETS.md](DATASETS.md) — dataset generation parameters, correlation structure, and provenance checksums.
-- [MODULES.md](MODULES.md) — API reference for all public classes and functions.
+- [ARCHITECTURE.md](ARCHITECTURE.md)  full six-tier design rationale and module descriptions.
+- [REPRODUCIBILITY.md](REPRODUCIBILITY.md)  detailed explanation of every determinism and integrity mechanism.
+- [DATASETS.md](DATASETS.md)  dataset generation parameters, correlation structure, and provenance checksums.
+- [MODULES.md](MODULES.md)  API reference for all public classes and functions.

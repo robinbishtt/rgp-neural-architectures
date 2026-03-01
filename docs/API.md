@@ -1,4 +1,4 @@
-# RGP Neural Architectures — API Reference
+# RGP Neural Architectures  API Reference
 
 ## Overview
 
