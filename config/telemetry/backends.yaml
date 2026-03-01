@@ -1,0 +1,32 @@
+# config/telemetry/backends.yaml
+# Telemetry backend selection and configuration.
+
+backends:
+  default: [tensorboard, jsonl]
+  collaborative: [tensorboard, wandb, jsonl]
+  production: [tensorboard, mlflow, jsonl]
+
+tensorboard:
+  enabled: true
+  log_dir: logs/tensorboard
+  flush_secs: 30
+
+wandb:
+  enabled: false
+  project: rgp_neural_architectures
+  mode: offline
+  log_dir: logs/wandb
+
+mlflow:
+  enabled: false
+  tracking_uri: sqlite:///logs/mlflow.db
+
+jsonl:
+  enabled: true
+  path: logs/telemetry.jsonl
+  flush_every: 10  # steps
+
+logging:
+  level: INFO
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: logs/run.log

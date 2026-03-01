@@ -1,0 +1,442 @@
+{
+  "_comment": "Annotated example of an RGP audit report. Every field is present.",
+
+  "run_id": "f47ac10b-58cc-4372-a567-0e02b2c3d479",
+  "timestamp_utc": "2026-03-01T09:00:00.000000Z",
+
+  "provenance": {
+    "git": {
+      "commit_hash": "a3f1c2d4e5b6789012345678901234567890abcd",
+      "branch": "main",
+      "dirty": false,
+      "tags": [],
+      "remote_url": "https://github.com/your-repo/rgp-neural-architectures.git",
+      "diff_stat": null
+    },
+    "seed_registry": {
+      "master_seed": 42,
+      "step": 0,
+      "deterministic_cuda": true,
+      "benchmark_disabled": true,
+      "worker_seed_formula": "(master_seed * 2654435761 + worker_id * 1013904223) & 0xFFFFFFFF",
+      "rng_snapshot_embedded": true
+    },
+    "data_checksums": [
+      {
+        "dataset_name": "synthetic_hierarchy_n10000",
+        "path": "data/synthetic_hierarchy_n10000",
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "size_bytes": 4194304,
+        "generation_seed": 42,
+        "verified": true,
+        "verified_at_ns": 1740820800123456789
+      }
+    ],
+    "hardware": {
+      "device_type": "cuda",
+      "device_name": "NVIDIA A100-SXM4-80GB",
+      "total_memory_gb": 79.15,
+      "multi_processor_count": 108,
+      "compute_capability": "8.0",
+      "cuda_version": "12.1",
+      "cudnn_version": "8906",
+      "cpu_count": 64,
+      "cpu_model": "AMD EPYC 7742 64-Core Processor",
+      "platform": "Linux-5.15.0-1040-aws-x86_64-with-glibc2.35",
+      "python_version": "3.11.8",
+      "torch_version": "2.3.0+cu121",
+      "numpy_version": "1.26.4"
+    }
+  },
+
+  "orchestration": {
+    "wall_start_ns": 1740820800000000000,
+    "wall_end_ns":   1740820894420000000,
+    "wall_duration_seconds": 94.42,
+    "dag_trace": [
+      {
+        "node_id": "11111111-0000-0000-0000-000000000001",
+        "parent_node_id": null,
+        "node_type": "run_root",
+        "label": "audit run f47ac10b",
+        "started_ns": 1740820800000000000,
+        "ended_ns":   1740820894420000000,
+        "duration_ns": 94420000000,
+        "status": "failed",
+        "metadata": {}
+      },
+      {
+        "node_id": "22222222-0000-0000-0000-000000000002",
+        "parent_node_id": "11111111-0000-0000-0000-000000000001",
+        "node_type": "pytest_suite",
+        "label": "unit",
+        "started_ns": 1740820800100000000,
+        "ended_ns":   1740820812530000000,
+        "duration_ns": 12430000000,
+        "status": "failed",
+        "metadata": {"argv": ["python3", "-m", "pytest", "tests/unit", "--json-report", "--tb=short", "-q"]}
+      },
+      {
+        "node_id": "33333333-0000-0000-0000-000000000003",
+        "parent_node_id": "22222222-0000-0000-0000-000000000002",
+        "node_type": "pytest_case",
+        "label": "tests/unit/test_fisher_correctness.py::test_fisher_psd",
+        "started_ns": 1740820800200000000,
+        "ended_ns":   1740820800430000000,
+        "duration_ns": 230000000,
+        "status": "passed",
+        "metadata": {"seed": 42}
+      },
+      {
+        "node_id": "44444444-0000-0000-0000-000000000004",
+        "parent_node_id": "22222222-0000-0000-0000-000000000002",
+        "node_type": "pytest_case",
+        "label": "tests/unit/test_jacobian_finite_diff.py::test_jacobian_accuracy",
+        "started_ns": 1740820800440000000,
+        "ended_ns":   1740820800750000000,
+        "duration_ns": 310000000,
+        "status": "failed",
+        "metadata": {"seed": 42}
+      }
+    ],
+    "checkpoint_events": [
+      {
+        "event_type": "interrupt",
+        "timestamp_ns": 1740820850000000000,
+        "checkpoint_path": "checkpoints/h1_step_1200.pt",
+        "checkpoint_sha256": "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+        "step_at_event": 1200,
+        "epoch_at_event": 3,
+        "reason": "SIGTERM from scheduler (walltime limit)",
+        "seed_state_embedded": true
+      },
+      {
+        "event_type": "resume",
+        "timestamp_ns": 1740820860000000000,
+        "checkpoint_path": "checkpoints/h1_step_1200.pt",
+        "checkpoint_sha256": "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890",
+        "step_at_event": 1200,
+        "epoch_at_event": 3,
+        "reason": null,
+        "seed_state_embedded": true
+      }
+    ],
+    "total_interruptions": 1,
+    "total_resumptions": 1
+  },
+
+  "math_telemetry": {
+    "telemetry_sampling_config": {
+      "spectral_every_n_steps": 100,
+      "lyapunov_every_n_steps": 50,
+      "fisher_every_n_steps": 50,
+      "rg_flow_every_n_steps": 100,
+      "total_steps_in_run": 5000
+    },
+    "spectral_map": [
+      {
+        "layer_idx": 2,
+        "layer_name": "rg_op_2.linear",
+        "step": 500,
+        "timestamp_ns": 1740820830000000000,
+        "matrix_shape": [256, 256],
+        "singular_values": [3.14, 2.72, 2.58, 2.41, 2.30, 1.99, 1.87, 1.61, 1.41, 1.22],
+        "singular_values_truncated": true,
+        "eigenvalue_density": {
+          "bin_edges": [0.0, 0.5, 1.0, 1.5, 2.0, 2.5, 3.0, 3.5, 4.0],
+          "counts":    [0,   12,  89,  145, 98,  42,  11,  2,   1],
+          "n_bins": 8
+        },
+        "mp_fit": {
+          "sigma_sq": 1.0,
+          "ratio_q": 1.0,
+          "lambda_plus": 4.0,
+          "lambda_minus": 0.0,
+          "ks_statistic": 0.032,
+          "ks_pvalue": 0.41
+        },
+        "distribution_class": "marchenko_pastur",
+        "effective_rank": 3
+      }
+    ],
+    "lyapunov_evolution": [
+      {
+        "step": 500,
+        "timestamp_ns": 1740820831000000000,
+        "spectrum": [0.021, 0.008, -0.004, -0.019, -0.041, -0.078, -0.142, -0.231],
+        "max_lyapunov_exponent": 0.021,
+        "kaplan_yorke_dimension": 3.73,
+        "sum_positive_exponents": 0.029,
+        "regime": "chaotic",
+        "qr_algorithm": "adaptive",
+        "n_steps_averaged": 50
+      },
+      {
+        "step": 2500,
+        "timestamp_ns": 1740820860000000000,
+        "spectrum": [0.002, -0.003, -0.011, -0.028, -0.052, -0.093, -0.161, -0.258],
+        "max_lyapunov_exponent": 0.002,
+        "kaplan_yorke_dimension": 1.40,
+        "sum_positive_exponents": 0.002,
+        "regime": "critical",
+        "qr_algorithm": "adaptive",
+        "n_steps_averaged": 50
+      }
+    ],
+    "fisher_geometry": [
+      {
+        "layer_idx": 0,
+        "layer_name": "rg_op_0.linear",
+        "step": 500,
+        "timestamp_ns": 1740820832000000000,
+        "condition_number": 8432.1,
+        "lambda_max": 12.41,
+        "lambda_min": 0.00147,
+        "clip_min": 1e-10,
+        "rank": 64,
+        "effective_dimension": 31.2,
+        "is_ill_conditioned": false,
+        "eigenvalue_histogram": {
+          "log_bin_edges": [-10, -8, -6, -4, -2, 0, 2],
+          "counts": [0, 0, 2, 18, 39, 5]
+        }
+      }
+    ],
+    "rg_operator_flow": [
+      {
+        "layer_idx": 0,
+        "layer_name": "rg_op_0",
+        "step": 500,
+        "timestamp_ns": 1740820833000000000,
+        "operator_type": "standard",
+        "coarse_graining_scale": 1.0,
+        "information_retained_coefficient": 0.891,
+        "information_integrated_out_coefficient": 0.109,
+        "cumulative_information_loss": 0.109,
+        "jacobian_singular_value_ratio": 1.84,
+        "correlation_decay_xi": 14.3
+      },
+      {
+        "layer_idx": 3,
+        "layer_name": "rg_op_3",
+        "step": 500,
+        "timestamp_ns": 1740820833500000000,
+        "operator_type": "standard",
+        "coarse_graining_scale": 4.0,
+        "information_retained_coefficient": 0.612,
+        "information_integrated_out_coefficient": 0.388,
+        "cumulative_information_loss": 0.547,
+        "jacobian_singular_value_ratio": 0.93,
+        "correlation_decay_xi": 4.1
+      }
+    ]
+  },
+
+  "hardware_forensics": {
+    "vram_micro_log": [
+      {
+        "event": "alloc",
+        "layer_idx": 0,
+        "layer_name": "rg_op_0.linear.weight",
+        "tensor_shape": [256, 256],
+        "dtype": "float32",
+        "bytes_delta": 262144,
+        "cumulative_bytes": 262144,
+        "cumulative_gb": 0.000262,
+        "timestamp_ns": 1740820801000000000
+      },
+      {
+        "event": "alloc",
+        "layer_idx": 1,
+        "layer_name": "rg_op_1.linear.weight",
+        "tensor_shape": [256, 256],
+        "dtype": "float32",
+        "bytes_delta": 262144,
+        "cumulative_bytes": 524288,
+        "cumulative_gb": 0.000524,
+        "timestamp_ns": 1740820801100000000
+      },
+      {
+        "event": "peak",
+        "layer_idx": null,
+        "layer_name": null,
+        "tensor_shape": null,
+        "dtype": null,
+        "bytes_delta": 0,
+        "cumulative_bytes": 4194304,
+        "cumulative_gb": 0.004194,
+        "timestamp_ns": 1740820810000000000
+      }
+    ],
+    "kernel_latency_log": [
+      {
+        "kernel_name": "sgemm_N256_M256",
+        "layer_idx": 0,
+        "layer_name": "rg_op_0",
+        "step": 1,
+        "problem_size_n": 256,
+        "duration_us": 12.4,
+        "device": "cuda:0",
+        "timestamp_ns": 1740820802000000000,
+        "flops": 33554432,
+        "throughput_gflops": 2.706
+      },
+      {
+        "kernel_name": "sgemm_N512_M512",
+        "layer_idx": 0,
+        "layer_name": "rg_op_0",
+        "step": 1,
+        "problem_size_n": 512,
+        "duration_us": 24.9,
+        "device": "cuda:0",
+        "timestamp_ns": 1740820802500000000,
+        "flops": 134217728,
+        "throughput_gflops": 5.390
+      }
+    ],
+    "peak_vram_bytes": 4194304,
+    "peak_vram_gb": 0.0042,
+    "total_kernel_time_seconds": 0.000037
+  },
+
+  "suites": {
+    "unit": {
+      "suite_type": "pytest_suite",
+      "started_ns": 1740820800100000000,
+      "ended_ns":   1740820812530000000,
+      "duration_ns": 12430000000,
+      "duration_seconds": 12.43,
+      "pytest_args": ["python3", "-m", "pytest", "tests/unit", "--json-report", "--tb=short", "-q"],
+      "dag_node_id": "22222222-0000-0000-0000-000000000002",
+      "cases": [
+        {
+          "name": "tests/unit/test_fisher_correctness.py::test_fisher_psd",
+          "status": "passed",
+          "started_ns": 1740820800200000000,
+          "ended_ns":   1740820800430000000,
+          "duration_ns": 230000000,
+          "duration_seconds": 0.23,
+          "failure_message": null,
+          "traceback": null,
+          "seed_used": 42,
+          "worker_seed": null,
+          "stdout": null,
+          "stderr_snippet": null,
+          "markers": [],
+          "parametrize_id": null,
+          "dag_node_id": "33333333-0000-0000-0000-000000000003"
+        },
+        {
+          "name": "tests/unit/test_jacobian_finite_diff.py::test_jacobian_accuracy",
+          "status": "failed",
+          "started_ns": 1740820800440000000,
+          "ended_ns":   1740820800750000000,
+          "duration_ns": 310000000,
+          "duration_seconds": 0.31,
+          "failure_message": "AssertionError: max relative error 1.2e-4 > tolerance 1e-5",
+          "traceback": "Traceback (most recent call last):\n  File \"tests/unit/test_jacobian_finite_diff.py\", line 47, in test_jacobian_accuracy\n    assert rel_err < tol\nAssertionError: max relative error 1.2e-4 > tolerance 1e-5",
+          "seed_used": 42,
+          "worker_seed": null,
+          "stdout": null,
+          "stderr_snippet": null,
+          "markers": ["unit"],
+          "parametrize_id": null,
+          "dag_node_id": "44444444-0000-0000-0000-000000000004"
+        }
+      ]
+    }
+  },
+
+  "summary": {
+    "total_cases": 2,
+    "passed": 1,
+    "failed": 1,
+    "errored": 0,
+    "skipped": 0,
+    "duration_seconds": 94.42,
+    "all_passed": false,
+    "suite_summary": {
+      "unit": {"passed": 1, "failed": 1, "errored": 0, "skipped": 0}
+    }
+  },
+
+  "integrity": {
+    "hash_chain": [
+      {
+        "block_index": 0,
+        "block_name": "provenance",
+        "block_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa0000",
+        "previous_hash": "0000000000000000000000000000000000000000000000000000000000000000",
+        "chain_hash":    "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb0001"
+      },
+      {
+        "block_index": 1,
+        "block_name": "orchestration",
+        "block_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc0002",
+        "previous_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb0001",
+        "chain_hash":    "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd0003"
+      },
+      {
+        "block_index": 2,
+        "block_name": "math_telemetry",
+        "block_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee0004",
+        "previous_hash": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd0003",
+        "chain_hash":    "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff05"
+      },
+      {
+        "block_index": 3,
+        "block_name": "hardware_forensics",
+        "block_sha256": "1111111111111111111111111111111111111111111111111111111111110006",
+        "previous_hash": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff05",
+        "chain_hash":    "2222222222222222222222222222222222222222222222222222222222220007"
+      },
+      {
+        "block_index": 4,
+        "block_name": "suites",
+        "block_sha256": "3333333333333333333333333333333333333333333333333333333333330008",
+        "previous_hash": "2222222222222222222222222222222222222222222222222222222222220007",
+        "chain_hash":    "4444444444444444444444444444444444444444444444444444444444440009"
+      },
+      {
+        "block_index": 5,
+        "block_name": "summary",
+        "block_sha256": "5555555555555555555555555555555555555555555555555555555555550010",
+        "previous_hash": "4444444444444444444444444444444444444444444444444444444444440009",
+        "chain_hash":    "6666666666666666666666666666666666666666666666666666666666660011"
+      }
+    ],
+    "chain_root_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb0001",
+    "chain_tip_hash":  "6666666666666666666666666666666666666666666666666666666666660011",
+    "signature": {
+      "algorithm": "Ed25519",
+      "public_key_fingerprint": "AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78:90:AB:CD:EF:12:34:56:78",
+      "public_key_pem_path": "audit/signing.pub",
+      "signed_payload_sha256": "6666666666666666666666666666666666666666666666666666666666660011",
+      "signature_hex": "abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef1234567890abcdef12345678901234",
+      "signed_at_ns": 1740820894430000000
+    },
+    "manifest": {
+      "entries": [
+        {
+          "relative_path": "audit/schema.py",
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "size_bytes": 18432,
+          "verified": true,
+          "mtime_ns": 1740820800000000000
+        },
+        {
+          "relative_path": "src/core/fisher/condition_tracker.py",
+          "sha256": "a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3",
+          "size_bytes": 3201,
+          "verified": true,
+          "mtime_ns": 1740820750000000000
+        }
+      ],
+      "manifest_hash": "7777777777777777777777777777777777777777777777777777777777770012",
+      "verified_at_ns": 1740820894440000000,
+      "total_files": 374,
+      "total_bytes": 2048576
+    },
+    "schema_warnings": []
+  }
+}
