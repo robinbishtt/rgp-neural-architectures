@@ -4,7 +4,7 @@ This document provides an API reference for all public classes and functions in 
 
 ---
 
-## Tier 1 — Nervous System
+## Tier 1  Nervous System
 
 ### `src.core.fisher`
 
@@ -167,8 +167,8 @@ def empirical_spectral_density(
 
     Returns
     -------
-    x : np.ndarray  — evaluation points
-    density : np.ndarray  — estimated density at each point
+    x : np.ndarray   evaluation points
+    density : np.ndarray   estimated density at each point
     """
 ```
 
@@ -204,7 +204,7 @@ class TwoPointCorrelation:
 
         Returns
         -------
-        np.ndarray of shape (depth,) — correlation coefficient c^(k) per layer.
+        np.ndarray of shape (depth,)  correlation coefficient c^(k) per layer.
         """
 ```
 
@@ -287,7 +287,7 @@ class StandardQRAlgorithm:
 
 `AdaptiveQRAlgorithm` and `ParallelQRAlgorithm` expose the same `compute` interface. `AdaptiveQRAlgorithm` additionally accepts `condition_threshold` (default `1e6`) to trigger early re-orthogonalization. `ParallelQRAlgorithm` distributes layer batches across available GPUs.
 
-**`analyze_lyapunov`** — convenience function
+**`analyze_lyapunov`**  convenience function
 
 ```python
 def analyze_lyapunov(
@@ -301,7 +301,7 @@ def analyze_lyapunov(
 
 ---
 
-## Tier 2 — Engine Room
+## Tier 2  Engine Room
 
 ### `src.architectures.rg_net`
 

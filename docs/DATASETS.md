@@ -15,13 +15,13 @@ All datasets in this codebase carry explicit **hierarchical correlation structur
 | Name | Class | Source | Correlation Control | H1 | H2 | H3 |
 |---|---|---|:---:|:---:|:---:|:---:|
 | Synthetic Hierarchy | `SyntheticHierarchy` | Generated | Exact | ✅ | ✅ | ✅ |
-| Hierarchical MNIST | `HierarchicalMNIST` | MNIST + augmentation | Approximate | — | — | ✅ |
-| Hierarchical CIFAR | `HierarchicalCIFAR` | CIFAR-10 + augmentation | Approximate | — | — | ✅ |
-| Medical Hierarchy | `MedicalHierarchy` | External (see below) | Structural | — | — | ✅ |
+| Hierarchical MNIST | `HierarchicalMNIST` | MNIST + augmentation | Approximate |  |  | ✅ |
+| Hierarchical CIFAR | `HierarchicalCIFAR` | CIFAR-10 + augmentation | Approximate |  |  | ✅ |
+| Medical Hierarchy | `MedicalHierarchy` | External (see below) | Structural |  |  | ✅ |
 
 ---
 
-## Synthetic Hierarchy — `src/datasets/synthetic_hierarchy.py`
+## Synthetic Hierarchy  `src/datasets/synthetic_hierarchy.py`
 
 `SyntheticHierarchy` is the primary dataset for H1 and H2 validation because it provides **exact, configurable** correlation structure. The data-generating process is as follows.
 
@@ -45,9 +45,9 @@ The complete dataset is generated in a single call with a seed from `SeedRegistr
 
 ---
 
-## Hierarchical MNIST — `src/datasets/hierarchical_mnist.py`
+## Hierarchical MNIST  `src/datasets/hierarchical_mnist.py`
 
-`HierarchicalMNIST` extends standard MNIST by adding multi-scale spatial correlation via a structured noise augmentation. The augmentation process samples a hierarchy of Gaussian blobs at three scales — coarse (σ=16), medium (σ=8), and fine (σ=2) — and adds them to the original image with configurable scale weights. The three scales correspond to the three levels of the hierarchical label structure (digit family, digit identity, stroke style).
+`HierarchicalMNIST` extends standard MNIST by adding multi-scale spatial correlation via a structured noise augmentation. The augmentation process samples a hierarchy of Gaussian blobs at three scales  coarse (σ=16), medium (σ=8), and fine (σ=2)  and adds them to the original image with configurable scale weights. The three scales correspond to the three levels of the hierarchical label structure (digit family, digit identity, stroke style).
 
 The dataset downloads and caches standard MNIST via `torchvision.datasets.MNIST`. The hierarchical augmentation is applied deterministically at construction time using the seed from `SeedRegistry`. Labels are the standard ten MNIST classes.
 
@@ -55,7 +55,7 @@ The dataset downloads and caches standard MNIST via `torchvision.datasets.MNIST`
 
 ---
 
-## Hierarchical CIFAR — `src/datasets/hierarchical_cifar.py`
+## Hierarchical CIFAR  `src/datasets/hierarchical_cifar.py`
 
 `HierarchicalCIFAR` applies the same hierarchical augmentation strategy to CIFAR-10. Three spatial scales are used: coarse (σ=8), medium (σ=4), and fine (σ=1). The scale weights are set to emphasize the coarse and fine scales equally, with a moderate medium-scale contribution, producing a bimodal frequency spectrum that challenges architectures without multi-scale processing.
 
@@ -63,7 +63,7 @@ CIFAR-10 is downloaded and cached via `torchvision.datasets.CIFAR10`. Labels are
 
 ---
 
-## Medical Hierarchy — `src/datasets/medical_hierarchy.py`
+## Medical Hierarchy  `src/datasets/medical_hierarchy.py`
 
 `MedicalHierarchy` provides a real-world validation dataset with **structural** rather than synthetic hierarchical organisation. The hierarchy arises naturally from anatomy: images contain structures at three scales (organ, tissue, cell). This dataset is used to test whether the performance advantage observed in H3 on synthetic data transfers to a domain where the hierarchy is not explicitly constructed.
 
@@ -73,7 +73,7 @@ CIFAR-10 is downloaded and cached via `torchvision.datasets.CIFAR10`. Labels are
 
 ---
 
-## Data Loaders — `src/datasets/loaders/`
+## Data Loaders  `src/datasets/loaders/`
 
 Four loader implementations are provided, each suited to a different use case.
 
@@ -111,7 +111,7 @@ data/
 │   ├── test.pt
 │   └── manifest.json
 │
-└── medical_hierarchy/          External — must be downloaded separately
+└── medical_hierarchy/          External  must be downloaded separately
     ├── train/
     ├── val/
     ├── test/
