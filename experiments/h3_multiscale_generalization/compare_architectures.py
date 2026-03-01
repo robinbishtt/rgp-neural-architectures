@@ -145,7 +145,7 @@ def run_comparison(results_dir: Path, output_path: Path) -> Dict:
     results_file = results_dir / "h3_results.json"
     if not results_file.exists():
         raise FileNotFoundError(
-            f"Results file not found: {results_file}  run run_h3_validation.py first."
+            f"Results file not found: {results_file} — run run_h3_validation.py first."
         )
 
     with open(results_file) as fh:

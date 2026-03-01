@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure9.py
 
-Extended Data Figure 9  FSS Collapse Quality Across Widths
+Extended Data Figure 9 — FSS Collapse Quality Across Widths
 
 
 Finite-size scaling data collapse quality analysis:

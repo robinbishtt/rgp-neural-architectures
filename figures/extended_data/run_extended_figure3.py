@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure3.py
 
-Extended Data Figure 3  Stability Phase Diagram
+Extended Data Figure 3 — Stability Phase Diagram
 
   a) (σ_w, σ_b) phase diagram: ordered / critical / chaotic regions
   b) χ₁ heatmap over (σ_w², depth)

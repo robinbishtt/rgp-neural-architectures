@@ -1,7 +1,7 @@
 """
 src/utils/provenance.py
 
-SHA-256 data provenance  verifies dataset integrity before training begins.
+SHA-256 data provenance — verifies dataset integrity before training begins.
 """
 
 from __future__ import annotations

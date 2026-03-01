@@ -1,4 +1,4 @@
-"""src/training/optimizers  Custom optimizer collection."""
+"""src/training/optimizers — Custom optimizer collection."""
 
 from src.training.optimizers.adam_variants import build_adam, AdaBound
 from src.training.optimizers.sgd_momentum import build_sgd

@@ -46,7 +46,7 @@ from src.utils.seed_registry import SeedRegistry
 logger = logging.getLogger("compute_fisher_spectrum")
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s  %(message)s",
+    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 

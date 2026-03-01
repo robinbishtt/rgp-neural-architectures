@@ -15,21 +15,21 @@ import numpy as np
 
 
 # ---------------------------------------------------------------------------
-# Primary palette  used for main experimental series
+# Primary palette — used for main experimental series
 # ---------------------------------------------------------------------------
 PRIMARY: Dict[str, str] = {
-    "rgp_tanh":   "#1f77b4",   # blue    canonical RG-Net
-    "rgp_relu":   "#ff7f0e",   # orange  ReLU variant
-    "rgp_gelu":   "#2ca02c",   # green   GELU variant
-    "rgp_deep":   "#9467bd",   # purple  ultra-deep variant
-    "baseline_resnet":   "#d62728",   # red     ResNet baseline
-    "baseline_densenet": "#8c564b",   # brown   DenseNet baseline
-    "baseline_mlp":      "#e377c2",   # pink    MLP baseline
-    "baseline_vgg":      "#7f7f7f",   # gray    VGG baseline
+    "rgp_tanh":   "#1f77b4",   # blue   — canonical RG-Net
+    "rgp_relu":   "#ff7f0e",   # orange — ReLU variant
+    "rgp_gelu":   "#2ca02c",   # green  — GELU variant
+    "rgp_deep":   "#9467bd",   # purple — ultra-deep variant
+    "baseline_resnet":   "#d62728",   # red    — ResNet baseline
+    "baseline_densenet": "#8c564b",   # brown  — DenseNet baseline
+    "baseline_mlp":      "#e377c2",   # pink   — MLP baseline
+    "baseline_vgg":      "#7f7f7f",   # gray   — VGG baseline
 }
 
 # ---------------------------------------------------------------------------
-# Correlation-length palette  spectral from short to long range
+# Correlation-length palette — spectral from short to long range
 # ---------------------------------------------------------------------------
 CORRELATION_LENGTH_CMAP = "viridis"
 
@@ -45,7 +45,7 @@ def correlation_length_colors(xi_values: List[float]) -> List[str]:
 
 
 # ---------------------------------------------------------------------------
-# Depth palette  lighter to darker blue as L increases
+# Depth palette — lighter to darker blue as L increases
 # ---------------------------------------------------------------------------
 DEPTH_CMAP = "Blues"
 
@@ -70,32 +70,32 @@ PHASE: Dict[str, str] = {
 # Spectral / RMT palette
 # ---------------------------------------------------------------------------
 SPECTRAL: Dict[str, str] = {
-    "empirical": "#1f77b4",   # blue   empirical eigenvalue histogram
-    "mp_theory": "#d62728",   # red    Marchenko-Pastur theoretical curve
-    "wigner":    "#2ca02c",   # green  Wigner semi-circle
-    "tracy_widom": "#9467bd", # purple  Tracy-Widom edge
-    "bulk":      "#aec7e8",   # light blue  bulk region shading
-    "edge":      "#ffbb78",   # light orange  edge region shading
+    "empirical": "#1f77b4",   # blue  — empirical eigenvalue histogram
+    "mp_theory": "#d62728",   # red   — Marchenko-Pastur theoretical curve
+    "wigner":    "#2ca02c",   # green — Wigner semi-circle
+    "tracy_widom": "#9467bd", # purple — Tracy-Widom edge
+    "bulk":      "#aec7e8",   # light blue — bulk region shading
+    "edge":      "#ffbb78",   # light orange — edge region shading
 }
 
 # ---------------------------------------------------------------------------
 # Lyapunov spectrum palette
 # ---------------------------------------------------------------------------
 LYAPUNOV: Dict[str, str] = {
-    "positive":  "#d62728",   # red    positive exponents (chaotic)
-    "zero":      "#31a354",   # green  zero exponents (marginal)
-    "negative":  "#3182bd",   # blue   negative exponents (ordered)
-    "sum":       "#636363",   # gray   Lyapunov sum
+    "positive":  "#d62728",   # red   — positive exponents (chaotic)
+    "zero":      "#31a354",   # green — zero exponents (marginal)
+    "negative":  "#3182bd",   # blue  — negative exponents (ordered)
+    "sum":       "#636363",   # gray  — Lyapunov sum
 }
 
 # ---------------------------------------------------------------------------
 # FSS / data-collapse palette
 # ---------------------------------------------------------------------------
 FSS: Dict[str, str] = {
-    "collapsed":  "#1f77b4",  # blue   post-collapse data
-    "raw":        "#aec7e8",  # light  raw pre-collapse data
-    "critical":   "#d62728",  # red    critical point xi_c
-    "fit":        "#000000",  # black  master curve fit
+    "collapsed":  "#1f77b4",  # blue  — post-collapse data
+    "raw":        "#aec7e8",  # light — raw pre-collapse data
+    "critical":   "#d62728",  # red   — critical point xi_c
+    "fit":        "#000000",  # black — master curve fit
 }
 
 # ---------------------------------------------------------------------------

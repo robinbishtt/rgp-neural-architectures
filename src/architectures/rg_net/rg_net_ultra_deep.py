@@ -1,7 +1,7 @@
 """
 src/architectures/rg_net/rg_net_ultra_deep.py
 
-RGNetUltraDeep  L=1000+ with memory optimization for extreme depth.
+RGNetUltraDeep — L=1000+ with memory optimization for extreme depth.
 Requires 80GB VRAM (A100/H100) for full batch training.
 """
 from __future__ import annotations

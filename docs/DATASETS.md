@@ -111,7 +111,7 @@ data/
 │   ├── test.pt
 │   └── manifest.json
 │
-└── medical_hierarchy/          External  must be downloaded separately
+└── medical_hierarchy/          External — must be downloaded separately
     ├── train/
     ├── val/
     ├── test/

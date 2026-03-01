@@ -187,7 +187,7 @@ class ChecksumRegistry:
                     self._store[k] = v
             logger.debug("Merged %d master hashes into registry.", len(MASTER_HASHES))
         except ImportError:
-            logger.warning("master_hashes.py not found  skipping merge.")
+            logger.warning("master_hashes.py not found — skipping merge.")
         except Exception as exc:
             logger.warning("Could not merge master hashes: %s", exc)
 

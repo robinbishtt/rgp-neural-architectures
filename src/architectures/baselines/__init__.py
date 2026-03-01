@@ -1,4 +1,4 @@
-"""src/architectures/baselines  Baseline architectures for H3 comparison."""
+"""src/architectures/baselines — Baseline architectures for H3 comparison."""
 
 from src.architectures.baselines.resnet_baseline import ResNetBaseline
 from src.architectures.baselines.densenet_baseline import DenseNetBaseline

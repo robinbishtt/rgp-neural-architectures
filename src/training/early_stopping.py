@@ -8,12 +8,12 @@ Motivation
 Ultra-deep networks (L=500-1000) can train for 48-72 hours on A100 GPUs.
 Early stopping prevents wasted compute when the network has converged or
 diverged.  For the scaling law experiments (H2), we require the *minimum*
-depth to reach a target accuracy  early stopping must therefore track
+depth to reach a target accuracy — early stopping must therefore track
 *accuracy*, not loss, as the convergence criterion.
 
 Two modes are supported:
-    ``minimize``   stops when metric stops decreasing (e.g., validation loss)
-    ``maximize``   stops when metric stops increasing (e.g., validation accuracy)
+    ``minimize``  — stops when metric stops decreasing (e.g., validation loss)
+    ``maximize``  — stops when metric stops increasing (e.g., validation accuracy)
 
 Integration with H2 validation:
     The H2 experiment records the epoch at which early stopping fires as

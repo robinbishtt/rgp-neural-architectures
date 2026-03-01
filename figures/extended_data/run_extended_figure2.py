@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure2.py
 
-Extended Data Figure 2  Jacobian Spectrum Evolution
+Extended Data Figure 2 — Jacobian Spectrum Evolution
 
   a) Singular value distribution across 5 depth checkpoints
   b) Log singular value evolution (mean ± std across seeds)

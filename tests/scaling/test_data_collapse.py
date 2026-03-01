@@ -1,4 +1,4 @@
-"""tests/scaling/test_data_collapse.py  FSS collapse quality chi-squared."""
+"""tests/scaling/test_data_collapse.py — FSS collapse quality chi-squared."""
 import numpy as np
 from src.scaling.data_collapse import DataCollapseVerifier
 

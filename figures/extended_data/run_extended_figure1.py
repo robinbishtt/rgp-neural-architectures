@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure1.py
 
-Extended Data Figure 1  Correlation-Length Decay Diagnostics
+Extended Data Figure 1 — Correlation-Length Decay Diagnostics
 
 Four-panel deep-dive into ξ(k) estimation robustness:
   a) All four estimator methods vs layer k

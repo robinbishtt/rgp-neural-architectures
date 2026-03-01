@@ -167,8 +167,8 @@ def empirical_spectral_density(
 
     Returns
     -------
-    x : np.ndarray   evaluation points
-    density : np.ndarray   estimated density at each point
+    x : np.ndarray  — evaluation points
+    density : np.ndarray  — estimated density at each point
     """
 ```
 
@@ -204,7 +204,7 @@ class TwoPointCorrelation:
 
         Returns
         -------
-        np.ndarray of shape (depth,)  correlation coefficient c^(k) per layer.
+        np.ndarray of shape (depth,) — correlation coefficient c^(k) per layer.
         """
 ```
 

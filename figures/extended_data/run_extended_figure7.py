@@ -1,7 +1,7 @@
 """
 figures/extended_data/run_extended_figure7.py
 
-Extended Data Figure 7  Lyapunov Spectrum Depth Dependence
+Extended Data Figure 7 — Lyapunov Spectrum Depth Dependence
 
 
 Four-panel analysis of the Lyapunov exponent spectrum as a function of depth:

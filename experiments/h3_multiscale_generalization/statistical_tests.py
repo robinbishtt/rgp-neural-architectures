@@ -30,10 +30,10 @@ Tests performed
 Outputs
 -------
 results/h3/statistical_tests/
-    h3_paired_tests.json       per-baseline paired test results
-    h3_effect_sizes.json       Cohen's d and delta statistics
-    h3_hierarchy_correlation.json   Spearman correlation results
-    h3_statistical_summary.md  human-readable summary table
+    h3_paired_tests.json      — per-baseline paired test results
+    h3_effect_sizes.json      — Cohen's d and delta statistics
+    h3_hierarchy_correlation.json  — Spearman correlation results
+    h3_statistical_summary.md — human-readable summary table
 
 Usage
 -----
@@ -58,7 +58,7 @@ sys.path.insert(0, str(_ROOT))
 logger = logging.getLogger("h3_statistical_tests")
 logging.basicConfig(
     level=logging.INFO,
-    format="%(asctime)s [%(levelname)s] %(name)s  %(message)s",
+    format="%(asctime)s [%(levelname)s] %(name)s — %(message)s",
     handlers=[logging.StreamHandler(sys.stdout)],
 )
 
@@ -216,7 +216,7 @@ def run(fast_track: bool = False) -> None:
                     std = loaded.get(f"{ds}_{key}_std",  0.01)
                     data[ds][key] = rng.normal(mu, std, size=n_seeds).clip(0, 1)
     else:
-        logger.info("H3 results not found  generating synthetic data.")
+        logger.info("H3 results not found — generating synthetic data.")
         rng = np.random.default_rng(42)
         data = _generate_synthetic_h3_data(n_seeds=n_seeds, rng=rng)
 

@@ -1,7 +1,7 @@
 """
 figures/manuscript/generate_figure3.py
 
-Figure 3  H1: Scale Correspondence Validation
+Figure 3 — H1: Scale Correspondence Validation
 
 Panel layout:
   a) ξ(k) exponential decay across depths, multiple network widths
@@ -102,7 +102,7 @@ def _synthetic_h1_data(fast_track: bool = False) -> Dict:
 
 
 # ---------------------------------------------------------------------------
-# Panel (a)  ξ(k) decay
+# Panel (a) — ξ(k) decay
 # ---------------------------------------------------------------------------
 
 def _panel_xi_decay(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
@@ -152,7 +152,7 @@ def _panel_xi_decay(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (b)  KS-test p-values
+# Panel (b) — KS-test p-values
 # ---------------------------------------------------------------------------
 
 def _panel_ks_pvalues(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
@@ -181,7 +181,7 @@ def _panel_ks_pvalues(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
 
 
 # ---------------------------------------------------------------------------
-# Panel (c)  χ₁ phase diagram
+# Panel (c) — χ₁ phase diagram
 # ---------------------------------------------------------------------------
 
 def _panel_chi1_phase(ax: plt.Axes, data: Dict) -> None:
@@ -221,7 +221,7 @@ def generate(
 
     data = _load_h1_results(Path(results_dir))
     if data is None:
-        print("H1 results not found  using synthetic data.")
+        print("H1 results not found — using synthetic data.")
         data = _synthetic_h1_data(fast_track=fast_track)
 
     fig, axes = plt.subplots(1, 3, figsize=(DOUBLE_COL_WIDTH, 3.3))

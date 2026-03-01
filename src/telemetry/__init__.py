@@ -1,4 +1,4 @@
-"""src/telemetry  Industrial telemetry and logging architecture."""
+"""src/telemetry — Industrial telemetry and logging architecture."""
 
 from src.telemetry.telemetry_logger import TelemetryLogger
 from src.telemetry.hdf5_storage import HDF5Storage

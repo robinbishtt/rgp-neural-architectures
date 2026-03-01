@@ -1,4 +1,4 @@
-"""src/proofs  Symbolic and numerical theorem verification."""
+"""src/proofs — Symbolic and numerical theorem verification."""
 
 from src.proofs.theorem1_fisher_transform import run_all_verifications as verify_theorem1
 from src.proofs.theorem2_exponential_decay import run_all_verifications as verify_theorem2

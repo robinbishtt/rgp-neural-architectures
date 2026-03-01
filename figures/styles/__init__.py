@@ -1,4 +1,4 @@
-"""figures/styles  plotting style resources."""
+"""figures/styles — plotting style resources."""
 
 from pathlib import Path
 

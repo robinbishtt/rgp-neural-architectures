@@ -109,7 +109,7 @@ def run_lmin_extraction(
     results_file = results_dir / "h2_results.json"
     if not results_file.exists():
         raise FileNotFoundError(
-            f"Results file not found: {results_file}  run run_h2_validation.py first."
+            f"Results file not found: {results_file} — run run_h2_validation.py first."
         )
 
     with open(results_file) as fh:
