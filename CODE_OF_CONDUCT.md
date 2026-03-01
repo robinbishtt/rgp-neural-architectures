@@ -18,7 +18,7 @@ Maintainers have the right to remove, edit, or reject comments, commits, code, i
 
 ## Scope
 
-This Code of Conduct applies within all project spaces — including the GitHub repository, issue tracker, pull requests, and any other project-related communication — and also applies when an individual is representing the project in public spaces.
+This Code of Conduct applies within all project spaces including the GitHub repository, issue tracker, pull requests, and any other project-related communication and also applies when an individual is representing the project in public spaces.
 
 ## Enforcement
 
