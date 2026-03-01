@@ -136,4 +136,4 @@ pip install jsonschema
 
 ## License
 
-MIT — see `LICENSE` at the repository root.
+MIT see `LICENSE` at the repository root.
