@@ -2,7 +2,7 @@
 
 ## Our Commitment
 
-This project is committed to providing a welcoming, professional, and harassment-free environment for everyone who participates — regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual orientation.
+This project is committed to providing a welcoming, professional, and harassment-free environment for everyone who participates regardless of age, body size, disability, ethnicity, gender identity and expression, level of experience, nationality, personal appearance, race, religion, or sexual orientation.
 
 ## Standards
 
