@@ -1,0 +1,189 @@
+# =============================================================================
+# RGP Neural Architectures — Singularity Definition File
+# For HPC clusters (SLURM / PBS / LSF) with Apptainer / Singularity >= 3.8
+#
+# Build:
+#   singularity build rgp-neural.sif containers/Singularity.def
+#   # OR with sudo on HPC:
+#   sudo singularity build rgp-neural.sif containers/Singularity.def
+#
+# Run (fast-track, GPU):
+#   singularity run --nv rgp-neural.sif make reproduce_fast
+#
+# Run (specific experiment):
+#   singularity exec --nv rgp-neural.sif \
+#       python experiments/h1_scale_correspondence/run_h1_validation.py
+#
+# SLURM batch job example:
+#   #SBATCH --gres=gpu:1
+#   #SBATCH --mem=32G
+#   singularity run --nv --bind $SCRATCH:/workspace/data rgp-neural.sif \
+#       make reproduce_h1
+# =============================================================================
+
+Bootstrap: docker
+From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
+
+%labels
+    Maintainer RGP Neural Architectures
+    Version 1.0.0
+    Python 3.9.18
+    PyTorch 2.0.1
+    CUDA 11.8
+    Description Reproducibility container for RGP Neural Architectures
+
+%help
+    RGP Neural Architectures — Singularity Container
+
+    QUICK START
+    -----------
+    # Verify pipeline (< 1 minute)
+    singularity run --nv rgp-neural.sif make verify_pipeline
+
+    # Fast-track verification (3-5 minutes)
+    singularity run --nv rgp-neural.sif make reproduce_fast
+
+    # Full H1 experiment
+    singularity exec --nv rgp-neural.sif make reproduce_h1
+
+    # Interactive shell
+    singularity shell --nv rgp-neural.sif
+
+    GPU SUPPORT
+    -----------
+    Use --nv flag for NVIDIA GPU access (requires CUDA drivers on host).
+    Container CUDA 11.8 is compatible with driver >= 520.61.05.
+
+    DATA BINDING
+    ------------
+    Bind host directories for persistent storage:
+      singularity run --nv \
+          --bind /cluster/scratch/data:/workspace/data \
+          --bind /cluster/scratch/results:/workspace/results \
+          rgp-neural.sif make reproduce_all
+
+%environment
+    export DEBIAN_FRONTEND=noninteractive
+    export TZ=UTC
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+    export PYTHONDONTWRITEBYTECODE=1
+    export PYTHONUNBUFFERED=1
+    export PYTHONPATH=/workspace
+    export CUBLAS_WORKSPACE_CONFIG=:4096:8
+    export CUDA_LAUNCH_BLOCKING=0
+    export PATH=/opt/conda/bin:$PATH
+
+%post
+    # -------------------------------------------------------------------------
+    # System packages
+    # -------------------------------------------------------------------------
+    export DEBIAN_FRONTEND=noninteractive
+    apt-get update && apt-get install -y --no-install-recommends \
+        build-essential \
+        git \
+        wget \
+        curl \
+        ca-certificates \
+        libhdf5-dev \
+        libhdf5-serial-dev \
+        hdf5-tools \
+        libffi-dev \
+        libssl-dev \
+        libblas-dev \
+        liblapack-dev \
+        gfortran \
+        pkg-config \
+        cmake \
+        make \
+        rsync \
+        unzip \
+        vim \
+    && rm -rf /var/lib/apt/lists/*
+
+    # -------------------------------------------------------------------------
+    # Miniconda — reproducible Python 3.9.18 environment
+    # -------------------------------------------------------------------------
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+        -O /tmp/miniconda.sh
+    bash /tmp/miniconda.sh -b -p /opt/conda
+    rm /tmp/miniconda.sh
+    /opt/conda/bin/conda install -y python=3.9.18
+    /opt/conda/bin/conda clean -afy
+
+    export PATH=/opt/conda/bin:$PATH
+
+    # -------------------------------------------------------------------------
+    # PyTorch (CUDA 11.8)
+    # -------------------------------------------------------------------------
+    pip install \
+        torch==2.0.1+cu118 \
+        torchvision==0.15.2+cu118 \
+        torchaudio==2.0.2+cu118 \
+        --index-url https://download.pytorch.org/whl/cu118
+
+    # -------------------------------------------------------------------------
+    # Project dependencies
+    # -------------------------------------------------------------------------
+    mkdir -p /workspace
+    # requirements.txt embedded for self-contained build
+    pip install \
+        numpy==1.24.3 \
+        scipy==1.11.1 \
+        sympy==1.12 \
+        matplotlib==3.7.2 \
+        pandas==2.0.3 \
+        h5py==3.9.0 \
+        tqdm==4.65.0 \
+        pyyaml==6.0.1 \
+        hydra-core==1.3.2 \
+        omegaconf==2.3.0 \
+        tensorboard==2.13.0 \
+        wandb==0.15.8 \
+        pytest==7.4.3 \
+        pytest-cov==4.1.0 \
+        black==23.7.0 \
+        isort==5.12.0 \
+        mypy==1.4.1 \
+        flake8==6.0.0
+
+    # -------------------------------------------------------------------------
+    # Workspace directories
+    # -------------------------------------------------------------------------
+    mkdir -p /workspace/results/h1 \
+             /workspace/results/h2 \
+             /workspace/results/h3 \
+             /workspace/results/fss \
+             /workspace/results/jacobian \
+             /workspace/figures/out \
+             /workspace/checkpoints \
+             /workspace/logs \
+             /workspace/data
+
+    # -------------------------------------------------------------------------
+    # Verify Python + PyTorch installation
+    # -------------------------------------------------------------------------
+    python -c "import torch; print('PyTorch:', torch.__version__)"
+
+%files
+    # Copy entire project into container at build time
+    # Comment this out if you prefer bind-mounting at runtime
+    . /workspace
+
+%runscript
+    #!/bin/bash
+    cd /workspace
+    exec "$@"
+
+%startscript
+    #!/bin/bash
+    cd /workspace
+    exec make verify_pipeline
+
+%test
+    #!/bin/bash
+    echo "=== Singularity container test ==="
+    python --version
+    python -c "import torch; print('PyTorch:', torch.__version__)"
+    python -c "import numpy, scipy, sympy, matplotlib; print('Core deps OK')"
+    echo "=== Container test passed ==="
