@@ -148,3 +148,4 @@ PANEL_LABELS = list("abcdefghijklmnopqrstuvwxyz")
 def panel_label(idx: int) -> str:
     """Return lowercase panel label: a, b, c, … z."""
     return PANEL_LABELS[idx % len(PANEL_LABELS)]
+ 
