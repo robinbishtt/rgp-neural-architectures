@@ -25,3 +25,4 @@ class TestAttentionOperatorAblation:
         x  = torch.randn(4, 16, requires_grad=True)
         op(x).sum().backward()
         assert x.grad is not None and x.grad.norm() > 0
+ 
