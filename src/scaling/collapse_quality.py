@@ -97,3 +97,4 @@ class CollapseQualityMetrics:
             n_points=len(y_all),
             passed=(q_value >= self.q_threshold),
         )
+ 
