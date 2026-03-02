@@ -28,3 +28,4 @@ class TestInitializationVariance:
             if isinstance(m, nn.Linear) and m.bias is not None:
                 max_bias = m.bias.data.abs().max().item()
                 assert max_bias < 1.0, f"Bias too large at init: {max_bias:.4f}"
+ 
