@@ -38,3 +38,4 @@ class MixedPrecisionTrainer(Trainer):
 
         self.optimizer.zero_grad()
         return loss.item()
+ 
