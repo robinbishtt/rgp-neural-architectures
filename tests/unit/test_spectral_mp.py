@@ -31,3 +31,4 @@ def test_mp_ks_test_on_wishart_sample():
     ev  = mp.sample_wishart(n=200, m=400, rng=np.random.default_rng(0))
     stat, pval = mp.ks_test(ev)
     assert pval > 0.01, f"KS test failed: p={pval:.4f}"
+ 
