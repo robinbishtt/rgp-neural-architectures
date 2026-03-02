@@ -17,3 +17,4 @@ def test_critical_init_no_vanishing():
     loss.backward()
     grad_norm = x.grad.norm().item()
     assert grad_norm > 1e-6, f"Gradient vanished: norm={grad_norm:.2e}"
+ 
