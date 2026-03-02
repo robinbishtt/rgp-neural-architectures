@@ -39,3 +39,4 @@ class TestGradientClippingEffect:
             clip_gradients(model, max_norm=1.0)
             opt.step()
             assert not torch.isnan(loss)
+ 
