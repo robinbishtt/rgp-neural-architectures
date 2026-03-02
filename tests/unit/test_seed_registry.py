@@ -38,3 +38,4 @@ class TestSeedRegistry:
         r.restore_state(s)
         v2 = torch.randn(4)
         assert torch.equal(v1, v2)
+ 
