@@ -109,3 +109,4 @@ class WignerSemicircleDistribution:
         A     = rng.standard_normal((N, N)) * sigma
         M     = (A + A.T) / np.sqrt(2.0)
         return np.linalg.eigvalsh(M)
+ 
