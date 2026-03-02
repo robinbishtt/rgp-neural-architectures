@@ -43,3 +43,4 @@ class TestFullHypothesisPipeline:
             with torch.no_grad():
                 probs = torch.softmax(model(x), dim=-1)
             assert torch.allclose(probs.sum(dim=-1), torch.ones(8), atol=1e-5)
+ 
