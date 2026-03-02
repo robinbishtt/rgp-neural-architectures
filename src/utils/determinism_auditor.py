@@ -81,3 +81,4 @@ class BitExactVerifier:
         """Verify fn produces identical output across n_runs with same seed."""
         hashes = [self.run_and_hash(fn, seed, *args, **kwargs) for _ in range(n_runs)]
         return len(set(hashes)) == 1
+ 
