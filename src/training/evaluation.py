@@ -209,3 +209,4 @@ class Evaluator:
                 xi_k = 1.0 / np.sqrt(np.mean(1.0 / eigenvalues))
                 xi_vals.append(float(xi_k))
         return xi_vals
+ 
