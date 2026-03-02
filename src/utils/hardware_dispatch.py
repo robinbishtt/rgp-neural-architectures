@@ -74,3 +74,4 @@ def select_dtype(
     if hw.supports_fp16:
         return torch.float16
     return torch.float32
+ 
