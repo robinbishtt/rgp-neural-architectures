@@ -47,3 +47,4 @@ class HierarchicalMNIST(Dataset):
     def __getitem__(self, idx: int):
         x, y = self.base[idx]
         return self._add_correlations(x).view(-1), y
+ 
