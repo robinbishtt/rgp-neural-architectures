@@ -120,3 +120,4 @@ class LearningRateFinder:
         gradients = np.gradient(np.array(self._losses))
         min_idx   = int(np.argmin(gradients))
         return float(self._lrs[min_idx]) / 10.0
+ 
