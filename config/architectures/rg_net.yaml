@@ -44,3 +44,4 @@ rg_net_multiscale:
   n_scales: 4
   fusion_mode: concat
   use_case: hierarchical_representations
+ 
