@@ -45,3 +45,4 @@ class JVPJacobian:
         """Compute the directional derivative J @ v without forming the full Jacobian."""
         _, jvp = torch.func.jvp(fn, (x,), (v,))
         return jvp
+ 
