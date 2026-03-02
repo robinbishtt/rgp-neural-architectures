@@ -41,3 +41,4 @@ class ProgressiveTrainer(Trainer):
                                max_epochs=self.epochs_per_stage)
             results.append({"depth": depth, "metrics": metrics})
         return results
+ 
