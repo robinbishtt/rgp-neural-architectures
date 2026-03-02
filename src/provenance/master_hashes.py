@@ -45,3 +45,4 @@ def get_expected_hash(dataset_name: str) -> str | None:
 
 def is_registered(dataset_name: str) -> bool:
     return dataset_name in MASTER_HASHES
+ 
