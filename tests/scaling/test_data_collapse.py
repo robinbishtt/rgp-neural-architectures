@@ -9,3 +9,4 @@ def test_perfect_collapse_passes():
     verifier = DataCollapseVerifier(r2_threshold=0.90)
     result   = verifier.verify(x_scaled, y_obs)
     assert result.passed, f"R²={result.r2:.3f}"
+ 
