@@ -24,3 +24,4 @@ class RNGStateSerializer:
             with open(rng_file, "rb") as f:
                 state = pickle.load(f)
             SeedRegistry.get_instance().restore_state(state)
+ 
