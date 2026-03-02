@@ -26,3 +26,4 @@ class TestScalingLawConsistency:
             n_measurements=10,
         )
         assert result.consistent, f"t-statistic {result.t_statistic:.2f} too large"
+ 
