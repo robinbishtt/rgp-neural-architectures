@@ -1,0 +1,79 @@
+#!/bin/bash
+# =============================================================================
+# PBS/Torque Job Script: RGP Fast-Track Verification
+# Renormalization-Group Principles for Deep Neural Networks
+#
+# SUBMIT:
+#   qsub pbs_rgp_fast.pbs
+#
+# MONITOR:
+#   qstat -u $USER
+#   tail -f logs/rgp-fast-*.o*
+# =============================================================================
+
+#PBS -N rgp-fast
+#PBS -q gpu                    # GPU queue
+#PBS -l nodes=1:ppn=4:gpus=1   # 1 node, 4 CPUs, 1 GPU
+#PBS -l walltime=00:15:00      # 15 minutes
+#PBS -l mem=16gb               # Memory
+#PBS -o logs/                  # Output directory
+#PBS -e logs/                  # Error directory
+#PBS -m be                     # Email at begin/end
+#PBS -M your.email@university.edu
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+CONTAINER_NAME="rgp-neural.sif"
+CONTAINER_PATH="${HOME}/rgp-neural-architectures/containers/${CONTAINER_NAME}"
+WORK_DIR="${PBS_O_WORKDIR}"
+SCRATCH_DIR="${SCRATCH}/rgp-${PBS_JOBID}"
+
+# Create directories
+mkdir -p "${SCRATCH_DIR}"
+mkdir -p "${WORK_DIR}/logs"
+mkdir -p "${WORK_DIR}/results"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Load Modules
+# ─────────────────────────────────────────────────────────────────────────────
+echo "=== Loading Modules ==="
+module purge
+module load singularity
+module load cuda/11.8
+
+echo ""
+echo "=== GPU Information ==="
+nvidia-smi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Run Fast-Track
+# ─────────────────────────────────────────────────────────────────────────────
+echo ""
+echo "=== Starting RGP Fast-Track ==="
+echo "Job ID: ${PBS_JOBID}"
+echo "Node: $(hostname)"
+echo "Start Time: $(date)"
+echo ""
+
+cd "${WORK_DIR}"
+
+singularity run --nv \
+    --bind "${SCRATCH_DIR}:/workspace/data" \
+    --bind "${WORK_DIR}/results:/workspace/results" \
+    --bind "${WORK_DIR}/logs:/workspace/logs" \
+    "${CONTAINER_PATH}" \
+    make reproduce_fast
+
+EXIT_CODE=$?
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Summary
+# ─────────────────────────────────────────────────────────────────────────────
+echo ""
+echo "=== Job Summary ==="
+echo "Exit Code: ${EXIT_CODE}"
+echo "End Time: $(date)"
+
+rm -rf "${SCRATCH_DIR}"
+exit ${EXIT_CODE}

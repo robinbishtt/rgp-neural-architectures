@@ -1,90 +1,218 @@
 # =============================================================================
-# RGP Neural Architectures — Singularity Definition File
-# For HPC clusters (SLURM / PBS / LSF) with Apptainer / Singularity >= 3.8
+# RGP Neural Architectures — HPC Singularity Definition File
+# Renormalization-Group Principles for Deep Neural Network Depth
 #
-# Build:
-#   singularity build rgp-neural.sif containers/Singularity.def
-#   # OR with sudo on HPC:
-#   sudo singularity build rgp-neural.sif containers/Singularity.def
+# PURPOSE:
+#   This container enables reproducible execution of RGP experiments on
+#   High-Performance Computing (HPC) clusters where Docker is not available
+#   due to security constraints. Singularity/Apptainer is the de facto
+#   standard for containerized scientific computing on HPC.
 #
-# Run (fast-track, GPU):
-#   singularity run --nv rgp-neural.sif make reproduce_fast
+# COMPATIBILITY:
+#   - Singularity >= 3.8
+#   - Apptainer >= 1.0
+#   - SLURM, PBS/Torque, LSF, SGE schedulers
+#   - NVIDIA GPUs with CUDA >= 11.8
+#   - CPU-only fallback for non-GPU partitions
 #
-# Run (specific experiment):
-#   singularity exec --nv rgp-neural.sif \
-#       python experiments/h1_scale_correspondence/run_h1_validation.py
+# BUILD INSTRUCTIONS:
+#   Local build (requires sudo):
+#     sudo singularity build rgp-neural.sif containers/Singularity.def
 #
-# SLURM batch job example:
+#   Remote build (Singularity Library):
+#     singularity build --remote rgp-neural.sif containers/Singularity.def
+#
+#   HPC build (fakeroot - no sudo needed):
+#     singularity build --fakeroot rgp-neural.sif containers/Singularity.def
+#
+# USAGE EXAMPLES:
+#   Fast-track verification (5 minutes):
+#     singularity run --nv rgp-neural.sif make reproduce_fast
+#
+#   Full H1 experiment (4-6 hours):
+#     singularity exec --nv rgp-neural.sif make reproduce_h1
+#
+#   Interactive shell with GPU:
+#     singularity shell --nv rgp-neural.sif
+#
+#   CPU-only execution:
+#     singularity run rgp-neural.sif make verify_pipeline
+#
+# SLURM BATCH JOB EXAMPLE:
+#   #!/bin/bash
+#   #SBATCH --job-name=rgp-h1
+#   #SBATCH --partition=gpu
 #   #SBATCH --gres=gpu:1
+#   #SBATCH --cpus-per-task=8
 #   #SBATCH --mem=32G
-#   singularity run --nv --bind $SCRATCH:/workspace/data rgp-neural.sif \
-#       make reproduce_h1
+#   #SBATCH --time=24:00:00
+#   #SBATCH --output=logs/%x-%j.out
+#
+#   module load singularity
+#   singularity run --nv \
+#       --bind $SCRATCH:/workspace/data \
+#       --bind $SLURM_SUBMIT_DIR/results:/workspace/results \
+#       rgp-neural.sif make reproduce_h1
+#
+# PBS/TORQUE EXAMPLE:
+#   #PBS -N rgp-experiment
+#   #PBS -l nodes=1:ppn=8:gpus=1
+#   #PBS -l walltime=24:00:00
+#   #PBS -l mem=32gb
+#
+#   module load singularity
+#   singularity run --nv \
+#       --bind $PBS_O_WORKDIR:/workspace \
+#       rgp-neural.sif make reproduce_all
+#
+# AUTHOR: Robin Bisht
+# REPOSITORY: https://github.com/robinbishtt/rgp-neural-architectures
+# DOI: 10.5281/zenodo.18822812
+# LICENSE: MIT
 # =============================================================================
 
+# Base image: NVIDIA CUDA development environment
 Bootstrap: docker
 From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
 
+# =============================================================================
+# METADATA LABELS
+# =============================================================================
 %labels
-    Maintainer RGP Neural Architectures
-    Version 1.0.0
+    Maintainer Robin Bisht <robinbisht@example.com>
+    Version 1.1.0
+    Project RGP Neural Architectures
+    Description HPC-optimized container for RG-principled neural network research
     Python 3.9.18
     PyTorch 2.0.1
-    CUDA 11.8
-    Description Reproducibility container for RGP Neural Architectures
+    CUDA 11.8.0
+    cuDNN 8.6.0
+    License MIT
+    DOI 10.5281/zenodo.18822812
+    GitHub https://github.com/robinbishtt/rgp-neural-architectures
 
+# =============================================================================
+# HELP TEXT
+# =============================================================================
 %help
-    RGP Neural Architectures — Singularity Container
+    ╔══════════════════════════════════════════════════════════════════════╗
+    ║     RGP Neural Architectures — HPC Singularity Container             ║
+    ║     Renormalization-Group Principles for Deep Neural Networks        ║
+    ╚══════════════════════════════════════════════════════════════════════╝
 
-    QUICK START
-    -----------
-    # Verify pipeline (< 1 minute)
-    singularity run --nv rgp-neural.sif make verify_pipeline
+    QUICK START COMMANDS
+    ────────────────────
+    Verify pipeline (< 1 min):
+        singularity run --nv rgp-neural.sif make verify_pipeline
 
-    # Fast-track verification (3-5 minutes)
-    singularity run --nv rgp-neural.sif make reproduce_fast
+    Fast-track H1+H2+H3 (3-5 min):
+        singularity run --nv rgp-neural.sif make reproduce_fast
 
-    # Full H1 experiment
-    singularity exec --nv rgp-neural.sif make reproduce_h1
+    Individual hypothesis tests:
+        singularity exec --nv rgp-neural.sif make reproduce_fast_h1
+        singularity exec --nv rgp-neural.sif make reproduce_fast_h2
+        singularity exec --nv rgp-neural.sif make reproduce_fast_h3
 
-    # Interactive shell
-    singularity shell --nv rgp-neural.sif
+    Full experiments (24-72 hours):
+        singularity exec --nv rgp-neural.sif make reproduce_all
+        singularity exec --nv rgp-neural.sif make reproduce_h1
+        singularity exec --nv rgp-neural.sif make reproduce_h2
+        singularity exec --nv rgp-neural.sif make reproduce_h3
 
-    GPU SUPPORT
-    -----------
-    Use --nv flag for NVIDIA GPU access (requires CUDA drivers on host).
-    Container CUDA 11.8 is compatible with driver >= 520.61.05.
+    GPU REQUIREMENTS
+    ────────────────
+    • Use --nv flag for NVIDIA GPU access
+    • Host driver >= 520.61.05 required
+    • Container CUDA 11.8 compatible with drivers 520.61.05 - 535.x
 
-    DATA BINDING
-    ------------
-    Bind host directories for persistent storage:
-      singularity run --nv \
-          --bind /cluster/scratch/data:/workspace/data \
-          --bind /cluster/scratch/results:/workspace/results \
-          rgp-neural.sif make reproduce_all
+    CPU-ONLY MODE
+    ─────────────
+    • Omit --nv flag for CPU execution
+    • Automatic device detection via DeviceManager
+    • Suitable for: verify_pipeline, small-scale tests
 
+    DATA PERSISTENCE
+    ────────────────
+    Bind host directories for results:
+        --bind /path/to/data:/workspace/data
+        --bind /path/to/results:/workspace/results
+        --bind /path/to/checkpoints:/workspace/checkpoints
+
+    ENVIRONMENT VARIABLES
+    ─────────────────────
+    RGP_SEED          - Global random seed (default: 42)
+    RGP_DEVICE        - Force device (cuda/cpu/mps)
+    RGP_FAST_TRACK    - Enable fast-track mode (1/0)
+    CUDA_VISIBLE_DEVICES - GPU selection
+
+    For detailed documentation:
+        singularity exec rgp-neural.sif cat docs/HPC_GUIDE.md
+
+# =============================================================================
+# ENVIRONMENT CONFIGURATION
+# =============================================================================
 %environment
+    # System locale
     export DEBIAN_FRONTEND=noninteractive
     export TZ=UTC
     export LANG=C.UTF-8
     export LC_ALL=C.UTF-8
+
+    # Python optimization
     export PYTHONDONTWRITEBYTECODE=1
     export PYTHONUNBUFFERED=1
-    export PYTHONPATH=/workspace
+    export PYTHONFAULTHANDLER=1
+    export PYTHONHASHSEED=0
+    export PYTHONPATH=/workspace:$PYTHONPATH
+
+    # CUDA configuration for reproducibility
     export CUBLAS_WORKSPACE_CONFIG=:4096:8
     export CUDA_LAUNCH_BLOCKING=0
+    export CUDA_MODULE_LOADING=LAZY
+
+    # PyTorch determinism
+    export PYTORCH_CUDA_ALLOC_CONF=max_split_size_mb:512
+
+    # Conda path
     export PATH=/opt/conda/bin:$PATH
 
+    # RGP-specific environment
+    export RGP_WORKSPACE=/workspace
+    export RGP_RESULTS=/workspace/results
+    export RGP_DATA=/workspace/data
+    export RGP_CHECKPOINTS=/workspace/checkpoints
+
+    # Default seed for reproducibility
+    export RGP_SEED=${RGP_SEED:-42}
+
+# =============================================================================
+# POST-INSTALLATION SCRIPT
+# =============================================================================
 %post
-    # -------------------------------------------------------------------------
-    # System packages
-    # -------------------------------------------------------------------------
+    echo "=== Starting RGP Neural Architectures Container Build ==="
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # System Dependencies
+    # ─────────────────────────────────────────────────────────────────────────
     export DEBIAN_FRONTEND=noninteractive
     apt-get update && apt-get install -y --no-install-recommends \
+        # Build essentials
         build-essential \
+        gcc \
+        g++ \
+        gfortran \
+        make \
+        cmake \
+        ninja-build \
+        pkg-config \
+        # Version control
         git \
+        git-lfs \
+        # Network tools
         wget \
         curl \
         ca-certificates \
+        # Scientific libraries
         libhdf5-dev \
         libhdf5-serial-dev \
         hdf5-tools \
@@ -92,98 +220,314 @@ From: nvidia/cuda:11.8.0-cudnn8-devel-ubuntu22.04
         libssl-dev \
         libblas-dev \
         liblapack-dev \
-        gfortran \
-        pkg-config \
-        cmake \
-        make \
+        libopenblas-dev \
+        # Compression
+        zlib1g-dev \
+        libbz2-dev \
+        liblzma-dev \
+        # Image processing
+        libjpeg-dev \
+        libpng-dev \
+        libtiff-dev \
+        # Utilities
         rsync \
         unzip \
         vim \
-    && rm -rf /var/lib/apt/lists/*
+        nano \
+        less \
+        tree \
+        htop \
+        time \
+        # MPI for distributed computing
+        libopenmpi-dev \
+        openmpi-bin \
+        # Cleanup
+        && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-    # -------------------------------------------------------------------------
-    # Miniconda — reproducible Python 3.9.18 environment
-    # -------------------------------------------------------------------------
-    wget -q https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh \
+    # ─────────────────────────────────────────────────────────────────────────
+    # Miniconda Installation (Python 3.9.18)
+    # ─────────────────────────────────────────────────────────────────────────
+    echo "Installing Miniconda with Python 3.9.18..."
+    wget -q https://repo.anaconda.com/miniconda/Miniconda3-py39_23.11.0-2-Linux-x86_64.sh \
         -O /tmp/miniconda.sh
     bash /tmp/miniconda.sh -b -p /opt/conda
     rm /tmp/miniconda.sh
-    /opt/conda/bin/conda install -y python=3.9.18
-    /opt/conda/bin/conda clean -afy
 
+    # Initialize conda
     export PATH=/opt/conda/bin:$PATH
+    conda init bash
+    conda config --set auto_activate_base false
 
-    # -------------------------------------------------------------------------
-    # PyTorch (CUDA 11.8)
-    # -------------------------------------------------------------------------
-    pip install \
+    # Update conda and install Python 3.9.18 explicitly
+    conda update -n base -c defaults conda -y
+    conda install -y python=3.9.18
+    conda clean -afy
+
+    # Verify Python version
+    python --version
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # PyTorch with CUDA 11.8
+    # ─────────────────────────────────────────────────────────────────────────
+    echo "Installing PyTorch 2.0.1 with CUDA 11.8..."
+    pip install --no-cache-dir \
         torch==2.0.1+cu118 \
         torchvision==0.15.2+cu118 \
         torchaudio==2.0.2+cu118 \
         --index-url https://download.pytorch.org/whl/cu118
 
-    # -------------------------------------------------------------------------
-    # Project dependencies
-    # -------------------------------------------------------------------------
-    mkdir -p /workspace
-    # requirements.txt embedded for self-contained build
-    pip install \
+    # Verify PyTorch installation
+    python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA available: {torch.cuda.is_available()}')"
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Core Scientific Computing Stack
+    # ─────────────────────────────────────────────────────────────────────────
+    echo "Installing scientific computing dependencies..."
+    pip install --no-cache-dir \
         numpy==1.24.3 \
         scipy==1.11.1 \
         sympy==1.12 \
-        matplotlib==3.7.2 \
         pandas==2.0.3 \
         h5py==3.9.0 \
-        tqdm==4.65.0 \
+        netCDF4==1.6.4
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Visualization and Plotting
+    # ─────────────────────────────────────────────────────────────────────────
+    pip install --no-cache-dir \
+        matplotlib==3.7.2 \
+        seaborn==0.12.2 \
+        plotly==5.15.0 \
+        pillow==10.0.0
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Configuration and Experiment Management
+    # ─────────────────────────────────────────────────────────────────────────
+    pip install --no-cache-dir \
         pyyaml==6.0.1 \
         hydra-core==1.3.2 \
         omegaconf==2.3.0 \
-        tensorboard==2.13.0 \
-        wandb==0.15.8 \
+        mlflow==2.6.0 \
+        wandb==0.15.8
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Progress and Logging
+    # ─────────────────────────────────────────────────────────────────────────
+    pip install --no-cache-dir \
+        tqdm==4.65.0 \
+        rich==13.5.2 \
+        tensorboard==2.13.0
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Testing and Quality Assurance
+    # ─────────────────────────────────────────────────────────────────────────
+    pip install --no-cache-dir \
         pytest==7.4.3 \
         pytest-cov==4.1.0 \
+        pytest-xdist==3.3.1 \
+        hypothesis==6.82.6
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Code Quality Tools
+    # ─────────────────────────────────────────────────────────────────────────
+    pip install --no-cache-dir \
         black==23.7.0 \
         isort==5.12.0 \
         mypy==1.4.1 \
-        flake8==6.0.0
+        flake8==6.0.0 \
+        pylint==2.17.5
 
-    # -------------------------------------------------------------------------
-    # Workspace directories
-    # -------------------------------------------------------------------------
-    mkdir -p /workspace/results/h1 \
-             /workspace/results/h2 \
-             /workspace/results/h3 \
-             /workspace/results/fss \
-             /workspace/results/jacobian \
-             /workspace/figures/out \
-             /workspace/checkpoints \
-             /workspace/logs \
-             /workspace/data
+    # ─────────────────────────────────────────────────────────────────────────
+    # Additional Utilities
+    # ─────────────────────────────────────────────────────────────────────────
+    pip install --no-cache-dir \
+        scikit-learn==1.3.0 \
+        scikit-image==0.21.0 \
+        opencv-python-headless==4.8.0.76 \
+        einops==0.7.0
 
-    # -------------------------------------------------------------------------
-    # Verify Python + PyTorch installation
-    # -------------------------------------------------------------------------
-    python -c "import torch; print('PyTorch:', torch.__version__)"
+    # ─────────────────────────────────────────────────────────────────────────
+    # Workspace Directory Structure
+    # ─────────────────────────────────────────────────────────────────────────
+    echo "Creating workspace directories..."
+    mkdir -p /workspace/{src,tests,experiments,figures,config,scripts,notebooks,docs}
+    mkdir -p /workspace/results/{h1,h2,h3,fss,jacobian,scaling,ablation,robustness}
+    mkdir -p /workspace/figures/out
+    mkdir -p /workspace/checkpoints/{h1,h2,h3,baselines}
+    mkdir -p /workspace/logs
+    mkdir -p /workspace/data/{raw,processed,external}
+    mkdir -p /workspace/tmp
 
+    # Set permissions
+    chmod -R 755 /workspace
+
+    # ─────────────────────────────────────────────────────────────────────────
+    # Verification
+    # ─────────────────────────────────────────────────────────────────────────
+    echo "=== Verifying Installation ==="
+    python -c "
+import sys
+print(f'Python: {sys.version}')
+import torch
+print(f'PyTorch: {torch.__version__}')
+print(f'CUDA available: {torch.cuda.is_available()}')
+if torch.cuda.is_available():
+    print(f'CUDA version: {torch.version.cuda}')
+    print(f'cuDNN version: {torch.backends.cudnn.version()}')
+import numpy, scipy, sympy, matplotlib, pandas
+print('Core dependencies: OK')
+"
+
+    echo "=== Build Complete ==="
+
+# =============================================================================
+# FILES TO COPY INTO CONTAINER
+# =============================================================================
 %files
-    # Copy entire project into container at build time
-    # Comment this out if you prefer bind-mounting at runtime
-    . /workspace
+    # Uncomment to embed project code in container
+    # . /workspace
 
+    # Alternative: Bind-mount at runtime for development
+    # singularity run --bind $(pwd):/workspace rgp-neural.sif
+
+# =============================================================================
+# RUNSCRIPT (Default action when using 'singularity run')
+# =============================================================================
 %runscript
     #!/bin/bash
     cd /workspace
-    exec "$@"
+    echo "╔════════════════════════════════════════════════════════════════╗"
+    echo "║  RGP Neural Architectures — HPC Container                      ║"
+    echo "║  Renormalization-Group Principles for Deep Neural Networks     ║"
+    echo "╚════════════════════════════════════════════════════════════════╝"
+    echo ""
+    echo "Usage: singularity run [options] rgp-neural.sif <command>"
+    echo ""
+    echo "Quick commands:"
+    echo "  make verify_pipeline    # Smoke test (< 1 min)"
+    echo "  make reproduce_fast     # Fast-track (3-5 min)"
+    echo "  make reproduce_all      # Full pipeline (24-72 hours)"
+    echo ""
+    echo "For help: singularity exec rgp-neural.sif cat /singularity"
+    echo ""
 
+    if [ $# -eq 0 ]; then
+        # Default: verify pipeline
+        exec make verify_pipeline
+    else
+        exec "$@"
+    fi
+
+# =============================================================================
+# STARTSCRIPT (Runs on 'singularity instance start')
+# =============================================================================
 %startscript
     #!/bin/bash
     cd /workspace
+    echo "Starting RGP Neural Architectures container instance..."
+    echo "Timestamp: $(date)"
+    echo "Hostname: $(hostname)"
+    echo ""
+
+    # Log system info
+    if command -v nvidia-smi &> /dev/null; then
+        echo "GPU Information:"
+        nvidia-smi --query-gpu=name,driver_version,memory.total --format=csv
+        echo ""
+    fi
+
+    echo "Running verification pipeline..."
     exec make verify_pipeline
 
+# =============================================================================
+# TEST SCRIPT (Runs on 'singularity test')
+# =============================================================================
 %test
     #!/bin/bash
-    echo "=== Singularity container test ==="
+    echo "══════════════════════════════════════════════════════════════════"
+    echo "  RGP Neural Architectures — Container Validation"
+    echo "══════════════════════════════════════════════════════════════════"
+
+    # Python version check
+    echo ""
+    echo "[1/6] Python Environment"
     python --version
-    python -c "import torch; print('PyTorch:', torch.__version__)"
-    python -c "import numpy, scipy, sympy, matplotlib; print('Core deps OK')"
-    echo "=== Container test passed ==="
+    which python
+
+    # PyTorch check
+    echo ""
+    echo "[2/6] PyTorch Installation"
+    python -c "
+import torch
+print(f'PyTorch version: {torch.__version__}')
+print(f'CUDA available: {torch.cuda.is_available()}')
+if torch.cuda.is_available():
+    print(f'CUDA version: {torch.version.cuda}')
+    print(f'Device count: {torch.cuda.device_count()}')
+    for i in range(torch.cuda.device_count()):
+        print(f'  Device {i}: {torch.cuda.get_device_name(i)}')
+"
+
+    # Core dependencies
+    echo ""
+    echo "[3/6] Core Dependencies"
+    python -c "
+import numpy, scipy, sympy, matplotlib, pandas, h5py, yaml
+print('numpy:', numpy.__version__)
+print('scipy:', scipy.__version__)
+print('sympy:', sympy.__version__)
+print('matplotlib:', matplotlib.__version__)
+print('pandas:', pandas.__version__)
+print('h5py:', h5py.__version__)
+print('PyYAML:', yaml.__version__)
+print('All core dependencies: OK')
+"
+
+    # ML/DL libraries
+    echo ""
+    echo "[4/6] ML/DL Libraries"
+    python -c "
+import torch, torchvision, tensorboard, tqdm
+print('torch:', torch.__version__)
+print('torchvision:', torchvision.__version__)
+print('tensorboard:', tensorboard.__version__)
+print('tqdm:', tqdm.__version__)
+print('All ML/DL libraries: OK')
+"
+
+    # Workspace check
+    echo ""
+    echo "[5/6] Workspace Structure"
+    if [ -d "/workspace" ]; then
+        echo "Workspace directory: OK"
+        ls -la /workspace/
+    else
+        echo "ERROR: Workspace directory not found!"
+        exit 1
+    fi
+
+    # GPU check (if available)
+    echo ""
+    echo "[6/6] GPU Availability"
+    if command -v nvidia-smi &> /dev/null; then
+        nvidia-smi --query-gpu=name,driver_version --format=csv,noheader || echo "No GPU detected"
+    else
+        echo "nvidia-smi not available (CPU-only mode)"
+    fi
+
+    echo ""
+    echo "══════════════════════════════════════════════════════════════════"
+    echo "  All tests passed! Container is ready for RGP experiments."
+    echo "══════════════════════════════════════════════════════════════════"
+
+# =============================================================================
+# INSPECT SCRIPT (Metadata for 'singularity inspect')
+# =============================================================================
+%apphelp rgp
+    RGP Neural Architectures Application
+    Run RG-principled neural network experiments
+
+%apprun rgp
+    #!/bin/bash
+    cd /workspace
+    exec python -m src "$@"

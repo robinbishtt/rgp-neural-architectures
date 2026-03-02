@@ -1,123 +1,264 @@
-#!/usr/bin/env bash
+#!/bin/bash
 # =============================================================================
-# containers/singularity_build.sh
+# RGP Neural Architectures — Singularity Build Script
+# Renormalization-Group Principles for Deep Neural Networks
 #
-# Builds the Singularity .sif image from Singularity.def.
-# Handles both local sudo builds and HPC fakeroot builds.
+# USAGE:
+#   ./singularity_build.sh [options]
 #
-# Usage:
-#   bash containers/singularity_build.sh [OPTIONS]
+# OPTIONS:
+#   --cpu-only    Build CPU-only variant
+#   --fakeroot    Use fakeroot (no sudo required)
+#   --remote      Build on Singularity remote builder
+#   --clean       Remove existing .sif files before build
+#   --test        Run tests after build
+#   --help        Show this help message
 #
-# Options:
-#   --fakeroot          Use --fakeroot instead of sudo (HPC clusters)
-#   --remote            Build remotely via Sylabs Cloud (no root needed)
-#   --output FILE       Output .sif path (default: rgp-neural.sif)
-#   --force             Overwrite existing .sif without prompting
-#   --test              Run %test section after build
+# EXAMPLES:
+#   # Build with sudo (local)
+#   ./singularity_build.sh
+#
+#   # Build without sudo (HPC)
+#   ./singularity_build.sh --fakeroot
+#
+#   # Build CPU-only variant
+#   ./singularity_build.sh --cpu-only --fakeroot
+#
+#   # Clean build with tests
+#   ./singularity_build.sh --clean --test
 # =============================================================================
 
 set -euo pipefail
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Configuration
+# ─────────────────────────────────────────────────────────────────────────────
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-
-# Defaults
-OUTPUT_SIF="${PROJECT_ROOT}/rgp-neural.sif"
+PROJECT_ROOT="$(dirname "${SCRIPT_DIR}")"
+CONTAINER_NAME="rgp-neural.sif"
+CPU_CONTAINER_NAME="rgp-neural-cpu.sif"
 DEF_FILE="${SCRIPT_DIR}/Singularity.def"
+CPU_DEF_FILE="${SCRIPT_DIR}/Singularity.cpu.def"
+
+# Build options
+BUILD_CPU=false
 USE_FAKEROOT=false
 USE_REMOTE=false
-FORCE=false
-RUN_TEST=false
+CLEAN=false
+RUN_TESTS=false
 
-# Parse arguments
+# ─────────────────────────────────────────────────────────────────────────────
+# Parse Arguments
+# ─────────────────────────────────────────────────────────────────────────────
 while [[ $# -gt 0 ]]; do
     case $1 in
-        --fakeroot)  USE_FAKEROOT=true  ; shift ;;
-        --remote)    USE_REMOTE=true    ; shift ;;
-        --output)    OUTPUT_SIF="$2"    ; shift 2 ;;
-        --force)     FORCE=true         ; shift ;;
-        --test)      RUN_TEST=true      ; shift ;;
-        -h|--help)
-            sed -n '/^#/p' "$0" | head -30 | sed 's/^# \?//'
-            exit 0 ;;
+        --cpu-only)
+            BUILD_CPU=true
+            shift
+            ;;
+        --fakeroot)
+            USE_FAKEROOT=true
+            shift
+            ;;
+        --remote)
+            USE_REMOTE=true
+            shift
+            ;;
+        --clean)
+            CLEAN=true
+            shift
+            ;;
+        --test)
+            RUN_TESTS=true
+            shift
+            ;;
+        --help)
+            echo "RGP Neural Architectures — Singularity Build Script"
+            echo ""
+            echo "Usage: $0 [options]"
+            echo ""
+            echo "Options:"
+            echo "  --cpu-only    Build CPU-only variant"
+            echo "  --fakeroot    Use fakeroot (no sudo required)"
+            echo "  --remote      Build on Singularity remote builder"
+            echo "  --clean       Remove existing .sif files before build"
+            echo "  --test        Run tests after build"
+            echo "  --help        Show this help message"
+            echo ""
+            echo "Examples:"
+            echo "  $0                          # Build with sudo"
+            echo "  $0 --fakeroot               # Build without sudo"
+            echo "  $0 --cpu-only --fakeroot    # Build CPU-only variant"
+            echo "  $0 --clean --test           # Clean build with tests"
+            exit 0
+            ;;
         *)
-            echo "Unknown option: $1" >&2
-            exit 1 ;;
+            echo "Unknown option: $1"
+            echo "Use --help for usage information"
+            exit 1
+            ;;
     esac
 done
 
-# Check Singularity / Apptainer availability
-if command -v apptainer &>/dev/null; then
-    SIF_CMD=apptainer
-elif command -v singularity &>/dev/null; then
-    SIF_CMD=singularity
+# ─────────────────────────────────────────────────────────────────────────────
+# Determine Build Parameters
+# ─────────────────────────────────────────────────────────────────────────────
+if [ "$BUILD_CPU" = true ]; then
+    CONTAINER_NAME="$CPU_CONTAINER_NAME"
+    DEF_FILE="$CPU_DEF_FILE"
+    echo "Building CPU-only container..."
 else
-    echo "ERROR: Neither 'apptainer' nor 'singularity' found in PATH." >&2
-    echo "Install from: https://apptainer.org/docs/admin/main/installation.html" >&2
+    echo "Building GPU-enabled container..."
+fi
+
+CONTAINER_PATH="${SCRIPT_DIR}/${CONTAINER_NAME}"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Clean Existing Container
+# ─────────────────────────────────────────────────────────────────────────────
+if [ "$CLEAN" = true ] && [ -f "$CONTAINER_PATH" ]; then
+    echo "Removing existing container: $CONTAINER_PATH"
+    rm -f "$CONTAINER_PATH"
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Check Prerequisites
+# ─────────────────────────────────────────────────────────────────────────────
+echo ""
+echo "=== Checking Prerequisites ==="
+
+# Check Singularity/Apptainer
+if command -v apptainer &> /dev/null; then
+    SINGULARITY_CMD="apptainer"
+    echo "Using Apptainer"
+elif command -v singularity &> /dev/null; then
+    SINGULARITY_CMD="singularity"
+    echo "Using Singularity"
+else
+    echo "ERROR: Neither Singularity nor Apptainer found!"
+    echo "Please install Singularity >= 3.8 or Apptainer >= 1.0"
     exit 1
 fi
 
-echo "=== RGP Neural Architectures — Singularity Build ==="
-echo "  Command  : $SIF_CMD"
-echo "  Def file : $DEF_FILE"
-echo "  Output   : $OUTPUT_SIF"
-echo ""
-
-# Check for existing .sif
-if [[ -f "$OUTPUT_SIF" ]]; then
-    if [[ "$FORCE" == false ]]; then
-        read -rp "  $OUTPUT_SIF exists. Overwrite? [y/N]: " answer
-        [[ "$answer" =~ ^[Yy]$ ]] || { echo "Aborted."; exit 0; }
-    fi
-    rm -f "$OUTPUT_SIF"
+# Check version
+VERSION=$($SINGULARITY_CMD --version | grep -oP '\d+\.\d+' | head -1)
+REQUIRED_VERSION="3.8"
+if [ "$(printf '%s\n' "$REQUIRED_VERSION" "$VERSION" | sort -V | head -n1)" != "$REQUIRED_VERSION" ]; then
+    echo "WARNING: Singularity version $VERSION < $REQUIRED_VERSION"
+    echo "Some features may not work correctly"
 fi
 
-# Build command
-BUILD_ARGS=("build")
+# Check definition file exists
+if [ ! -f "$DEF_FILE" ]; then
+    echo "ERROR: Definition file not found: $DEF_FILE"
+    exit 1
+fi
 
-if [[ "$USE_REMOTE" == true ]]; then
-    BUILD_ARGS+=("--remote")
-elif [[ "$USE_FAKEROOT" == true ]]; then
+echo "Definition file: $DEF_FILE"
+echo "Output: $CONTAINER_PATH"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Build Container
+# ─────────────────────────────────────────────────────────────────────────────
+echo ""
+echo "=== Building Container ==="
+echo "Start time: $(date)"
+echo ""
+
+# Build command construction
+BUILD_ARGS=()
+
+if [ "$USE_FAKEROOT" = true ]; then
     BUILD_ARGS+=("--fakeroot")
+    echo "Using fakeroot (no sudo required)"
+elif [ "$USE_REMOTE" = true ]; then
+    BUILD_ARGS+=("--remote")
+    echo "Using remote builder"
 else
-    # Try sudo if available, otherwise fall back to fakeroot
-    if sudo -n true 2>/dev/null; then
-        BUILD_ARGS=("build")   # sudo handled by prepending sudo below
-    else
-        echo "  sudo not available — trying --fakeroot"
-        BUILD_ARGS+=("--fakeroot")
-    fi
+    echo "Using sudo (local build)"
 fi
 
-BUILD_ARGS+=("$OUTPUT_SIF" "$DEF_FILE")
-
-echo "  Running: $SIF_CMD ${BUILD_ARGS[*]}"
+# Execute build
+echo "Running: $SINGULARITY_CMD build ${BUILD_ARGS[*]} $CONTAINER_PATH $DEF_FILE"
 echo ""
 
-START_TIME=$(date +%s)
-
-if [[ "$USE_FAKEROOT" == true || "$USE_REMOTE" == true ]]; then
-    "$SIF_CMD" "${BUILD_ARGS[@]}"
+if [ "$USE_FAKEROOT" = false ] && [ "$USE_REMOTE" = false ]; then
+    # Local build requires sudo
+    sudo $SINGULARITY_CMD build "${BUILD_ARGS[@]}" "$CONTAINER_PATH" "$DEF_FILE"
 else
-    sudo "$SIF_CMD" "${BUILD_ARGS[@]}"
+    $SINGULARITY_CMD build "${BUILD_ARGS[@]}" "$CONTAINER_PATH" "$DEF_FILE"
 fi
 
-END_TIME=$(date +%s)
-ELAPSED=$(( END_TIME - START_TIME ))
+BUILD_EXIT_CODE=$?
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Build Summary
+# ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo "=== Build complete in ${ELAPSED}s ==="
-echo "  Image: $OUTPUT_SIF ($(du -sh "$OUTPUT_SIF" | cut -f1))"
+echo "=== Build Summary ==="
+echo "End time: $(date)"
+echo "Exit code: $BUILD_EXIT_CODE"
 
-# Optional test
-if [[ "$RUN_TEST" == true ]]; then
+if [ $BUILD_EXIT_CODE -ne 0 ]; then
+    echo "✗ Build FAILED"
+    exit $BUILD_EXIT_CODE
+fi
+
+if [ -f "$CONTAINER_PATH" ]; then
+    CONTAINER_SIZE=$(du -h "$CONTAINER_PATH" | cut -f1)
+    echo "✓ Build SUCCESSFUL"
+    echo "Container: $CONTAINER_PATH"
+    echo "Size: $CONTAINER_SIZE"
+else
+    echo "✗ Build failed - container not found"
+    exit 1
+fi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Run Tests
+# ─────────────────────────────────────────────────────────────────────────────
+if [ "$RUN_TESTS" = true ]; then
     echo ""
-    echo "=== Running container test ==="
-    "$SIF_CMD" test "$OUTPUT_SIF"
+    echo "=== Running Container Tests ==="
+
+    # Basic test
+    echo "[1/3] Container test..."
+    $SINGULARITY_CMD test "$CONTAINER_PATH"
+
+    # Python version check
+    echo ""
+    echo "[2/3] Python environment..."
+    $SINGULARITY_CMD exec "$CONTAINER_PATH" python --version
+
+    # PyTorch check
+    echo ""
+    echo "[3/3] PyTorch installation..."
+    if [ "$BUILD_CPU" = true ]; then
+        $SINGULARITY_CMD exec "$CONTAINER_PATH" python -c "import torch; print(f'PyTorch: {torch.__version__}')"
+    else
+        $SINGULARITY_CMD exec --nv "$CONTAINER_PATH" python -c "import torch; print(f'PyTorch: {torch.__version__}'); print(f'CUDA: {torch.cuda.is_available()}')"
+    fi
+
+    echo ""
+    echo "✓ All tests passed!"
 fi
 
+# ─────────────────────────────────────────────────────────────────────────────
+# Next Steps
+# ─────────────────────────────────────────────────────────────────────────────
 echo ""
-echo "Usage:"
-echo "  $SIF_CMD run --nv $OUTPUT_SIF make verify_pipeline"
-echo "  $SIF_CMD run --nv $OUTPUT_SIF make reproduce_fast"
-echo "  $SIF_CMD exec --nv $OUTPUT_SIF bash"
+echo "╔════════════════════════════════════════════════════════════════╗"
+echo "║  Build Complete!                                               ║"
+echo "╚════════════════════════════════════════════════════════════════╝"
+echo ""
+echo "Container location: $CONTAINER_PATH"
+echo ""
+echo "Quick test:"
+if [ "$BUILD_CPU" = true ]; then
+    echo "  singularity run $CONTAINER_PATH make verify_pipeline"
+else
+    echo "  singularity run --nv $CONTAINER_PATH make verify_pipeline"
+fi
+echo ""
+echo "For HPC deployment, see: docs/HPC_GUIDE.md"
+echo ""
