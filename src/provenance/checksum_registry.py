@@ -210,3 +210,4 @@ class ChecksumRegistry:
                             h.update(chunk)
             return h.hexdigest()
         return hashlib.sha256(b"missing").hexdigest()
+ 
