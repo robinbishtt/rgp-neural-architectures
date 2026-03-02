@@ -25,3 +25,4 @@ class DistributedDataLoader(DataLoader):
     def set_epoch(self, epoch: int) -> None:
         """Call at start of each epoch to re-shuffle across ranks."""
         self.dist_sampler.set_epoch(epoch)
+ 
