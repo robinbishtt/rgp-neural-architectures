@@ -130,3 +130,4 @@ class TrainingMonitor:
     def has_anomaly(self) -> bool:
         return any(e.event in ("NaN_loss", "gradient_explosion")
                    for e in self._events)
+ 
