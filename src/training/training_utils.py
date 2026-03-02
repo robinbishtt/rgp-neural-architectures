@@ -120,3 +120,4 @@ def cosine_similarity_layers(
         sim    = torch.dot(flat_a, flat_b) / (flat_a.norm() * flat_b.norm() + 1e-12)
         similarities.append(float(sim.item()))
     return similarities
+ 
