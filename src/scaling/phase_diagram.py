@@ -119,3 +119,4 @@ class PhaseDiagramMapper:
                     hi = mid
             critical.append((sb, (lo + hi) / 2.0))
         return np.array(critical)
+ 
