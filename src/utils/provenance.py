@@ -6,3 +6,4 @@ Backward-compatible shim. Canonical implementation is at src/provenance/data_aud
 from src.provenance.data_auditor import DataAuditor  # noqa: F401
 
 __all__ = ["DataAuditor"]
+ 
