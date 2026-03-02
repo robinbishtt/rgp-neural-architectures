@@ -51,3 +51,4 @@ class TestActivationStatistics:
             total = v.numel()
             assert dead / total < 0.5, \
                 f"Layer {i}: {dead}/{total} neurons are dead"
+ 
