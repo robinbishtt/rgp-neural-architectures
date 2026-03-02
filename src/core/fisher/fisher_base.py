@@ -116,3 +116,4 @@ class FisherMetricBase(ABC):
         """
         evs = torch.linalg.eigvalsh(g)
         return bool((evs >= tol).all().item())
+ 
