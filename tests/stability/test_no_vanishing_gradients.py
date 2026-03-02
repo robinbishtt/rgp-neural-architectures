@@ -1,5 +1,4 @@
 """tests/stability/test_no_vanishing_gradients.py"""
-import pytest
 import torch
 import torch.nn as nn
 from src.rg_flow.operators.operators import StandardRGOperator

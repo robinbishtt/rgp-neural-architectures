@@ -30,9 +30,8 @@ Usage
 from __future__ import annotations
 
 import logging
-from typing import Any, Dict, Optional, Type
+from typing import Any, Dict, Type
 
-import torch.nn as nn
 
 from src.architectures.rg_net.rg_net_template import RGNetTemplate
 

@@ -15,7 +15,7 @@ Implements:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, Tuple
 
 import numpy as np
 from scipy.optimize import curve_fit, minimize_scalar

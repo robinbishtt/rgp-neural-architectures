@@ -29,7 +29,6 @@ _ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_ROOT))
 
 from figures.styles import use_publication_style
-from figures.styles.color_palette import panel_label
 from figures.styles.font_config import (
     DOUBLE_COL_WIDTH,
     add_panel_label,

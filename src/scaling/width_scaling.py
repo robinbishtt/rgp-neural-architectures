@@ -10,10 +10,9 @@ where g is a control parameter (e.g., σ_w²) and g_c is the critical value.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Optional
 
 import numpy as np
-from scipy.optimize import minimize
 
 
 @dataclass

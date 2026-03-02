@@ -10,7 +10,7 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Optional, Tuple
 import numpy as np
-from scipy.optimize import minimize_scalar, minimize
+from scipy.optimize import minimize
 
 
 @dataclass
@@ -47,7 +47,6 @@ class CriticalExponentExtractor:
         widths      : (M,) array of network widths
         observables : (M,) array of measured quantity (e.g., accuracy)
         """
-        from scipy.optimize import curve_fit
 
         if lc_bounds is None:
             lc_bounds = (depths.min() * 0.5, depths.max() * 2.0)

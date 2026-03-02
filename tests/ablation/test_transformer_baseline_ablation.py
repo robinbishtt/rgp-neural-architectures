@@ -1,5 +1,4 @@
 """tests/ablation/test_transformer_baseline_ablation.py"""
-import pytest
 import torch
 
 

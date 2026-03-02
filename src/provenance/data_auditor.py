@@ -9,7 +9,7 @@ from __future__ import annotations
 import hashlib
 import json
 from pathlib import Path
-from typing import Dict, Optional
+from typing import Dict
 
 from src.utils.error_handler import DataIntegrityError
 

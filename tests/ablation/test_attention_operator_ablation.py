@@ -1,7 +1,5 @@
 """tests/ablation/test_attention_operator_ablation.py"""
-import pytest
 import torch
-import torch.nn as nn
 
 
 class TestAttentionOperatorAblation:

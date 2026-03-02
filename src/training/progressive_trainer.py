@@ -9,7 +9,6 @@ Prevents vanishing gradients in very deep networks during early training.
 """
 from __future__ import annotations
 from typing import List
-import torch.nn as nn
 from src.training.trainer import Trainer
 
 

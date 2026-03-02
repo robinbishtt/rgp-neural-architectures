@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import random
 import threading
-import warnings
 from typing import Any, Dict, Optional
 
 import numpy as np

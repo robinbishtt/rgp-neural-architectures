@@ -4,7 +4,6 @@ src/datasets/hierarchical_cifar.py
 CIFAR-10/100 with hierarchical label structure for multi-scale evaluation.
 """
 from __future__ import annotations
-import torch
 from torch.utils.data import Dataset
 
 

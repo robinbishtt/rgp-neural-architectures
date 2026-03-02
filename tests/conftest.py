@@ -4,7 +4,6 @@ tests/conftest.py
 Shared pytest fixtures for all test suites.
 """
 import pytest
-import numpy as np
 import torch
 from src.utils.seed_registry import SeedRegistry
 from src.utils.device_manager import DeviceManager

@@ -1,5 +1,4 @@
 """tests/stability/test_initialization_variance.py"""
-import pytest
 import torch
 import torch.nn as nn
 

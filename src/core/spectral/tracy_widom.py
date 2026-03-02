@@ -12,8 +12,6 @@ Reference: Tracy, C.A. & Widom, H. (1994). Level-spacing distributions
 from __future__ import annotations
 from typing import Tuple
 import numpy as np
-from scipy.stats import chi2
-from scipy.integrate import cumulative_trapezoid
 
 
 class TracyWidomDistribution:

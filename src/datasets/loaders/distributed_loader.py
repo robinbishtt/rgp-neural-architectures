@@ -4,7 +4,6 @@ src/datasets/loaders/distributed_loader.py
 Multi-process DataLoader with DistributedSampler for distributed training.
 """
 from __future__ import annotations
-import torch
 from torch.utils.data import DataLoader, Dataset, DistributedSampler
 
 

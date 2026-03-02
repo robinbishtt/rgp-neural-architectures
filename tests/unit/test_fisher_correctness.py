@@ -3,8 +3,6 @@ tests/unit/test_fisher_correctness.py
 
 Verifies G^(k) = J_k^T G^(k-1) J_k pushforward implementation against symbolic derivations.
 """
-import pytest
-import numpy as np
 import torch
 from src.core.fisher.fisher_metric import FisherMetric
 

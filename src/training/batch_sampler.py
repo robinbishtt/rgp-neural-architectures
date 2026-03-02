@@ -32,7 +32,6 @@ import logging
 from typing import Iterator, List, Optional
 
 import numpy as np
-import torch
 from torch.utils.data import Sampler
 
 logger = logging.getLogger(__name__)

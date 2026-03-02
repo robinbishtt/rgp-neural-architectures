@@ -9,7 +9,7 @@ When the running matrix product becomes numerically ill-conditioned
 triggers a QR step to prevent floating-point overflow/underflow.
 """
 from __future__ import annotations
-from typing import List, Optional
+from typing import List
 
 import numpy as np
 import torch

@@ -7,7 +7,6 @@ Validates that wide random-layer Jacobians follow RMT predictions.
 
 import pytest
 import numpy as np
-import torch
 
 
 def _sample_wishart_eigenvalues(n: int, m: int, sigma2: float = 1.0, seed: int = 42) -> np.ndarray:

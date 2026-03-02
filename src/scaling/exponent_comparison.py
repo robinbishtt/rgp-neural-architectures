@@ -9,9 +9,8 @@ with the predicted values ν = 1, α = 0 (logarithmic scaling).
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
-import numpy as np
 from scipy.stats import t as t_dist
 
 

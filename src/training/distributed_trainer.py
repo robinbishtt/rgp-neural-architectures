@@ -4,7 +4,6 @@ src/training/distributed_trainer.py
 Multi-GPU distributed training with synchronous SGD via torch.distributed.
 """
 from __future__ import annotations
-import os
 import torch
 import torch.distributed as dist
 import torch.nn as nn

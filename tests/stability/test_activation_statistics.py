@@ -1,5 +1,4 @@
 """tests/stability/test_activation_statistics.py"""
-import pytest
 import torch
 import torch.nn as nn
 

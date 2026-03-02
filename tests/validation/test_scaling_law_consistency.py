@@ -1,5 +1,4 @@
 """tests/validation/test_scaling_law_consistency.py"""
-import pytest
 import numpy as np
 
 

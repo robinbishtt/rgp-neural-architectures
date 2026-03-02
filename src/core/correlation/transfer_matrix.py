@@ -9,7 +9,6 @@ cross-validation tool for nonlinear architectures.
 Reference: Cardy, J. (1988). Finite-Size Scaling. North-Holland.
 """
 from __future__ import annotations
-from typing import Optional, Tuple
 
 import numpy as np
 import torch
@@ -63,7 +62,7 @@ class TransferMatrixMethod:
             return float("inf")
         ratio = svs[1] / (svs[0] + 1e-12)
         ratio = np.clip(ratio, 1e-12, 1.0 - 1e-12)
-        return float(-1.0 / np.log(ratio))
+        return float(-1.0 / np.log(ratio + 1e-12))
 
     def compute_depth_profile(
         self,

@@ -12,11 +12,9 @@ Implements:
 
 from __future__ import annotations
 
-from dataclasses import dataclass
 from typing import Optional, Tuple
 
 import numpy as np
-import torch
 from scipy.stats import gaussian_kde, kstest
 
 
@@ -56,7 +54,6 @@ class MarchenkoPasturDistribution:
         lam = np.asarray(lam, dtype=float)
         x   = np.linspace(self.lam_minus * 0.99, self.lam_plus * 1.01, n_points)
         y   = self.pdf(x)
-        from scipy.integrate import cumtrapz
         cdf_vals = np.concatenate([[0.0], np.cumsum(y[:-1] * np.diff(x))])
         cdf_norm = cdf_vals / max(cdf_vals[-1], 1e-12)
         return np.interp(lam, x, cdf_norm)

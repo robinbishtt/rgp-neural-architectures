@@ -58,7 +58,6 @@ def check_device() -> Tuple[bool, str]:
 
 def check_seed_registry() -> Tuple[bool, str]:
     try:
-        import torch
         from src.utils.seed_registry import SeedRegistry
         reg = SeedRegistry.get_instance()
         reg.set_master_seed(42)
@@ -174,7 +173,7 @@ def run_checks(checks) -> int:
         t0 = time.time()
         try:
             ok, msg = fn()
-        except Exception as exc:
+        except Exception:
             ok  = False
             msg = traceback.format_exc()
 

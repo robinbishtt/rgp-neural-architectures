@@ -9,11 +9,10 @@ confirms the extracted scaling exponents.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Optional, Tuple
+from typing import List, Optional
 
 import numpy as np
 from scipy.interpolate import interp1d
-from scipy.optimize import minimize_scalar
 
 
 @dataclass

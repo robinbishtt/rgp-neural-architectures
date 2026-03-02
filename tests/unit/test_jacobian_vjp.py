@@ -1,5 +1,4 @@
 """tests/unit/test_jacobian_vjp.py"""
-import pytest
 import torch
 
 
@@ -9,7 +8,8 @@ class TestVJPJacobian:
         from src.core.jacobian.autograd_jacobian import AutogradJacobian
         torch.manual_seed(1)
         W = torch.randn(3, 5)
-        fn = lambda x: W @ x
+        def fn(x):
+            return W @ x
         x = torch.randn(5, requires_grad=True)
         assert torch.allclose(VJPJacobian().compute(fn, x),
                               AutogradJacobian().compute(fn, x), atol=1e-5)

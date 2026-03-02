@@ -1,7 +1,5 @@
 """tests/robustness/test_ood_generalization.py"""
-import pytest
 import torch
-import torch.nn as nn
 
 
 class TestOODGeneralization:

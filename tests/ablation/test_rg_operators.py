@@ -1,5 +1,6 @@
 """tests/ablation/test_rg_operators.py"""
-import torch, torch.nn as nn
+import torch
+import torch.nn as nn
 from src.rg_flow.operators.operators import StandardRGOperator
 
 

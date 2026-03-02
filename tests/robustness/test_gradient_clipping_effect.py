@@ -1,5 +1,4 @@
 """tests/robustness/test_gradient_clipping_effect.py"""
-import pytest
 import torch
 import torch.nn as nn
 import torch.optim as optim

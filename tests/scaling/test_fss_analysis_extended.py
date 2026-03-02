@@ -1,5 +1,4 @@
 """tests/scaling/test_fss_analysis_extended.py"""
-import pytest
 import numpy as np
 
 

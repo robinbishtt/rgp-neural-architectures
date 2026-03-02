@@ -1,7 +1,5 @@
 """tests/scaling/test_h3_generalization.py"""
-import pytest
 import torch
-import torch.nn as nn
 from src.architectures.rg_net.rg_net import RGNet
 from src.architectures.baselines.mlp_baseline import MLPBaseline
 

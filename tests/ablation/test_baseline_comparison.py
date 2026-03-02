@@ -1,7 +1,5 @@
 """tests/ablation/test_baseline_comparison.py"""
-import pytest
 import torch
-import torch.nn as nn
 
 
 class TestBaselineComparison:

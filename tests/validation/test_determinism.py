@@ -6,7 +6,6 @@ bit-exact identical outputs across model forward passes, gradient computations,
 and data loading.
 """
 
-import pytest
 import random
 import torch
 import torch.nn as nn

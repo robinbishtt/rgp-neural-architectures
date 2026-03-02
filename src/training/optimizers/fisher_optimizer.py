@@ -10,9 +10,8 @@ factorization F_k ≈ A_{k-1} ⊗ G_k (Martens & Grosse, 2015) where
 A_{k-1} is the input covariance and G_k is the output gradient covariance.
 """
 from __future__ import annotations
-from typing import Dict, List, Optional
+from typing import Optional
 import torch
-import torch.nn as nn
 from torch.optim import Optimizer
 
 

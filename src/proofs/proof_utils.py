@@ -11,7 +11,7 @@ Provides:
 """
 from __future__ import annotations
 from dataclasses import dataclass, field
-from typing import Any, Callable, Dict, List, Optional, Tuple
+from typing import Any, Callable, Dict, List
 import time
 
 import numpy as np
@@ -93,7 +93,7 @@ class NumericalVerifier:
                 errors.append(err)
                 if err <= self.tol:
                     n_passed += 1
-            except Exception as e:
+            except Exception:
                 errors.append(float("inf"))
 
         elapsed = time.time() - t0

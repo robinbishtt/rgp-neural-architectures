@@ -1,7 +1,5 @@
 """tests/stability/test_mixed_precision_stability.py"""
-import pytest
 import torch
-import torch.nn as nn
 
 
 class TestMixedPrecisionStability:

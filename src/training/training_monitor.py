@@ -9,9 +9,8 @@ Integrates with TelemetryLogger for persistent storage of all monitoring
 events.
 """
 from __future__ import annotations
-from dataclasses import dataclass, field
-from typing import Dict, List, Optional
-import time
+from dataclasses import dataclass
+from typing import List
 
 import torch
 import torch.nn as nn

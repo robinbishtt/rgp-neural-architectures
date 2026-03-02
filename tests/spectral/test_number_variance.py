@@ -6,7 +6,6 @@ For GOE, sigma^2(L) ~ (2/pi^2) log(L) + const (logarithmic rigidity).
 For Poisson (uncorrelated), sigma^2(L) = L (linear).
 """
 
-import pytest
 import numpy as np
 
 
@@ -23,7 +22,7 @@ def _number_variance(ev: np.ndarray, interval_length: float) -> float:
     of length L (in unfolded units) averaged over window positions.
     """
     ev     = np.sort(ev)
-    n      = len(ev)
+    len(ev)
     counts = []
     # Slide window of length interval_length across spectrum
     step   = interval_length / 4.0

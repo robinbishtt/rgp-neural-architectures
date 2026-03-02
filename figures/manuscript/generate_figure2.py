@@ -21,7 +21,6 @@ from pathlib import Path
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as mgridspec
 import numpy as np
 from scipy.stats import gaussian_kde
 
@@ -29,7 +28,7 @@ _ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_ROOT))
 
 from figures.styles import use_publication_style
-from figures.styles.color_palette import SPECTRAL, depth_colors, panel_label
+from figures.styles.color_palette import depth_colors
 from figures.styles.font_config import (
     DOUBLE_COL_WIDTH,
     add_panel_label, remove_top_right_spines,
@@ -115,7 +114,7 @@ def _draw_fisher_pushforward(ax: plt.Axes) -> None:
         traces.append(ev.mean())
         cond_nos.append(ev[-1] / (ev[0] + 1e-6))
 
-    colors = depth_colors(list(layers))
+    depth_colors(list(layers))
 
     ax2 = ax.twinx()
     ax.plot(layers, traces, "-o", ms=4, lw=1.2,

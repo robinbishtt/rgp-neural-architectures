@@ -5,7 +5,6 @@ Medical imaging dataset with anatomical hierarchy (organ -> sub-region -> cell).
 Uses synthetic generation when real data unavailable.
 """
 from __future__ import annotations
-import torch
 from torch.utils.data import Dataset
 from src.datasets.synthetic_hierarchy import SyntheticHierarchy
 

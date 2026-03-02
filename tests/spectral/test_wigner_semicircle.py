@@ -7,7 +7,6 @@ Tests GOE/GUE eigenvalue bulk universality.
 
 import pytest
 import numpy as np
-from scipy.stats import kstest
 
 
 def _goe_eigenvalues(n: int, seed: int = 42) -> np.ndarray:

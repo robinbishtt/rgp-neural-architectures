@@ -32,9 +32,8 @@ from __future__ import annotations
 
 import logging
 import math
-from typing import Callable, List, Optional
+from typing import Callable, List
 
-import torch
 import torch.nn as nn
 from torch.optim import Optimizer
 

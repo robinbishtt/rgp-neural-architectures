@@ -10,8 +10,6 @@ from dataclasses import dataclass
 from typing import List, Literal, Optional
 
 import numpy as np
-import torch
-import torch.nn as nn
 
 
 @dataclass

@@ -1,5 +1,4 @@
 """tests/ablation/test_inception_baseline_ablation.py"""
-import pytest
 import torch
 
 

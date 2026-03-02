@@ -1,5 +1,4 @@
 """tests/ablation/test_multiscale_fusion.py"""
-import torch
 from src.architectures.rg_net.rg_net_multiscale import RGNetMultiScale
 from src.architectures.rg_net.rg_net_standard import RGNetStandard
 
