@@ -111,3 +111,4 @@ class TracyWidomDistribution:
         ])
         stat, pval = kstest(scaled, self.cdf)
         return float(stat), float(pval)
+ 
