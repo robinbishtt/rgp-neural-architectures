@@ -39,3 +39,4 @@ class TestGradientFlowDepth:
         if len(grad_norms) >= 2:
             ratio = max(grad_norms) / (min(grad_norms) + 1e-12)
             assert ratio < 1e3, f"Gradient norm ratio too large: {ratio:.2e}"
+ 
