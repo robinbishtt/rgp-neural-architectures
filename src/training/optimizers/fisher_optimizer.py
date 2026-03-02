@@ -87,3 +87,4 @@ class FisherOptimizer(Optimizer):
                 p.data -= group["lr"] * nat_grad
 
         return loss
+ 
