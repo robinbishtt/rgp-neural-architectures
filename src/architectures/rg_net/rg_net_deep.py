@@ -17,3 +17,4 @@ class RGNetDeep(RGNet):
         kwargs.setdefault("use_gradient_checkpointing", True)
         super().__init__(in_features=in_features, n_classes=n_classes,
                          depth=depth, width=width, **kwargs)
+ 
