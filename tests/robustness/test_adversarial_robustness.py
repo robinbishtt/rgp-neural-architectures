@@ -124,3 +124,4 @@ class TestAdversarialRobustness:
         assert loss_adv >= loss_clean - 1e-4, (
             f"Adversarial loss {loss_adv:.4f} not >= clean loss {loss_clean:.4f}."
         )
+ 
