@@ -75,3 +75,4 @@ class FisherEigenvalueAnalyzer:
         ev = np.clip(ev, 1e-12, None)
         top = np.sort(ev)[::-1][:n_components]
         return float(top.sum() / ev.sum())
+ 
