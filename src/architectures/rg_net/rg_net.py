@@ -309,3 +309,4 @@ def build_rg_net(variant: str, **kwargs) -> nn.Module:
     if variant not in _VARIANTS:
         raise ValueError(f"Unknown variant {variant!r}. Choose from: {list(_VARIANTS)}")
     return _VARIANTS[variant](**kwargs)
+ 
