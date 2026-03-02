@@ -22,3 +22,4 @@ def test_repeated_pushforward_symmetric():
         J = torch.randn(4, 4) * 0.3
         G = fm.pushforward(G, J)
     assert torch.allclose(G, G.T, atol=1e-4)
+ 
