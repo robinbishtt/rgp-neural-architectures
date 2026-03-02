@@ -149,3 +149,4 @@ class TransferMatrixMethod:
             else:
                 xi_values.append(1.0)
         return np.array(xi_values)
+ 
