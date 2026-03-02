@@ -22,3 +22,4 @@ class TestCollapseQualityExtended:
         y2 = np.cos(x) * 3.0
         result = CollapseQualityMetrics(q_threshold=0.1).evaluate([x, x], [y1, y2])
         assert result.mean_residual > 0.1
+ 
