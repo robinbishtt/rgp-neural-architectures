@@ -35,7 +35,7 @@ mlflow==2.6.0
 
 # --- Progress & logging ---
 tqdm==4.65.0
-rich==13.5.2
+rich==14.3.3
 loguru==0.7.0
 
 # --- Testing ---
