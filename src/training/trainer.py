@@ -179,3 +179,4 @@ class Trainer:
             "optimizer": self.optimizer.state_dict(),
             "rng_state": SeedRegistry.get_instance().snapshot_state(),
         }, str(path))
+ 
