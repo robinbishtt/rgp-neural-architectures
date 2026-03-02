@@ -15,3 +15,4 @@ def test_model_loss_decreases():
         loss.backward(); opt.step(); opt.zero_grad()
         losses.append(loss.item())
     assert losses[-1] < losses[0] * 1.5  # should not diverge
+ 
