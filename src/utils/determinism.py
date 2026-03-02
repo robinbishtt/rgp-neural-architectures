@@ -69,3 +69,4 @@ def verify_determinism(
         if not torch.allclose(reference, out, rtol=rtol, atol=1e-7):
             return False
     return True
+ 
