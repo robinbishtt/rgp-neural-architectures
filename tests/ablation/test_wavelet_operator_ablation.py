@@ -24,3 +24,4 @@ class TestWaveletOperatorAblation:
         x  = torch.randn(2, 8, requires_grad=True)
         op(x).sum().backward()
         assert x.grad is not None
+ 
