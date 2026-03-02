@@ -19,3 +19,4 @@ class TestWidthScalingAblation:
         obs    = 2.0 + 10.0 / widths
         inf_val = WidthScalingAnalyzer().infinite_width_extrapolation(widths, obs)
         assert obs.min() - 1.0 < inf_val < obs.max() + 1.0
+ 
