@@ -131,3 +131,4 @@ class TwoPointCorrelation:
             c12 = q12 / np.sqrt(max(q11 * q22, 1e-12))
             c12_vals.append(float(np.clip(c12, -1.0, 1.0)))
         return np.array(c12_vals)
+ 
