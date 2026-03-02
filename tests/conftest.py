@@ -42,3 +42,4 @@ def random_psd_matrix():
 def synthetic_dataset():
     from src.datasets.synthetic_hierarchy import SyntheticHierarchy
     return SyntheticHierarchy(n_samples=100, n_features=64, seed=42)
+ 
