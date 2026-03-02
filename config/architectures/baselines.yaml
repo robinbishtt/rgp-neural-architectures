@@ -38,3 +38,4 @@ comparison:
     - hierarchical_mnist
     - hierarchical_cifar
     - synthetic_hierarchy
+ 
