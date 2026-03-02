@@ -19,3 +19,4 @@ critical_exponents:
   gamma:
     description: "Susceptibility exponent"
     expected_range: [1.0, 2.5]
+ 
