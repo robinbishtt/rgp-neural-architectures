@@ -93,3 +93,4 @@ class TestLabelNoise:
                 assert torch.isfinite(param.grad).all(), (
                     f"Non-finite gradient in {name} under label noise."
                 )
+ 
