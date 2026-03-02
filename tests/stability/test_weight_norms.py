@@ -37,3 +37,4 @@ class TestWeightNorms:
                 norm_per_unit = m.weight.data.norm() / (fan_in ** 0.5)
                 assert 0.1 < norm_per_unit < 10.0, \
                     f"Unexpected weight norm per sqrt(fan_in): {norm_per_unit:.4f}"
+ 
