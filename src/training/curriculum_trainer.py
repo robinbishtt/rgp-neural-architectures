@@ -98,3 +98,4 @@ class CurriculumTrainer:
             total_loss += loss.item()
 
         return total_loss / max(len(loader), 1)
+ 
