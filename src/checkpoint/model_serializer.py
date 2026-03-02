@@ -38,3 +38,4 @@ class ModelStateSerializer:
         target.load_state_dict(state_dict)
         if optimizer is not None and (path / "optimizer.pt").exists():
             optimizer.load_state_dict(torch.load(path / "optimizer.pt", map_location=map_location))
+ 
