@@ -110,3 +110,4 @@ class AttentionRGOperator(nn.Module):
         if len(batch) == 1:
             out = out.squeeze(1)  # (B, d_model)
         return out
+ 
