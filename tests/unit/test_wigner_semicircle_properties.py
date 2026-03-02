@@ -22,3 +22,4 @@ class TestWignerSemicircle:
         x   = np.linspace(-2.0, 2.0, 50)
         cdf = wsc.cdf(x)
         assert np.all(np.diff(cdf) >= -1e-8)
+ 
