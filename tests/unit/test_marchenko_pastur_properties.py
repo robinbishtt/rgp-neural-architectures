@@ -28,3 +28,4 @@ class TestMarchenkoPasturProperties:
         evs = mp.sample_wishart(200, 400, rng=np.random.default_rng(0))
         stat, pval = mp.ks_test(evs)
         assert pval > 0.01, f"KS test p-value too low: {pval:.4f}"
+ 
