@@ -95,3 +95,4 @@ class TestMarchenkoPasturFit:
         assert ev.max() < lam_p * 1.3, (
             f"Max eigenvalue {ev.max():.3f} significantly exceeds lambda+={lam_p:.3f}."
         )
+ 
