@@ -94,3 +94,4 @@ class TestNoiseRobustness:
                 f"Output variance decreased from sigma={noise_levels[i-1]} "
                 f"to sigma={noise_levels[i]}."
             )
+ 
