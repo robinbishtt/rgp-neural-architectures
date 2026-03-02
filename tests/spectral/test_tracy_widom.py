@@ -72,3 +72,4 @@ class TestTracyWidom:
             assert lam > 0.0, (
                 f"GOE max eigenvalue {lam:.4f} is below zero (inside Wigner bulk edge)."
             )
+ 
