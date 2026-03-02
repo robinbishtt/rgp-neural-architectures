@@ -27,3 +27,4 @@ class TestOODGeneralization:
             probs  = torch.softmax(logits, dim=-1)
         assert torch.allclose(probs.sum(dim=-1), torch.ones(8), atol=1e-5)
         assert (probs >= 0).all() and (probs <= 1).all()
+ 
