@@ -23,3 +23,4 @@ def test_eigenvalue_clipping_maintains_psd():
     G_k = fm.pushforward(G, J)
     ev  = torch.linalg.eigvalsh(G_k)
     assert (ev >= 0).all()
+ 
