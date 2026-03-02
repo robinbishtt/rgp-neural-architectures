@@ -210,3 +210,4 @@ class EarlyStopping:
             return metric < (self._best_value - self.min_delta)
         else:
             return metric > (self._best_value + self.min_delta)
+ 
