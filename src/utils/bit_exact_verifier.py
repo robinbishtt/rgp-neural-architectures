@@ -178,3 +178,4 @@ class BitExactVerifier:
         if isinstance(value, (int, float)):
             return float(value)
         return value
+ 
