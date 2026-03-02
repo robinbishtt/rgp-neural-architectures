@@ -118,3 +118,4 @@ class ExponentialDecayFitter:
             xi_0_ci=ci_xi, k_c_ci=ci_kc,
             chi1=chi1, residuals=residuals,
         )
+ 
