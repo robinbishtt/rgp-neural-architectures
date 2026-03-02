@@ -25,3 +25,4 @@ class TestPhaseDiagram:
             assert any(p.regime == "ordered" for p in ordered)
         if chaotic:
             assert any(p.regime == "chaotic" for p in chaotic)
+ 
