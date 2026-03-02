@@ -112,3 +112,4 @@ def set_axis_linewidth(ax: "mpl.axes.Axes", lw: float = 0.75) -> None:
     for spine in ax.spines.values():
         spine.set_linewidth(lw)
     ax.tick_params(width=lw)
+ 
