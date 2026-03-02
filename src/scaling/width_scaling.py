@@ -109,3 +109,4 @@ class WidthScalingAnalyzer:
         inv_N = 1.0 / widths
         coeffs = np.polyfit(inv_N, observables, 1)
         return float(coeffs[1])  # intercept = O(∞)
+ 
