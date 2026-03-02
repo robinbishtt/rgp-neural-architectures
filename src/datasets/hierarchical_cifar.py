@@ -34,3 +34,4 @@ class HierarchicalCIFAR(Dataset):
         x, fine_label = self.base[idx]
         coarse = self.COARSE_LABELS.get(fine_label, 0)
         return x.view(-1), fine_label, coarse
+ 
