@@ -324,3 +324,4 @@ if __name__ == "__main__":
         table_path=args.table,
         fast_track=args.fast_track,
     )
+ 
