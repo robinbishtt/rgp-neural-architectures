@@ -119,3 +119,4 @@ class AdaptiveQRAlgorithm(StandardQRAlgorithm):
             kaplan_yorke_dim=ky_dim,
             regime=regime,
         )
+ 
