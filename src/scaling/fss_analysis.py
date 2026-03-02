@@ -207,3 +207,4 @@ class CriticalExponentFitter:
 
         boots = np.array(boots)
         return nu_best, float(np.percentile(boots, 2.5)), float(np.percentile(boots, 97.5))
+ 
