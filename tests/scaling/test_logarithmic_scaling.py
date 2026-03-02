@@ -10,3 +10,4 @@ def test_log_fit_slope_matches_kc():
     def _log(x, a, b): return a * np.log(x) + b
     popt, _ = curve_fit(_log, xi, lm)
     assert abs(popt[0] - kc) < 0.5, f"Fitted slope {popt[0]:.2f} != kc={kc}"
+ 
