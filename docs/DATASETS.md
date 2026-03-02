@@ -158,3 +158,4 @@ print('All datasets generated and verified.')
 ```
 
 Estimated disk space: synthetic hierarchy 180 MB, hierarchical MNIST 90 MB, hierarchical CIFAR 620 MB.
+ 
