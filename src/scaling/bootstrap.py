@@ -78,3 +78,4 @@ class BootstrapConfidence:
             if diff >= observed_diff:
                 count += 1
         return float(count / self.n_bootstrap)
+ 
