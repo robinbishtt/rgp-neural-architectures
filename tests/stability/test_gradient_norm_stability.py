@@ -16,3 +16,4 @@ def test_gradient_norms_consistent_across_layers():
         norms.append(h.detach().norm(dim=-1).mean().item())
     cv = np.std(norms) / (np.mean(norms) + 1e-8)
     assert cv < 2.0, f"Activation norms vary too much: CV={cv:.3f}"
+ 
