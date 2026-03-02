@@ -125,3 +125,4 @@ class TransferMatrixMethod:
         if len(svs) < k or svs[0] < 1e-12:
             return 0.0
         return float(svs[k - 1] / (svs[0] + 1e-12))
+ 
