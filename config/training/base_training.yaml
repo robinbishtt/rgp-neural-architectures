@@ -37,3 +37,4 @@ early_stopping:
   patience: 15
   min_delta: 1.0e-4
   monitor: val_loss
+ 
