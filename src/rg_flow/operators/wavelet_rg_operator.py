@@ -95,3 +95,4 @@ class WaveletRGOperator(nn.Module):
                 h = h + mixing[i] * detail
 
         return h
+ 
