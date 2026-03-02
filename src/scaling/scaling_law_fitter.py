@@ -105,3 +105,4 @@ class ScalingLawFitter:
             law=law, coefficients=popt, r2=r2, rmse=rmse,
             coeff_ci=ci, n_points=len(x),
         )
+ 
