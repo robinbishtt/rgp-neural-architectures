@@ -22,3 +22,4 @@ class TestTracyWidomEdge:
         tw = TracyWidomDistribution(beta=2)
         t  = tw.scaled_statistic(lambda_max=2.1, R=2.0, N=100)
         assert np.isfinite(t)
+ 
