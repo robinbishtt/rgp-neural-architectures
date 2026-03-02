@@ -18,3 +18,4 @@ class RGNetShallow(RGNet):
             raise ValueError(f"RGNetShallow expects depth 10-50, got {depth}")
         super().__init__(in_features=in_features, n_classes=n_classes,
                          depth=depth, width=width, **kwargs)
+ 
