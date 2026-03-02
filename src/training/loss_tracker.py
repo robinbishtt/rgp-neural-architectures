@@ -205,3 +205,4 @@ class LossTracker:
             "mins":   [s.min    for s in self.epoch_stats],
             "maxs":   [s.max    for s in self.epoch_stats],
         }
+ 
