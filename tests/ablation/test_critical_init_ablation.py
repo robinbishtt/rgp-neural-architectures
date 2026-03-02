@@ -18,3 +18,4 @@ def test_standard_init_vs_critical_gradient_norm():
     g_critical = x.grad.norm().item() if x.grad else 0.0
 
     assert g_critical > 1e-8
+ 
