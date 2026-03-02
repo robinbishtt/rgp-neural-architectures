@@ -76,3 +76,4 @@ mapper   = PhaseDiagramMapper(n_points=15, n_gauss=200)
 critical = mapper.critical_line(np.linspace(0.0, 1.5, 10))
 print(f"\nPhase diagram critical line computed for {len(critical)} σ_b values.")
 print("Run complete. All three hypotheses verified in fast-track mode.")
+ 
