@@ -59,3 +59,4 @@ class TestWignerSemicircle:
         assert 2.0 < ev.var() * n < 6.0, (
             f"GOE eigenvalue variance {ev.var():.4f} does not scale as expected."
         )
+ 
