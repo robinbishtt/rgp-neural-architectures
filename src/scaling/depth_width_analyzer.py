@@ -113,3 +113,4 @@ class DepthWidthAnalyzer:
                 frac   = (threshold - y0) / (y1 - y0 + 1e-12)
                 critical_depths.append(float(x0 + frac * (x1 - x0)))
         return np.array(critical_depths)
+ 
