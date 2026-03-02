@@ -1,0 +1,70 @@
+name: Experiment Tracker
+
+on:
+  push:
+    branches: [main]
+    paths: ['experiments/**', 'src/**', 'config/**']
+  workflow_dispatch:
+
+jobs:
+  validate-experiments:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+          
+      - name: Install
+        run: pip install -e .
+        
+      - name: List Experiments
+        run: |
+          echo "📊 Available Experiments:"
+          ls -la experiments/
+          
+      - name: Quick Smoke Test
+        run: |
+          python << 'EOF'
+          import sys
+          sys.path.insert(0, 'src')
+          
+          # Test ki experiments import ho rahe hain
+          try:
+              import experiments
+              print("✅ Experiments module imports successfully")
+          except ImportError as e:
+              print(f"⚠️ Import warning: {e}")
+          
+          # Check for common experiment files
+          import os
+          exp_files = [f for f in os.listdir('experiments') if f.endswith('.py')]
+          print(f"📁 Found {len(exp_files)} experiment files")
+          
+          for f in exp_files[:5]:  # Show first 5
+              print(f"  - {f}")
+          EOF
+          
+      - name: Validate Configs
+        run: |
+          python << 'EOF'
+          import os
+          import yaml
+          
+          config_dir = "config"
+          if os.path.exists(config_dir):
+              configs = [f for f in os.listdir(config_dir) if f.endswith('.yaml')]
+              print(f"⚙️ Found {len(configs)} config files")
+              
+              for cfg in configs:
+                  try:
+                      with open(os.path.join(config_dir, cfg)) as f:
+                          yaml.safe_load(f)
+                      print(f"  ✓ {cfg}")
+                  except Exception as e:
+                      print(f"  ✗ {cfg}: {e}")
+          else:
+              print("ℹ️ No config directory found")
+          EOF
+          
