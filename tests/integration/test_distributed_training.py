@@ -11,3 +11,4 @@ def test_distributed_trainer_instantiation():
     trainer = DistributedTrainer(rank=0, world_size=1)
     assert trainer.rank == 0
     assert trainer.is_main_rank()
+ 
