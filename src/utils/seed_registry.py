@@ -166,3 +166,4 @@ class SeedRegistry:
         return (
             f"SeedRegistry(master_seed={self._master_seed}, step={self._step})"
         )
+ 
