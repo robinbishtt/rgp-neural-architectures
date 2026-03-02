@@ -92,3 +92,4 @@ Initial public release.
 
 [Unreleased]: https://github.com/robinbishtt/rgp-neural-architectures/compare/v1.0.0...HEAD
 [1.0.0]: https://github.com/robinbishtt/rgp-neural-architectures/releases/tag/v1.0.0
+ 
