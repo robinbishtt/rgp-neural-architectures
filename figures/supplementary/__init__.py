@@ -5,3 +5,4 @@
 # S3: Scaling Collapse
 # S4: Stability Diagnostics
 # S1-S4 Tables: Depth-Scaling, Parameter Sweep, Uncertainty Budget, Metric Geometry
+ 
