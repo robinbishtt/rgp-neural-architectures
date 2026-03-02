@@ -137,3 +137,4 @@ class ProofLogger:
     def all_passed(self) -> bool:
         """Return True if all recorded proofs passed."""
         return all(r.passed for r in self._results)
+ 
