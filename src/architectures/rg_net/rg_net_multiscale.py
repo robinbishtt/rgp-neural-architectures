@@ -57,3 +57,4 @@ class RGNetMultiScale(nn.Module):
             scale_feats.append(self.fusion_projs[len(scale_feats)](h))
 
         return self.head(torch.cat(scale_feats, dim=-1))
+ 
