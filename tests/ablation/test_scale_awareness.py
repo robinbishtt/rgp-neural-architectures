@@ -7,3 +7,4 @@ def test_multiscale_output_shape():
     m   = RGNetMultiScale(in_features=32, n_classes=4, depth=8, width=32)
     out = m(torch.randn(4, 32))
     assert out.shape == (4, 4)
+ 
