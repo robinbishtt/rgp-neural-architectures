@@ -44,3 +44,4 @@ class MedicalHierarchy(Dataset):
 
     def __getitem__(self, idx: int):
         return self._base[idx]
+ 
