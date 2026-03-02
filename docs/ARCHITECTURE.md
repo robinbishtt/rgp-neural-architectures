@@ -186,3 +186,4 @@ The ICL provides services that every tier consumes. It is the only layer with no
 Data and control flow through the tiers in a single direction. Tier 1 exposes mathematical primitives. Tier 2 uses Tier 1 primitives to build trainable models. Tier 3 imports from Tiers 1 and 2 to test them. Tier 4 provides configuration and data to Tier 2. Tier 5 imports from all other tiers to produce outputs. The ICL is imported by all tiers but imports nothing from them.
 
 This unidirectional dependency structure means that Tier 1 can be tested and verified independently, that changes to training infrastructure (Tier 2) cannot break mathematical correctness (Tier 1), and that the test suite (Tier 3) has no circular dependencies.
+ 
