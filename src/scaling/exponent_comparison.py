@@ -95,3 +95,4 @@ class ExponentComparison:
             pred = predictions.get(name, 0.0)
             results.append(self.compare(name, measured, se, pred, n_measurements))
         return results
+ 
