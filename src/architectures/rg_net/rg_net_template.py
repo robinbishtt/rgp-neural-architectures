@@ -185,3 +185,4 @@ class RGNetTemplate(nn.Module, abc.ABC):
             f"depth={self.DEPTH}, "
             f"params={self.count_parameters():,})"
         )
+ 
