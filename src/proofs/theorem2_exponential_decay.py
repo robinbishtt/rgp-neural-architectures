@@ -55,3 +55,4 @@ def run_all_verifications() -> dict:
     }
     results["all_pass"] = all(results.values())
     return results
+ 
