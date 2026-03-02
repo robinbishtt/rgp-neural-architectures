@@ -12,3 +12,4 @@ def test_model_produces_valid_logits():
     assert out.shape == (8, 4)
     assert not torch.isnan(out).any()
     assert not torch.isinf(out).any()
+ 
