@@ -126,3 +126,4 @@ class TestHypothesisH1:
         assert abs(chi1 - 1.0) < 0.05, (
             f"chi1 = {chi1:.4f} at critical init — expected ~1.0."
         )
+ 
