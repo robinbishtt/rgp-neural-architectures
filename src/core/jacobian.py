@@ -143,3 +143,4 @@ class CumulativeJacobian:
                 break
 
         return np.array(log_sv_per_layer)
+ 
