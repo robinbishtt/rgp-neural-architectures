@@ -82,3 +82,4 @@ class TestLevelSpacing:
         assert fraction_near_zero < 0.05, (
             f"Level repulsion violated: {fraction_near_zero:.1%} of spacings < 0.1."
         )
+ 
