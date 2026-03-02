@@ -181,3 +181,4 @@ def _parse_args() -> argparse.Namespace:
 if __name__ == "__main__":
     args = _parse_args()
     generate(output_path=args.output, fast_track=args.fast_track)
+ 
