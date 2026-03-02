@@ -98,3 +98,4 @@ class SpectralScalingAnalyzer:
                 results.append(self.analyze_layer(m.weight.data, sigma2, k))
                 k += 1
         return results
+ 
