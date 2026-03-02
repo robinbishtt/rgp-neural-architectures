@@ -1,0 +1,59 @@
+# config/experiments/h3_multiscale_generalization.yaml
+# H3: Multi-Scale Generalisation Validation
+# Full experiment parameters.
+
+experiment:
+  name: h3_multiscale_generalization
+  hypothesis: "H3: RG-Net achieves statistically superior accuracy on hierarchical data"
+  seed: 42
+
+models:
+  rgnet:
+    type: rg_net_standard
+    depth: 100
+    width: 512
+    activation: tanh
+  baselines:
+    resnet:
+      type: resnet_baseline
+      depth: 50
+    densenet:
+      type: densenet_baseline
+      growth_rate: 32
+    mlp:
+      type: mlp_baseline
+      depth: 10
+      width: 512
+    vgg:
+      type: vgg_baseline
+      variant: vgg16
+
+training:
+  epochs: 100
+  batch_size: 128
+  optimizer: adam
+  lr: 1.0e-3
+  lr_scheduler: cosine
+
+data:
+  iid_dataset: cifar10
+  hierarchical_dataset: hierarchical_cifar
+  ood_shift_levels: [0.0, 0.1, 0.2, 0.3, 0.5, 0.8, 1.0]
+  train_samples: 50000
+  val_samples: 10000
+  ood_samples: 5000
+
+analysis:
+  statistical_tests:
+    primary: wilcoxon_signed_rank
+    secondary: paired_ttest
+    significance_level: 0.05
+  n_seeds: 10
+  bootstrap_n_resamples: 1000
+  confidence_level: 0.95
+
+output:
+  results_dir: results/h3
+  checkpoint_dir: checkpoints/h3
+  log_dir: logs/h3
+  table1_output: figures/out/table1.tex

@@ -1,0 +1,69 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+.tox/
+.venv/
+venv/
+env/
+pip-wheel-metadata/
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+coverage.xml
+.mypy_cache/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Experiment outputs (bind-mount or gitignore)
+results/
+checkpoints/
+logs/
+data/
+figures/out/
+
+# Large model files
+*.pt
+*.pth
+*.ckpt
+*.safetensors
+*.h5
+*.hdf5
+*.parquet
+
+# Singularity image
+*.sif
+*.simg
+
+# Docs build
+docs/_build/
+site/
+
+# Temp
+tmp/
+temp/
+*.tmp
+*.pid
+
+# Environment files
+.env
+.envrc
