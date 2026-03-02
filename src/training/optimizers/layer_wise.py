@@ -4,7 +4,6 @@ src/training/optimizers/layer_wise.py
 Layer-wise learning rate assignment for fine-grained depth control.
 """
 from __future__ import annotations
-from typing import List
 import torch.nn as nn
 import torch
 

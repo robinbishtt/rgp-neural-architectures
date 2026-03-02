@@ -1,8 +1,5 @@
 """tests/integration/test_mixed_precision.py"""
-import pytest
 import torch
-import torch.nn as nn
-from src.utils.seed_registry import SeedRegistry
 
 
 def test_mixed_precision_trainer_instantiation():

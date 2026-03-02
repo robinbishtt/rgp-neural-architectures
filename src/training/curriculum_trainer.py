@@ -11,7 +11,7 @@ the critical initialization by starting with examples that produce small,
 well-conditioned Jacobians before progressing to the full data distribution.
 """
 from __future__ import annotations
-from typing import Callable, List, Optional
+from typing import Callable, Optional
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader, Subset, Dataset

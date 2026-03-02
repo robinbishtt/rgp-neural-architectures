@@ -8,7 +8,6 @@ compared to ResNet, DenseNet, MLP, and VGG baselines.
 
 import pytest
 import numpy as np
-from scipy.stats import wilcoxon
 
 
 def _simulate_accuracy(mean: float, std: float, n_seeds: int = 10, seed: int = 0) -> np.ndarray:

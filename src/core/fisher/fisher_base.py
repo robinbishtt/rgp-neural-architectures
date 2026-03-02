@@ -7,7 +7,6 @@ and FisherAnalyticCalculator must satisfy.
 """
 from __future__ import annotations
 from abc import ABC, abstractmethod
-from typing import Optional, Tuple
 
 import torch
 import torch.nn as nn

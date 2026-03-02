@@ -1,7 +1,5 @@
 """tests/spectral/test_spectral_scaling_analysis.py"""
-import pytest
 import torch
-import torch.nn as nn
 
 
 class TestSpectralScalingAnalysis:

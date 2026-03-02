@@ -9,11 +9,10 @@ This module fits that relationship and extracts the scaling coefficient.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Callable, Optional, Tuple
+from typing import Callable
 
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import pearsonr
 
 
 @dataclass

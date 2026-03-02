@@ -12,7 +12,6 @@ from typing import Optional, Tuple
 
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import pearsonr
 
 
 @dataclass

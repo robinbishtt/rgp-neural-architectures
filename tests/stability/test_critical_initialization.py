@@ -1,5 +1,4 @@
 """tests/stability/test_critical_initialization.py"""
-import numpy as np
 from src.core.correlation.two_point import chi1_gauss_hermite, critical_sigma_w2
 
 

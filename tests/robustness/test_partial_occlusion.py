@@ -1,7 +1,5 @@
 """tests/robustness/test_partial_occlusion.py"""
-import pytest
 import torch
-import torch.nn as nn
 
 
 class TestPartialOcclusion:
@@ -35,7 +33,7 @@ class TestPartialOcclusion:
         perm = torch.randperm(16)
         x_perm = x[:, perm]
         with torch.no_grad():
-            out1 = model(x)
+            model(x)
             out2 = model(x_perm)
         assert not torch.isnan(out2).any()
  

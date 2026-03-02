@@ -1,5 +1,4 @@
 """tests/unit/test_seed_registry.py"""
-import pytest
 import torch
 
 

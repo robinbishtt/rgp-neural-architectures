@@ -16,7 +16,7 @@ Variants:
 from __future__ import annotations
 
 import math
-from typing import Callable, List, Optional
+from typing import List
 
 import torch
 import torch.nn as nn

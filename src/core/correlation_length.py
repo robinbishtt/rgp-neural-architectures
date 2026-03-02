@@ -15,11 +15,10 @@ Estimators:
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Optional, Tuple
+from typing import Tuple
 
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import chi2 as chi2_dist
 
 
 @dataclass

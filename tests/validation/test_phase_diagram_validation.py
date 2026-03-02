@@ -1,5 +1,4 @@
 """tests/validation/test_phase_diagram_validation.py"""
-import pytest
 import numpy as np
 
 

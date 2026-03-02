@@ -4,7 +4,6 @@ tests/unit/test_spectral_mp.py
 Validates Marchenko-Pastur RMT predictions for wide network Jacobians.
 """
 import numpy as np
-import pytest
 from src.core.spectral.spectral import MarchenkoPasturDistribution
 
 

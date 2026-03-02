@@ -21,7 +21,7 @@ from pathlib import Path
 from typing import Dict
 
 import numpy as np
-from scipy.stats import wilcoxon, mannwhitneyu
+from scipy.stats import wilcoxon
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])

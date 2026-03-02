@@ -5,7 +5,6 @@ Training with gradient checkpointing for ultra-deep networks (L=1000+).
 Reduces activation memory by ~60% at cost of ~25% extra compute.
 """
 from __future__ import annotations
-import torch.utils.checkpoint as cp
 import torch.nn as nn
 from src.training.trainer import Trainer
 

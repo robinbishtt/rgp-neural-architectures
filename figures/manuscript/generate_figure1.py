@@ -22,17 +22,14 @@ from pathlib import Path
 
 import matplotlib.patches as mpatches
 import matplotlib.pyplot as plt
-import matplotlib.patheffects as pe
 import numpy as np
 
 _ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_ROOT))
 
 from figures.styles import use_publication_style
-from figures.styles.color_palette import PHASE, SPECTRAL, panel_label
 from figures.styles.font_config import (
-    DOUBLE_COL_WIDTH, MAX_HEIGHT,
-    add_panel_label, remove_top_right_spines,
+    DOUBLE_COL_WIDTH, add_panel_label, remove_top_right_spines,
 )
 
 
@@ -106,7 +103,7 @@ def _draw_rg_cartoon(ax: plt.Axes) -> None:
     ax.set_ylim(-1.2, 1.2)
     ax.axis("off")
 
-    rng = np.random.default_rng(42)
+    np.random.default_rng(42)
     x_fine = np.linspace(0, 6, 300)
     # Fine-scale field: fast + slow oscillation
     field = (

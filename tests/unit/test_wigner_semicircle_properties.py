@@ -1,5 +1,4 @@
 """tests/unit/test_wigner_semicircle_properties.py"""
-import pytest
 import numpy as np
 
 

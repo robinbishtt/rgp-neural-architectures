@@ -6,7 +6,6 @@ The largest eigenvalue of a GOE matrix, properly centred and scaled,
 follows the Tracy-Widom (GUE beta=2) distribution.
 """
 
-import pytest
 import numpy as np
 
 

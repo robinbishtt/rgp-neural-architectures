@@ -7,7 +7,7 @@ RGP system in the (L, N) parameter space.
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import Dict, List, Optional, Tuple
+from typing import Optional, Tuple
 
 import numpy as np
 from scipy.interpolate import RegularGridInterpolator

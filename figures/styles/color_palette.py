@@ -8,7 +8,7 @@ Consistent color scheme for all figures. Palette designed for:
 """
 
 from __future__ import annotations
-from typing import Dict, List, Tuple
+from typing import Dict, List
 
 import matplotlib.colors as mcolors
 import numpy as np

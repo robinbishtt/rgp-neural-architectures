@@ -1,8 +1,4 @@
 """tests/integration/test_distributed_training.py"""
-import pytest
-import torch
-import torch.nn as nn
-from src.utils.seed_registry import SeedRegistry
 
 
 def test_distributed_trainer_instantiation():

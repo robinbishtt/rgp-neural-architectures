@@ -1,5 +1,4 @@
 """tests/unit/test_exp_decay_fitter.py"""
-import pytest
 import numpy as np
 
 

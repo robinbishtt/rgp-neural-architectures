@@ -9,7 +9,7 @@ Uses Hutchinson trace estimator: Tr(F) ≈ (1/m) Σ vᵀ F v, v ~ Rademacher
 
 from __future__ import annotations
 
-from typing import Callable, Optional
+from typing import Callable
 
 import torch
 import torch.nn as nn

@@ -13,7 +13,6 @@ from __future__ import annotations
 from typing import Tuple
 import numpy as np
 from scipy.stats import kstest
-from scipy.integrate import cumulative_trapezoid
 
 
 class WignerSemicircleDistribution:

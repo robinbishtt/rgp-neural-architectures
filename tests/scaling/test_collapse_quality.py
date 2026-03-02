@@ -1,5 +1,4 @@
 """tests/scaling/test_collapse_quality.py - Additional collapse quality tests."""
-import pytest
 import numpy as np
 
 

@@ -1,11 +1,9 @@
 """tests/integration/test_checkpoint_save_load.py"""
-import pytest
 import torch
 import torch.nn as nn
-from src.utils.seed_registry import SeedRegistry
 
 
-import tempfile, torch.nn as nn
+import tempfile
 def test_checkpoint_save_and_load():
     from src.checkpoint.checkpoint_manager import CheckpointManager
     with tempfile.TemporaryDirectory() as tmpdir:

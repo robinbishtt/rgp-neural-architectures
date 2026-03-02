@@ -5,7 +5,6 @@ SymPy-based symbolic Jacobian computation for small networks.
 Used to generate analytic reference values for unit test verification.
 """
 from __future__ import annotations
-from typing import List, Optional
 import numpy as np
 
 try:

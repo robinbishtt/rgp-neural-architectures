@@ -25,10 +25,9 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 
 import matplotlib.pyplot as plt
-import matplotlib.colors as mcolors
 import numpy as np
 from scipy.stats import wilcoxon
 
@@ -38,8 +37,7 @@ sys.path.insert(0, str(_ROOT))
 from figures.styles import use_publication_style
 from figures.styles.color_palette import PRIMARY, panel_label
 from figures.styles.font_config import (
-    DOUBLE_COL_WIDTH, CI_ALPHA,
-    add_panel_label, remove_top_right_spines,
+    DOUBLE_COL_WIDTH, add_panel_label, remove_top_right_spines,
 )
 
 
@@ -123,13 +121,13 @@ def _panel_accuracy_bars(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
     hier_means = [np.mean(data["hier_runs"][m])  for m in models]
     hier_stds  = [np.std(data["hier_runs"][m])   for m in models]
 
-    bars1 = ax.bar(
+    ax.bar(
         x - width / 2, iid_means, width,
         yerr=iid_stds, capsize=2, label="IID data",
         color=[c + "cc" for c in _MODEL_COLORS], edgecolor="none",
         error_kw={"lw": 0.7, "ecolor": "#555555"},
     )
-    bars2 = ax.bar(
+    ax.bar(
         x + width / 2, hier_means, width,
         yerr=hier_stds, capsize=2, label="Hierarchical data",
         color=_MODEL_COLORS, edgecolor="none",
@@ -149,7 +147,7 @@ def _panel_accuracy_bars(ax: plt.Axes, data: Dict, fast_track: bool) -> None:
     remove_top_right_spines(ax)
 
     # Significance stars on RG-Net hierarchical bar
-    rgp_mean = hier_means[0]
+    hier_means[0]
     for i, (m, p_h) in enumerate(zip(models[1:], data["pvals_hier"]), start=1):
         stars = "***" if p_h < 0.001 else "**" if p_h < 0.01 else "*" if p_h < 0.05 else ""
         if stars:

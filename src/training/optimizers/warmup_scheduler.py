@@ -6,8 +6,6 @@ decay schedule. Essential for training ultra-deep RG-Net architectures
 (L=500+) where cold-start with full learning rate causes gradient explosions.
 """
 from __future__ import annotations
-from typing import Optional
-import torch
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
 

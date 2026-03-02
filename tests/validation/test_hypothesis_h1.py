@@ -8,7 +8,6 @@ Verifies: xi(k) = xi_0 * exp(-k / k_c) with R^2 > 0.95 and p-value > 0.05.
 import pytest
 import numpy as np
 from scipy.optimize import curve_fit
-from scipy.stats import kstest
 
 
 def _exp_decay(k: np.ndarray, xi_0: float, k_c: float) -> np.ndarray:

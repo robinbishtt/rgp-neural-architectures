@@ -1,5 +1,4 @@
 """tests/integration/test_full_hypothesis_pipeline.py"""
-import pytest
 import torch
 import torch.nn as nn
 import numpy as np

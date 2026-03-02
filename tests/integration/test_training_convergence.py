@@ -1,8 +1,6 @@
 """tests/integration/test_training_convergence.py"""
-import pytest
 import torch
 import torch.nn as nn
-from src.utils.seed_registry import SeedRegistry
 
 
 def test_model_loss_decreases():

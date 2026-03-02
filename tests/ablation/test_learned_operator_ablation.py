@@ -1,5 +1,4 @@
 """tests/ablation/test_learned_operator_ablation.py"""
-import pytest
 import torch
 
 

@@ -11,7 +11,6 @@ Intended usage:
     print(report)
 """
 from __future__ import annotations
-from typing import Optional
 import time
 
 from src.proofs.proof_utils import ProofLogger, VerificationResult

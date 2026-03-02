@@ -6,12 +6,9 @@ Provides a unified factory interface for all LR schedules used across
 H1, H2, H3 validation experiments.
 """
 from __future__ import annotations
-from typing import Optional
-import torch
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import (
-    CosineAnnealingLR, StepLR, MultiStepLR,
-    ReduceLROnPlateau, _LRScheduler
+    CosineAnnealingLR, StepLR, ReduceLROnPlateau, _LRScheduler
 )
 from src.training.optimizers.warmup_scheduler import LinearWarmupScheduler
 from src.training.optimizers.cosine_annealing import CosineAnnealingWithRestarts

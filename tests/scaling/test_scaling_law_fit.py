@@ -1,5 +1,4 @@
 """tests/scaling/test_scaling_law_fit.py"""
-import pytest
 import numpy as np
 
 

@@ -1,5 +1,4 @@
 """tests/ablation/test_phase_diagram.py"""
-import pytest
 import numpy as np
 
 

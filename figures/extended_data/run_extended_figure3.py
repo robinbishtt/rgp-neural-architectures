@@ -90,7 +90,7 @@ def _panel_phase_diagram(ax: plt.Axes, data: Dict) -> None:
     cmap = mcolors.ListedColormap(
         [PHASE["ordered"], PHASE["critical"], PHASE["chaotic"]]
     )
-    im = ax.pcolormesh(sw, sb, phase, cmap=cmap, shading="auto",
+    ax.pcolormesh(sw, sb, phase, cmap=cmap, shading="auto",
                        vmin=-0.5, vmax=2.5, alpha=0.82)
 
     sw_crit = sw[np.argmin(np.abs(np.array(data["chi"]).mean(axis=0) - 1.0))]

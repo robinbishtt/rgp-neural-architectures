@@ -1,5 +1,4 @@
 """tests/stability/test_loss_monotonicity.py"""
-import pytest
 import torch
 import torch.nn as nn
 import torch.optim as optim

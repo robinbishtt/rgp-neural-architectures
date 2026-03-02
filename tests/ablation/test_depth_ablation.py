@@ -1,5 +1,4 @@
 """tests/ablation/test_depth_ablation.py"""
-import torch
 from src.architectures.rg_net.rg_net_shallow import RGNetShallow
 from src.architectures.rg_net.rg_net_standard import RGNetStandard
 

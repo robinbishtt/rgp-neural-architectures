@@ -10,11 +10,9 @@ corresponds to one RG step. The WaveletRGOperator therefore implements the
 RG blocking transformation natively in wavelet space.
 """
 from __future__ import annotations
-from typing import Optional
 
 import torch
 import torch.nn as nn
-import torch.nn.functional as F
 
 
 class WaveletRGOperator(nn.Module):

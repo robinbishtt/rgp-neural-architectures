@@ -1,6 +1,5 @@
 """tests/scaling/test_h1_scale_correspondence.py"""
 import numpy as np
-import pytest
 
 
 def test_exponential_decay_r2_threshold():

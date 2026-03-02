@@ -9,7 +9,6 @@ end-to-end given identical seeds and configuration.
 import pytest
 import hashlib
 import json
-import tempfile
 from pathlib import Path
 
 import numpy as np

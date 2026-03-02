@@ -1,6 +1,5 @@
 """tests/stability/test_numerical_precision.py"""
 import torch
-import numpy as np
 
 
 def test_fp32_fp64_jacobian_agreement():

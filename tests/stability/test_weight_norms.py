@@ -1,5 +1,4 @@
 """tests/stability/test_weight_norms.py"""
-import pytest
 import torch
 import torch.nn as nn
 import torch.optim as optim

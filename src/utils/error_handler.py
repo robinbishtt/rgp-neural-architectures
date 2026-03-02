@@ -7,10 +7,9 @@ Implements automatic retry, checkpoint resume, OOM recovery, and NaN recovery.
 
 from __future__ import annotations
 
-import functools
 import logging
 import time
-from typing import Callable, Optional, Type
+from typing import Callable
 
 import torch
 

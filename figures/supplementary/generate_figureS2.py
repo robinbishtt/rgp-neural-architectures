@@ -31,7 +31,6 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.stats import ks_2samp
 
 _ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_ROOT))
@@ -42,7 +41,6 @@ from figures.styles.font_config import (
     add_panel_label,
     remove_top_right_spines,
 )
-from figures.styles.color_palette import panel_label
 
 _FIG_ID = "S2"
 

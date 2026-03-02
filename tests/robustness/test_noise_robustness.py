@@ -8,7 +8,6 @@ Verifies that RG-Net accuracy degrades gracefully under additive noise.
 import pytest
 import torch
 import torch.nn as nn
-import numpy as np
 
 
 def _make_simple_model(depth: int = 5, width: int = 32) -> nn.Module:

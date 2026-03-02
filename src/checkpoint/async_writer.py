@@ -7,7 +7,6 @@ Reduces checkpoint overhead by ~90% for large models.
 from __future__ import annotations
 import copy
 import threading
-from pathlib import Path
 from typing import Any, Dict, Optional
 import torch.nn as nn
 

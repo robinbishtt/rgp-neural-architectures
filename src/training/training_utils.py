@@ -5,9 +5,8 @@ Shared training utility functions used across Trainer, DistributedTrainer,
 MixedPrecisionTrainer, and CurriculumTrainer.
 """
 from __future__ import annotations
-from typing import Dict, Iterator, List, Optional, Tuple
+from typing import List
 
-import numpy as np
 import torch
 import torch.nn as nn
 from torch.utils.data import DataLoader

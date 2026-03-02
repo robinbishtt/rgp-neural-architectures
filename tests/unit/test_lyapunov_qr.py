@@ -4,7 +4,6 @@ tests/unit/test_lyapunov_qr.py
 Verifies QR algorithm convergence and Lyapunov exponent accuracy.
 """
 import numpy as np
-import pytest
 from src.core.lyapunov.lyapunov import StandardQRAlgorithm, detect_regime
 
 

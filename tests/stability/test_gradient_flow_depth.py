@@ -1,5 +1,4 @@
 """tests/stability/test_gradient_flow_depth.py"""
-import pytest
 import torch
 import torch.nn as nn
 

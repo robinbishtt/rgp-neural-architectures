@@ -22,9 +22,7 @@ Usage:
 #       hierarchically structured data.
 
 # %% Setup
-import torch
 import numpy as np
-import matplotlib.pyplot as plt
 from src.utils.seed_registry import SeedRegistry
 from src.utils.device_manager import DeviceManager
 

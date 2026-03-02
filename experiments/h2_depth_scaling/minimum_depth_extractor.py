@@ -18,10 +18,9 @@ import json
 import logging
 import sys
 from pathlib import Path
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Optional
 
 import numpy as np
-from scipy.interpolate import interp1d
 
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])
@@ -116,7 +115,7 @@ def run_lmin_extraction(
         raw = json.load(fh)
 
     params  = raw.get("params", {})
-    depths  = params.get("depths", [10, 20, 50, 100, 200])
+    params.get("depths", [10, 20, 50, 100, 200])
     records = raw.get("records", {})
     output  = {"threshold": threshold, "per_xi": {}}
 

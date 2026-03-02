@@ -1,5 +1,4 @@
 """tests/ablation/test_width_scaling_ablation.py"""
-import pytest
 import numpy as np
 
 

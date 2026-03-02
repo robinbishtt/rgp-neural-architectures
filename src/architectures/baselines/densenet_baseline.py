@@ -4,7 +4,9 @@ src/architectures/baselines/densenet_baseline.py
 DenseNet baseline: dense skip connections to all previous layers.
 """
 from __future__ import annotations
-import torch, torch.nn as nn, torch.nn.functional as F
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
 
 
 class DenseNetBaseline(nn.Module):

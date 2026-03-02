@@ -10,11 +10,10 @@ Reference: Benettin, G. et al. (1980). Lyapunov characteristic exponents
 """
 from __future__ import annotations
 from dataclasses import dataclass
-from typing import List, Optional
+from typing import List
 
 import numpy as np
 import torch
-import torch.nn as nn
 
 
 @dataclass
@@ -89,7 +88,7 @@ class StandardQRAlgorithm:
 
         exponents  = np.sort(exponents)[::-1]
         mle        = float(exponents[0])
-        n_pos      = np.sum(exponents > 0)
+        np.sum(exponents > 0)
         sum_pos    = float(np.sum(exponents[exponents > 0]))
 
         # Kaplan-Yorke dimension

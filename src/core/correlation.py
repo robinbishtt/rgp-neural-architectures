@@ -108,11 +108,14 @@ class TwoPointCorrelation:
         sigma = np.sqrt(max(2.0 * q11, 1e-12))
 
         if self.nonlinearity == "tanh":
-            fn11 = lambda t: np.tanh(sigma * t) ** 2
+            def fn11(t):
+                return np.tanh(sigma * t) ** 2
         elif self.nonlinearity == "relu":
-            fn11 = lambda t: np.maximum(sigma * t, 0) ** 2
+            def fn11(t):
+                return np.maximum(sigma * t, 0) ** 2
         else:
-            fn11 = lambda t: np.tanh(sigma * t) ** 2
+            def fn11(t):
+                return np.tanh(sigma * t) ** 2
 
         new_q11 = self.sigma_w2 * _integrate(fn11) + self.sigma_b2
         new_q12 = new_q11 * (q12 / max(q11, 1e-12))  # linear approx

@@ -4,7 +4,7 @@ src/datasets/synthetic_hierarchy.py
 Fully synthetic hierarchical dataset with exact correlation structure control.
 """
 from __future__ import annotations
-from typing import Optional, Tuple
+from typing import Tuple
 import numpy as np
 import torch
 from torch.utils.data import Dataset

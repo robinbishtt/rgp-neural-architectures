@@ -1,5 +1,4 @@
 """tests/unit/test_device_manager.py"""
-import pytest
 import torch
 import torch.nn as nn
 

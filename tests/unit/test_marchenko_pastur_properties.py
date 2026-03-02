@@ -1,5 +1,4 @@
 """tests/unit/test_marchenko_pastur_properties.py"""
-import pytest
 import numpy as np
 
 

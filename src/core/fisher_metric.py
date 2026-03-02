@@ -86,7 +86,7 @@ class FisherMetric:
 
         with torch.enable_grad():
             x = x.requires_grad_(True)
-            y = model(x)
+            model(x)
 
         for h in hooks:
             h.remove()

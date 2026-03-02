@@ -31,7 +31,6 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.interpolate import interp1d
 
 _ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_ROOT))
@@ -69,7 +68,7 @@ def _order_parameter(
     where f is a smooth peaked function approximated by a Gaussian.
     """
     l_vals   = np.linspace(0, L, n_l)
-    lc       = lc_frac * L
+    lc_frac * L
     scaled_x = (l_vals / L - lc_frac) * (L ** (1.0 / nu))
 
     # Universal scaling function: Gaussian-like peak

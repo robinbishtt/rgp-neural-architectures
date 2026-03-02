@@ -1,5 +1,4 @@
 """tests/unit/test_transfer_matrix.py"""
-import pytest
 import torch
 import numpy as np
 

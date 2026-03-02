@@ -1,5 +1,4 @@
 """tests/spectral/test_tracy_widom_edge.py"""
-import pytest
 import numpy as np
 
 

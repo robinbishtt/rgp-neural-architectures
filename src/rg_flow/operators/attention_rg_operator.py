@@ -12,7 +12,6 @@ based coarse-graining learns which fine-grained features to aggregate
 for each coarse-grained unit, enabling adaptive scale selection.
 """
 from __future__ import annotations
-from typing import Optional
 
 import torch
 import torch.nn as nn
