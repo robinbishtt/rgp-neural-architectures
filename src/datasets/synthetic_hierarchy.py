@@ -54,3 +54,4 @@ class SyntheticHierarchy(Dataset):
 
     def __getitem__(self, idx: int):
         return self.data[idx], self.labels[idx]
+ 
