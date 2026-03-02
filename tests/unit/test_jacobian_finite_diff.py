@@ -23,3 +23,4 @@ class TestFiniteDiffJacobian:
         fdjac = FiniteDifferenceJacobian(eps=1e-5)
         err = fdjac.relative_error(AutogradJacobian().compute(fn, x), fn=fn, x=x)
         assert err < 0.01
+ 
