@@ -46,3 +46,4 @@ class AutogradJacobian:
         """Compute singular values of the Jacobian."""
         J = self.compute(fn, x)
         return torch.linalg.svdvals(J)
+ 
