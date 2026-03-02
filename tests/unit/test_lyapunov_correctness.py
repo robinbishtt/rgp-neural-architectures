@@ -38,3 +38,4 @@ class TestLyapunovCorrectness:
         J = [0.95 * torch.randn(4, 4) for _ in range(20)]
         result = AdaptiveQRAlgorithm().compute(J)
         assert np.isfinite(result.mle)
+ 
