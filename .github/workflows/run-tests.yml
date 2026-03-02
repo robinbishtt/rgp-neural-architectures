@@ -1,0 +1,111 @@
+name: Test Suite
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'tests/**', 'pyproject.toml', 'requirements*.txt']
+  pull_request:
+    branches: [main]
+    paths: ['src/**', 'tests/**', 'pyproject.toml', 'requirements*.txt']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  unit-tests:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.11"]
+      fail-fast: true
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install pytest pytest-cov pytest-timeout pytest-xdist
+          
+      - name: Run Unit Tests
+        run: |
+          pytest tests/unit/ \
+            -v \
+            --tb=short \
+            --timeout=300 \
+            -n auto \
+            --cov=src \
+            --cov-report=xml \
+            --cov-report=term-missing
+            
+      - name: Upload coverage report
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-report-unit-py${{ matrix.python-version }}
+          path: coverage.xml
+          retention-days: 14
+
+  integration-tests:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+        
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install pytest pytest-cov pytest-timeout
+          
+      - name: Run Integration Tests
+        run: |
+          pytest tests/integration/ \
+            -v \
+            --tb=short \
+            --timeout=600
+
+  extended-tests:
+    needs: unit-tests
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[run-extended-tests]')
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          pip install -e .
+          pip install pytest pytest-timeout
+          
+      - name: Run Extended Tests
+        run: |
+          pytest tests/ablation/ tests/robustness/ tests/scaling/ tests/spectral/ tests/stability/ tests/validation/ \
+            -v \
+            --tb=short \
+            --timeout=1800 || true
