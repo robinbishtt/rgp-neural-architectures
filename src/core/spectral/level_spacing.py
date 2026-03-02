@@ -64,3 +64,4 @@ class LevelSpacingDistribution:
         if p_poisson > alpha and p_goe < alpha:
             return "Poisson"
         return "Intermediate"
+ 
