@@ -77,3 +77,4 @@ class TestInputCorruption:
         assert out_clean.shape == out_corrupted.shape, (
             "Output shape changed under corruption."
         )
+ 
