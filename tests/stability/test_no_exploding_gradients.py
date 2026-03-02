@@ -15,3 +15,4 @@ def test_critical_init_no_exploding():
     loss.backward()
     grad_norm = x.grad.norm().item()
     assert grad_norm < 1e4, f"Gradient exploded: norm={grad_norm:.2e}"
+ 
