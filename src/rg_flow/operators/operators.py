@@ -134,3 +134,4 @@ class LearnedRGOperator(nn.Module):
         scale = torch.sigmoid(self.scale_net(ctx))
         shift = self.shift_net(ctx)
         return scale * self.base_op(x) + shift
+ 
