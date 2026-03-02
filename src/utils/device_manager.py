@@ -166,3 +166,4 @@ class DeviceManager:
 
     def __repr__(self) -> str:
         return f"DeviceManager(device={self._device})"
+ 
