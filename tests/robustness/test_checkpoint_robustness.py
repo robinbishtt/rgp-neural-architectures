@@ -36,3 +36,4 @@ class TestCheckpointRobustness:
             model.load_state_dict(partial, strict=False)
         except Exception as e:
             pytest.fail(f"strict=False should not raise: {e}")
+ 
