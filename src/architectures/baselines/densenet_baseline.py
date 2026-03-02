@@ -27,3 +27,4 @@ class DenseNetBaseline(nn.Module):
             h_new = F.relu(layer(torch.cat(features, dim=-1)))
             features.append(h_new)
         return self.head(torch.cat(features, dim=-1))
+ 
