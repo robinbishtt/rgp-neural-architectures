@@ -55,3 +55,4 @@ class ParallelQRAlgorithm:
         for i in range(0, len(jacobians), self.segment_size):
             segs.append(jacobians[i: i + self.segment_size])
         return segs
+ 
