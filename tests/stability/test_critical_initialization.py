@@ -13,3 +13,4 @@ def test_lemma_critical_init_passes():
     from src.proofs.lemma_critical_init import run_all_verifications
     results = run_all_verifications()
     assert results["infinite_correlation"]
+ 
