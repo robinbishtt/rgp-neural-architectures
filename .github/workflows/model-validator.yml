@@ -1,0 +1,66 @@
+name: Model Checkpoint Validator
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'checkpoints/**']
+  workflow_dispatch:
+
+jobs:
+  validate-checkpoints:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+          
+      - name: Install
+        run: pip install -e .
+        
+      - name: Check Checkpoints
+        run: |
+          python << 'EOF'
+          import os
+          import torch
+          import sys
+          
+          checkpoint_dir = "checkpoints"
+          
+          if not os.path.exists(checkpoint_dir):
+              print("ℹ️ No checkpoints directory")
+              sys.exit(0)
+          
+          checkpoints = [f for f in os.listdir(checkpoint_dir) if f.endswith('.pt') or f.endswith('.pth')]
+          
+          if not checkpoints:
+              print("ℹ️ No checkpoint files found")
+              sys.exit(0)
+          
+          print(f"🔍 Validating {len(checkpoints)} checkpoint(s):")
+          
+          errors = []
+          for ckpt in checkpoints:
+              path = os.path.join(checkpoint_dir, ckpt)
+              try:
+                  state = torch.load(path, map_location='cpu')
+                  print(f"  ✓ {ckpt}")
+                  
+                  # Check for required keys
+                  if 'model_state_dict' not in state and 'state_dict' not in state:
+                      errors.append(f"{ckpt}: Missing state_dict")
+                      
+              except Exception as e:
+                  errors.append(f"{ckpt}: Corrupted - {e}")
+                  print(f"  ✗ {ckpt}: CORRUPTED")
+          
+          if errors:
+              print(f"\n❌ {len(errors)} checkpoint(s) have issues")
+              for e in errors:
+                  print(f"  - {e}")
+              sys.exit(1)
+          else:
+              print(f"\n✅ All checkpoints valid!")
+          EOF
+          
