@@ -125,3 +125,4 @@ class FisherEigenvalueAnalyzer:
         d_eff = float((ev.sum() ** 2) / (ev ** 2).sum())
         kappa = float(ev[-1] / ev[0])
         return ev, d_eff, kappa
+ 
