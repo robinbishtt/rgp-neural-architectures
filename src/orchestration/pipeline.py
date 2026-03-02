@@ -32,3 +32,4 @@ def build_fast_track_pipeline() -> DAGExecutor:
     dag.register("fast_train",  lambda fast_data: None,   deps=["fast_data"])
     dag.register("fast_figs",   lambda fast_train: None,  deps=["fast_train"])
     return dag
+ 
