@@ -45,3 +45,4 @@ class ParquetStorage:
 
     def close(self) -> None:
         self.flush()
+ 
