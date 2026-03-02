@@ -85,3 +85,4 @@ class LogAggregator:
 
     def close(self) -> None:
         self._store.close()
+ 
