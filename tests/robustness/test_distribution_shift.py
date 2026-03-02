@@ -94,3 +94,4 @@ class TestDistributionShift:
             assert entropy <= max_entropy + 1e-4, (
                 f"Entropy {entropy:.4f} > max={max_entropy:.4f} at correlation={corr}."
             )
+ 
