@@ -57,3 +57,4 @@ output:
   checkpoint_dir: checkpoints/h3
   log_dir: logs/h3
   table1_output: figures/out/table1.tex
+ 
