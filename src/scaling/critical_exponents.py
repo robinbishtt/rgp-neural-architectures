@@ -80,3 +80,4 @@ class CriticalExponentExtractor:
             lc_ci=(float(lc_opt * 0.9), float(lc_opt * 1.1)),
             collapse_quality=quality,
         )
+ 
