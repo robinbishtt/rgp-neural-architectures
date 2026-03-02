@@ -11,3 +11,4 @@ def test_multiscale_has_more_params_than_standard():
     p_std = sum(p.numel() for p in std.parameters())
     # multiscale has fusion projections
     assert p_ms > 0 and p_std > 0
+ 
