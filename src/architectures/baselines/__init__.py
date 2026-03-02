@@ -6,3 +6,4 @@ from src.architectures.baselines.mlp_baseline import MLPBaseline
 from src.architectures.baselines.vgg_baseline import VGGBaseline
 
 __all__ = ["ResNetBaseline", "DenseNetBaseline", "MLPBaseline", "VGGBaseline"]
+ 
