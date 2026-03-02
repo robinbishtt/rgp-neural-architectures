@@ -93,3 +93,4 @@ class DAGExecutor:
         for name, task in self._tasks.items():
             lines.append(f"{name:<30} {task.status:<10} {task.elapsed:>7.2f}s")
         return "\n".join(lines)
+ 
