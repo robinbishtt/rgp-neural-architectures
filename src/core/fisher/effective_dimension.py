@@ -78,3 +78,4 @@ class FisherEffectiveDimension:
     ) -> list:
         """Compute effective dimension at each layer."""
         return [self.compute(G) for G in fisher_matrices]
+ 
