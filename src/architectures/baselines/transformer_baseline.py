@@ -74,3 +74,4 @@ class TransformerBaseline(nn.Module):
             x = block(x)
         x = x.mean(dim=1)       # mean pool over sequence
         return self.classifier(x)
+ 
