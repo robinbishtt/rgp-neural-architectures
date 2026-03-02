@@ -22,3 +22,4 @@ class TestFSSAnalysisExtended:
                 assert result.nu > 0
         except Exception:
             pass  # extractor may need specific interface; just verify no crash
+ 
