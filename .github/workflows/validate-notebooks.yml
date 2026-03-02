@@ -1,0 +1,101 @@
+name: Notebook Validation
+
+on:
+  push:
+    branches: [main]
+    paths: ['notebooks/**', 'requirements*.txt']
+  pull_request:
+    branches: [main]
+    paths: ['notebooks/**', 'requirements*.txt']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check-and-validate:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Check for notebooks
+        id: check_notebooks
+        run: |
+          NOTEBOOKS=$(find . -name "*.ipynb" -not -path "./.git/*" -not -path "./executed_notebooks/*" 2>/dev/null || true)
+          if [ -z "$NOTEBOOKS" ]; then
+            echo "No notebooks found. Skipping validation."
+            echo "has_notebooks=false" >> $GITHUB_OUTPUT
+          else
+            echo "Found notebooks:"
+            echo "$NOTEBOOKS"
+            echo "has_notebooks=true" >> $GITHUB_OUTPUT
+          fi
+          
+      - name: Set up Python
+        if: steps.check_notebooks.outputs.has_notebooks == 'true'
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+          
+      - name: Install dependencies
+        if: steps.check_notebooks.outputs.has_notebooks == 'true'
+        run: |
+          pip install -e .
+          pip install nbconvert nbformat jupyter
+          
+      - name: Validate notebook structure
+        if: steps.check_notebooks.outputs.has_notebooks == 'true'
+        run: |
+          python << 'EOF'
+          import nbformat
+          import glob
+          import sys
+          
+          notebooks = glob.glob('**/*.ipynb', recursive=True)
+          notebooks = [n for n in notebooks if not n.startswith('.git/') and not n.startswith('executed_notebooks/')]
+          
+          failed = []
+          for nb_path in notebooks:
+              try:
+                  with open(nb_path, 'r') as f:
+                      nb = nbformat.read(f, as_version=4)
+                  nbformat.validate(nb)
+                  print(f"✓ {nb_path} - Valid")
+              except Exception as e:
+                  print(f"✗ {nb_path} - Invalid: {e}")
+                  failed.append(nb_path)
+          
+          if failed:
+              print(f"\n{len(failed)} notebook(s) failed validation")
+              sys.exit(1)
+          else:
+              print(f"\nAll {len(notebooks)} notebook(s) passed validation")
+          EOF
+          
+      - name: Execute notebooks
+        if: steps.check_notebooks.outputs.has_notebooks == 'true'
+        run: |
+          mkdir -p executed_notebooks
+          
+          for notebook in $(find . -name "*.ipynb" -not -path "./.git/*" -not -path "./executed_notebooks/*"); do
+            echo "Executing: $notebook"
+            jupyter nbconvert --to notebook \
+              --execute \
+              --ExecutePreprocessor.timeout=3600 \
+              --ExecutePreprocessor.kernel_name=python3 \
+              --output "executed_notebooks/$(basename $notebook)" \
+              "$notebook" || echo "Warning: $notebook failed execution"
+          done
+          
+      - name: Upload executed notebooks
+        if: steps.check_notebooks.outputs.has_notebooks == 'true' && always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: executed-notebooks
+          path: executed_notebooks/
+          retention-days: 7
+          
