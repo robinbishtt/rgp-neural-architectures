@@ -57,3 +57,4 @@ class AttentionBaseline(nn.Module):
             x = layer(x)
         x = x.mean(dim=1)
         return self.classifier(x)
+ 
