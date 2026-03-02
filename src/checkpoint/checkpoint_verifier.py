@@ -224,3 +224,4 @@ class CheckpointVerifier:
             while chunk := f.read(chunk_size):
                 h.update(chunk)
         return h.hexdigest()
+ 
