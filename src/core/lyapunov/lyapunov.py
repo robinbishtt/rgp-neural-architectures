@@ -165,3 +165,4 @@ def analyze_lyapunov(jacobians: List[np.ndarray]) -> LyapunovResult:
         kaplan_yorke_dim=ky_dim,
         regime=regime,
     )
+ 
