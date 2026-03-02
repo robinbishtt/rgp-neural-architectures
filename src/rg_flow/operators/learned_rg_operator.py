@@ -106,3 +106,4 @@ class LearnedRGOperator(nn.Module):
         h_adapt = torch.bmm(W_delta, x.unsqueeze(-1)).squeeze(-1) + b_delta
 
         return self.activation(h_base + h_adapt)
+ 
