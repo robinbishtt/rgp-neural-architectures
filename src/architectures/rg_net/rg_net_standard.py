@@ -16,3 +16,4 @@ class RGNetStandard(RGNet):
                  depth: int = 100, width: int = 512, **kwargs):
         super().__init__(in_features=in_features, n_classes=n_classes,
                          depth=depth, width=width, **kwargs)
+ 
