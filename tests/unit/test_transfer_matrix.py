@@ -26,3 +26,4 @@ class TestTransferMatrix:
         W  = torch.randn(8, 8)
         gr = tm.gap_ratio(W, k=2)
         assert 0.0 <= gr <= 1.0
+ 
