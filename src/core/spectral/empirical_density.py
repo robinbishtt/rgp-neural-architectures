@@ -28,3 +28,4 @@ def empirical_spectral_density(
         return x_grid, np.zeros(n_points)
     kde    = gaussian_kde(ev, bw_method=bw_method)
     return x_grid, kde(x_grid)
+ 
