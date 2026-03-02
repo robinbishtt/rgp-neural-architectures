@@ -214,3 +214,4 @@ if __name__ == "__main__":
     args = _parse_args()
     generate(results_dir=args.results, output_path=args.output,
              fast_track=args.fast_track)
+ 
