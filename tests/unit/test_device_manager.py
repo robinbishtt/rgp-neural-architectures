@@ -25,3 +25,4 @@ class TestDeviceManager:
         from src.utils.device_manager import DeviceManager
         info = DeviceManager().get_device_info()
         assert isinstance(info, dict)
+ 
