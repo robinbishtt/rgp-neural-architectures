@@ -61,3 +61,4 @@ class AsyncCheckpointWriter:
         """Block until pending write completes."""
         if self._thread is not None:
             self._thread.join()
+ 
