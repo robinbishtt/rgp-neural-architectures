@@ -131,3 +131,4 @@ make validate
 **MPS (Apple Silicon).** The MPS backend does not support `torch.use_deterministic_algorithms(True)` as of PyTorch 2.0. On Apple Silicon, the codebase automatically disables strict determinism and falls back to best-effort reproducibility. Fast-track verification and all unit tests pass correctly on MPS; bit-exact multi-run reproducibility is not guaranteed on this backend.
 
 **Distributed training.** Multi-GPU training with `DistributedDataParallel` uses gradient synchronization via NCCL all-reduce, which is non-deterministic due to floating-point associativity. Results from distributed training may differ at the last significant figure from single-GPU results. All reported experimental results were obtained with single-GPU training.
+ 
