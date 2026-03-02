@@ -18,3 +18,4 @@ def test_fp32_fp64_jacobian_agreement():
     J32 = aj.compute(m32, x32).detach()
     J64 = aj.compute(m64, x64).detach().float()
     assert torch.allclose(J32, J64, atol=1e-3), "FP32/FP64 Jacobians disagree"
+ 
