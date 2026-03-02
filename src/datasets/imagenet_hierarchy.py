@@ -272,3 +272,4 @@ class ImageNetHierarchy(Dataset):
             ])
         except ImportError:
             return None
+ 
