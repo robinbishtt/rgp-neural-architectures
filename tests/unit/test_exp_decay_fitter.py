@@ -19,3 +19,4 @@ class TestExponentialDecayFitter:
         xi  = 15.0 * np.exp(-k / 8.0)
         res = ExponentialDecayFitter().fit(k, xi)
         assert 0.0 < res.chi1 < 1.0
+ 
