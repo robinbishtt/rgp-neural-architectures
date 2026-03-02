@@ -62,3 +62,4 @@ class SymbolicJacobian:
     ) -> bool:
         """Return True if symbolic and autograd Jacobians agree within rtol."""
         return bool(np.allclose(J_symbolic, J_autograd, rtol=rtol, atol=1e-7))
+ 
