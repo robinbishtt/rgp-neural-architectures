@@ -61,3 +61,4 @@ class DataCollapseVerifier:
             n_dof=max(len(ys) - 4, 1),
             passed=r2 >= self.r2_threshold,
         )
+ 
