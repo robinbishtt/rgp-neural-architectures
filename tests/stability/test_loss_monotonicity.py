@@ -42,3 +42,4 @@ class TestLossMonotonicity:
             loss.backward()
             opt.step()
             assert not torch.isnan(loss), f"NaN loss detected: {loss.item()}"
+ 
