@@ -165,3 +165,4 @@ DataAuditor().verify_checksum("data/hierarchical_mnist.pt", expected_hash="<sha2
 # make reproduce_fast      (3–5 minutes)
 # make verify_pipeline     (<1 minute smoke test)
 ```
+ 
