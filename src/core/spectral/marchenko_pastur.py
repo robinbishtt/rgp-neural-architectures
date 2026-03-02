@@ -118,3 +118,4 @@ class MarchenkoPasturDistribution:
         X   = rng.standard_normal((n, m)) * np.sqrt(self.sigma2)
         W   = X @ X.T / m
         return np.linalg.eigvalsh(W)
+ 
