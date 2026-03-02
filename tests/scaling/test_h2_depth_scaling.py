@@ -12,3 +12,4 @@ def test_lmin_increases_with_xi():
     xi = np.array([2.0, 5.0, 10.0, 20.0])
     l  = lmin_theoretical(xi, kc=5.0)
     assert (np.diff(l) > 0).all(), "L_min should increase with xi_data"
+ 
