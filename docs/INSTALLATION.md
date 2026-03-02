@@ -99,3 +99,4 @@ Download pre-trained model checkpoints to reproduce figures without retraining:
 bash scripts/download_pretrained_checkpoints.sh
 make reproduce_figures_from_checkpoints   # 10–15 minutes
 ```
+ 
