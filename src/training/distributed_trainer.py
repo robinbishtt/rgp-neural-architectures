@@ -37,3 +37,4 @@ class DistributedTrainer(Trainer):
 
     def is_main_rank(self) -> bool:
         return self.rank == 0
+ 
