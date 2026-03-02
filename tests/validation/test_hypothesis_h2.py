@@ -106,3 +106,4 @@ class TestHypothesisH2:
         xi_values = [2.0, 5.0, 10.0, 20.0]
         lmin      = [_compute_lmin(xi, xi_target=1.0, k_c=8.0) for xi in xi_values]
         assert all(l > 0 for l in lmin), "L_min is non-positive for xi > xi_target."
+ 
