@@ -38,3 +38,4 @@ class TestPartialOcclusion:
             out1 = model(x)
             out2 = model(x_perm)
         assert not torch.isnan(out2).any()
+ 
