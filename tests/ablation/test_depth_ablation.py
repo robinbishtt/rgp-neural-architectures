@@ -10,3 +10,4 @@ def test_shallow_fewer_params_than_standard():
     p_s  = sum(p.numel() for p in shallow.parameters())
     p_st = sum(p.numel() for p in standard.parameters())
     assert p_s < p_st
+ 
