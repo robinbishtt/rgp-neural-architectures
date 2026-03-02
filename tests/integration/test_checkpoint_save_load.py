@@ -16,3 +16,4 @@ def test_checkpoint_save_and_load():
         nn.init.zeros_(model.weight)
         cm.load(model=model)
         assert torch.allclose(model.weight.data, w_before, atol=1e-6)
+ 
