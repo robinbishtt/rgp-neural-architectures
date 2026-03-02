@@ -49,3 +49,4 @@ class VJPJacobian:
         y = fn(x)
         vjp = torch.autograd.grad(y, x, grad_outputs=v)[0]
         return vjp
+ 
