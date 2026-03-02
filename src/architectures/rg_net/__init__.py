@@ -12,3 +12,4 @@ __all__ = [
     "RGNet", "RGNetShallow", "RGNetStandard", "RGNetDeep",
     "RGNetUltraDeep", "RGNetVariableWidth", "RGNetMultiScale",
 ]
+ 
