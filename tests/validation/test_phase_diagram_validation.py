@@ -16,3 +16,4 @@ class TestPhaseDiagramValidation:
                 chi1_above = mapper._chi1(sw_crit * 1.5, sb)
                 assert chi1_below < 1.0 + 0.2, f"Below critical: χ₁={chi1_below:.3f}"
                 assert chi1_above > 1.0 - 0.2, f"Above critical: χ₁={chi1_above:.3f}"
+ 
