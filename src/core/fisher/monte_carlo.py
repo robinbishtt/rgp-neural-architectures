@@ -102,3 +102,4 @@ class FisherMonteCarloEstimator:
                 diag_accum += g_vec.detach() ** 2
 
         return diag_accum / self.n_samples
+ 
