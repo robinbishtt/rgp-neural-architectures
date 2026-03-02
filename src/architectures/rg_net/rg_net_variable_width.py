@@ -47,3 +47,4 @@ class RGNetVariableWidth(nn.Module):
         down = [int(max_width - (max_width - min_width) * i / half) for i in range(half)]
         up   = [int(min_width + (max_width - min_width) * i / half) for i in range(half)]
         return cls(in_features, down + up, n_classes)
+ 
