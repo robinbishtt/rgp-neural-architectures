@@ -38,3 +38,4 @@ class TestBaselineComparison:
                 out = model(x)
             assert not torch.isnan(out).any(), f"{name}: NaN in output"
             assert not torch.isinf(out).any(), f"{name}: Inf in output"
+ 
