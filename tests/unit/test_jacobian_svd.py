@@ -28,3 +28,4 @@ def test_singular_values_positive():
     J  = aj.compute(m, x).detach().numpy()
     sv = np.linalg.svd(J, compute_uv=False)
     assert (sv >= 0).all()
+ 
