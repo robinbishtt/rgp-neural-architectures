@@ -31,3 +31,4 @@ def test_chain_rule_two_layers():
     J0 = aj.compute(lambda v: torch.tanh(m[0](v)), h1_clone)
     J_chain = J1 @ J0
     assert torch.allclose(J_full, J_chain, atol=1e-4), "Chain rule violation"
+ 
