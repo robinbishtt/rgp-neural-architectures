@@ -19,3 +19,4 @@ class TestVJPJacobian:
         x = torch.randn(5, requires_grad=True)
         J = VJPJacobian().compute(lambda x: x * 2, x)
         assert J.shape == (5, 5)
+ 
