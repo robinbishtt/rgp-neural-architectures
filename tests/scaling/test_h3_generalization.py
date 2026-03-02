@@ -14,3 +14,4 @@ def test_rgnet_and_mlp_produce_valid_outputs():
         out = m(x)
         assert out.shape == (8, 4)
         assert not torch.isnan(out).any()
+ 
