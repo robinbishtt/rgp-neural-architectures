@@ -17,3 +17,4 @@ def test_rg_operator_critical_init_variance():
     out = rg(x)
     var = out.var().item()
     assert 0.5 < var < 2.0, f"Variance={var:.3f} far from unit"
+ 
