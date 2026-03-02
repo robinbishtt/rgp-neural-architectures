@@ -59,3 +59,4 @@ __all__ = [
     "StandardQRAlgorithm", "AdaptiveQRAlgorithm", "ParallelQRAlgorithm",
     "detect_regime", "kaplan_yorke_dimension", "analyze_lyapunov", "LyapunovResult",
 ]
+ 
