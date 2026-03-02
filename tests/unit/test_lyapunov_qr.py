@@ -38,3 +38,4 @@ def test_regime_detection():
     assert detect_regime(np.array([-0.5, -1.0, -2.0])) == "ordered"
     assert detect_regime(np.array([0.5, -0.3, -1.0])) == "chaotic"
     assert detect_regime(np.array([0.01, -0.01, -0.1])) == "critical"
+ 
