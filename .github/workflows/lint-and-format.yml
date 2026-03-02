@@ -1,0 +1,57 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'tests/**', 'experiments/**', 'figures/**', '*.py', 'pyproject.toml']
+  pull_request:
+    branches: [main]
+    paths: ['src/**', 'tests/**', 'experiments/**', 'figures/**', '*.py', 'pyproject.toml']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint-and-format:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+          
+      - name: Install dependencies
+        run: |
+          pip install black isort ruff
+          
+      - name: Check code formatting (PR only)
+        if: github.event_name == 'pull_request'
+        run: |
+          black --check .
+          isort --check-only .
+          ruff check .
+          
+      - name: Auto-fix and commit (Push to main only)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          
+          black .
+          isort .
+          ruff check . --fix
+          
+          if [[ -n $(git status --porcelain) ]]; then
+            git add -A
+            git commit -m "style: apply automatic code formatting [skip ci]"
+            git push origin main
+          else
+            echo "No changes to commit"
+          fi
