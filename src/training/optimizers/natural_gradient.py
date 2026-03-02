@@ -70,3 +70,4 @@ class DiagonalNaturalGradient(Optimizer):
                 p.data -= group["lr"] * p.grad.data / F_diag
 
         return loss
+ 
