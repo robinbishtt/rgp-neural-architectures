@@ -96,3 +96,4 @@ class FisherAnalyticCalculator:
         if self.nonlinearity == "relu":
             return (z > 0).astype(float)
         return 1.0 - np.tanh(z) ** 2
+ 
