@@ -23,3 +23,4 @@ class DeterministicDataLoader(DataLoader):
         kwargs.setdefault("pin_memory", torch.cuda.is_available())
         super().__init__(dataset, batch_size=batch_size,
                          num_workers=num_workers, **kwargs)
+ 
