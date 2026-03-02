@@ -18,3 +18,4 @@ class TestScalingLawFit:
         y = 3.0 * x ** 0.5
         res = ScalingLawFitter().fit_power_law(x, y)
         assert res.r2 > 0.99
+ 
