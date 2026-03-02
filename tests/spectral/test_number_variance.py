@@ -74,3 +74,4 @@ class TestNumberVariance:
             assert variances[i] >= variances[i - 1] - 0.1, (
                 f"sigma^2 decreased from L={intervals[i-1]} to L={intervals[i]}."
             )
+ 
