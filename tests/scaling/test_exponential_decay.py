@@ -9,3 +9,4 @@ def test_noisy_exponential_r2():
     xi  = np.clip(xi, 0.01, None)
     r   = ExponentialDecayFitter().fit(xi)
     assert r.r2 > 0.90
+ 
