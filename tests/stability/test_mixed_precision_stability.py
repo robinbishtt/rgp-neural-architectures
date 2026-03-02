@@ -29,3 +29,4 @@ class TestMixedPrecisionStability:
             out16 = model16(x.half()).float()
         assert torch.allclose(out32, out16, atol=1e-2), \
             "FP32 and FP16 outputs differ too much"
+ 
