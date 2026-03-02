@@ -82,3 +82,4 @@ class InceptionBaseline(nn.Module):
             h = block_dict["proj"](h)
             x = norm(x + h)
         return self.classifier(x)
+ 
