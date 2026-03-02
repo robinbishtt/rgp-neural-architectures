@@ -86,3 +86,4 @@ class FisherConditionTracker:
         if len(kappas) < 2:
             return None
         return float(np.log(kappas[-1] / max(kappas[0], 1.0)) / len(kappas))
+ 
