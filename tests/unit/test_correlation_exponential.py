@@ -26,3 +26,4 @@ def test_r2_threshold_noisy():
     fitter = ExponentialDecayFitter()
     result = fitter.fit(xi)
     assert result.r2 > 0.95
+ 
