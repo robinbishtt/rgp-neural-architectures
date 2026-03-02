@@ -18,3 +18,4 @@ def test_synthetic_data_loads_and_trains():
         loss.backward(); opt.step(); opt.zero_grad()
         assert not torch.isnan(loss)
         break
+ 
