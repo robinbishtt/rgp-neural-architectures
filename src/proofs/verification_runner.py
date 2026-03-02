@@ -85,3 +85,4 @@ class VerificationRunner:
     @property
     def all_passed(self) -> bool:
         return self._logger.all_passed()
+ 
