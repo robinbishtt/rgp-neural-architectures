@@ -204,3 +204,4 @@ class RGNetFactory:
                 "Proceeding, but behaviour may be sub-optimal.",
                 depth, lo, hi, variant,
             )
+ 
