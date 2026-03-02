@@ -80,3 +80,4 @@ class FiniteDifferenceJacobian:
         diff = (J_analytic - J_numerical).norm(p="fro")
         denom = J_numerical.norm(p="fro")
         return (diff / (denom + 1e-12)).item()
+ 
