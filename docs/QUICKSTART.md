@@ -227,3 +227,4 @@ Once the pipeline is verified and experiments are running, the following documen
 - [REPRODUCIBILITY.md](REPRODUCIBILITY.md)  detailed explanation of every determinism and integrity mechanism.
 - [DATASETS.md](DATASETS.md)  dataset generation parameters, correlation structure, and provenance checksums.
 - [MODULES.md](MODULES.md)  API reference for all public classes and functions.
+ 
