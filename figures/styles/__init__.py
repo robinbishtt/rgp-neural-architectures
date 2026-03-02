@@ -14,3 +14,4 @@ def use_publication_style() -> None:
     from figures.styles.font_config import apply_publication_fonts
     plt.style.use(PUBLICATION_STYLE)
     apply_publication_fonts()
+ 
