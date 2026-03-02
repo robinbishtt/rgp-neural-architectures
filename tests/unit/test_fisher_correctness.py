@@ -40,3 +40,4 @@ def test_pushforward_psd_preserved():
 def test_proof_numerical_verification():
     from src.proofs.theorem1_fisher_transform import verify_pushforward_numerically
     assert verify_pushforward_numerically(seed=42)
+ 
