@@ -27,3 +27,4 @@ class TestSpectralScalingAnalysis:
         result = SpectralScalingAnalyzer().analyze_layer(W, sigma2=1.0 / 128.0)
         assert result.mp_ks_stat is not None
         assert 0.0 <= result.mp_ks_stat <= 1.0
+ 
