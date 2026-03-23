@@ -1,0 +1,69 @@
+# Optimizer configurations for all experiments
+
+optimizers:
+
+  adam:
+    type: adam
+    lr: 1.0e-3
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+    weight_decay: 1.0e-4
+
+  amsgrad:
+    type: adam
+    lr: 1.0e-3
+    betas: [0.9, 0.999]
+    eps: 1.0e-8
+    weight_decay: 1.0e-4
+    amsgrad: true
+
+  adabound:
+    type: adabound
+    lr: 1.0e-3
+    final_lr: 0.1
+    weight_decay: 1.0e-4
+
+  sgd_nesterov:
+    type: sgd
+    lr: 0.1
+    momentum: 0.9
+    nesterov: true
+    weight_decay: 5.0e-4
+
+  lbfgs:
+    type: lbfgs
+    lr: 1.0
+    max_iter: 20
+    history_size: 100
+    line_search_fn: strong_wolfe
+
+  natural_gradient:
+    type: natural_gradient
+    lr: 1.0e-3
+    damping: 1.0e-4
+    update_freq: 10
+
+  layer_wise:
+    type: layer_wise
+    base_lr: 1.0e-3
+    decay_factor: 0.9     # lr at layer k = base_lr * decay_factor^k
+    weight_decay: 1.0e-4
+
+schedulers:
+
+  cosine:
+    type: cosine_annealing
+    T_max: 100
+    eta_min: 1.0e-6
+
+  step:
+    type: step_lr
+    step_size: 30
+    gamma: 0.1
+
+  plateau:
+    type: reduce_on_plateau
+    patience: 10
+    factor: 0.5
+    min_lr: 1.0e-7
+ 

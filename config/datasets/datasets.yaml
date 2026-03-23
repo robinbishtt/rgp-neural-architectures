@@ -1,0 +1,122 @@
+# config/datasets/datasets.yaml
+#
+# Dataset registry for RGP Neural Architectures experiments.
+#
+# Each entry specifies the dataset class, constructor parameters, and
+# the correlation-length profile used for H1/H2/H3 validation.
+# The 'xi_data' field is the ground-truth initial correlation length ξ₀
+# used in H2 (L_min ~ log(ξ_data / ξ_target)) and measured during H1.
+
+defaults:
+  - _self_
+
+datasets:
+
+  # -----------------------------------------------------------------------
+  # 1. Synthetic Hierarchical Dataset  (primary validation dataset)
+  # -----------------------------------------------------------------------
+  synthetic_hierarchy:
+    class: src.datasets.synthetic_hierarchy.SyntheticHierarchyDataset
+    params:
+      n_levels:   3
+      input_dim:  128
+      n_classes:  10
+      n_samples_train: 50_000
+      n_samples_val:   10_000
+      n_samples_test:  10_000
+    variants:
+      h1:  { xi_data: 20.0,  n_levels: 3, level_scales: [20.0, 5.0, 1.0] }
+      h2:  { xi_data: [2.0, 5.0, 10.0, 20.0, 50.0, 100.0] }
+      h3:  { ood_shift_magnitudes: [0.0, 0.1, 0.3, 0.5, 0.7, 1.0] }
+
+  # -----------------------------------------------------------------------
+  # 2. Hierarchical MNIST  (shallow hierarchy; fast-track default)
+  # -----------------------------------------------------------------------
+  hierarchical_mnist:
+    class: src.datasets.hierarchical_mnist.HierarchicalMNIST
+    params:
+      root:       data/mnist
+      n_levels:   2
+      download:   true
+    variants:
+      h1:  { xi_data: 8.0 }
+      h2:  { xi_data: [2.0, 4.0, 8.0, 12.0] }
+      h3:  { ood_shift_magnitudes: [0.0, 0.2, 0.5, 1.0] }
+
+  # -----------------------------------------------------------------------
+  # 3. Hierarchical CIFAR-10/100  (medium hierarchy; primary benchmark)
+  # -----------------------------------------------------------------------
+  hierarchical_cifar10:
+    class: src.datasets.hierarchical_cifar.HierarchicalCIFAR
+    params:
+      root:         data/cifar10
+      cifar_variant: 10
+      n_levels:     2
+      download:     true
+    variants:
+      h1:  { xi_data: 12.0 }
+      h2:  { xi_data: [3.0, 6.0, 12.0, 20.0] }
+      h3:  { ood_shift_magnitudes: [0.0, 0.2, 0.4, 0.6, 0.8, 1.0] }
+
+  hierarchical_cifar100:
+    class: src.datasets.hierarchical_cifar.HierarchicalCIFAR
+    params:
+      root:         data/cifar100
+      cifar_variant: 100
+      n_levels:     3
+      download:     true
+    variants:
+      h1:  { xi_data: 25.0 }
+      h2:  { xi_data: [5.0, 10.0, 25.0, 50.0] }
+      h3:  { ood_shift_magnitudes: [0.0, 0.25, 0.5, 0.75, 1.0] }
+
+  # -----------------------------------------------------------------------
+  # 4. ImageNet Hierarchy  (deep hierarchy; main paper results)
+  # -----------------------------------------------------------------------
+  imagenet_hierarchy:
+    class: src.datasets.imagenet_hierarchy.ImageNetHierarchy
+    params:
+      root:               data/imagenet
+      use_synthetic:      false      # set true for fast-track
+      n_samples_synthetic: 10_000
+      image_size:         224
+    variants:
+      h1:  { xi_data: 40.0, correlation_level: 3 }
+      h2:  { xi_data: [10.0, 20.0, 40.0, 80.0], correlation_level: [1, 2, 3] }
+      h3:  { ood_shift_magnitudes: [0.0, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0],
+             correlation_levels:   [1, 2, 3] }
+
+  # -----------------------------------------------------------------------
+  # 5. Medical Hierarchy  (domain generalisation benchmark; H3 Extended)
+  # -----------------------------------------------------------------------
+  medical_hierarchy:
+    class: src.datasets.medical_hierarchy.MedicalHierarchyDataset
+    params:
+      root:         data/medical
+      n_levels:     3
+      use_synthetic: true
+    variants:
+      h3:  { ood_shift_magnitudes: [0.0, 0.3, 0.6, 1.0] }
+
+# -----------------------------------------------------------------------
+# Data loader defaults (overridden per-experiment in config/training/)
+# -----------------------------------------------------------------------
+loader_defaults:
+  batch_size:   256
+  num_workers:  4
+  pin_memory:   true
+  prefetch_factor: 2
+  persistent_workers: true
+  drop_last:    false
+
+# -----------------------------------------------------------------------
+# Fast-track overrides (used when fast_track=true in experiment config)
+# -----------------------------------------------------------------------
+fast_track_overrides:
+  batch_size:         64
+  num_workers:        2
+  n_samples_train:    1_000
+  n_samples_val:      200
+  n_samples_test:     200
+  use_synthetic:      true
+ 

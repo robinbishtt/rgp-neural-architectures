@@ -1,0 +1,69 @@
+#!/bin/bash
+# =============================================================================
+# PBS/Torque Job Script: RGP H1 Scale Correspondence
+# Renormalization-Group Principles for Deep Neural Networks
+#
+# SUBMIT:
+#   qsub pbs_rgp_h1.pbs
+# =============================================================================
+
+#PBS -N rgp-h1
+#PBS -q gpu
+#PBS -l nodes=1:ppn=8:gpus=1
+#PBS -l walltime=08:00:00
+#PBS -l mem=32gb
+#PBS -o logs/
+#PBS -e logs/
+#PBS -m bea
+#PBS -M anonymous@institution.edu
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Configuration
+# ─────────────────────────────────────────────────────────────────────────────
+CONTAINER_NAME="rgp-neural.sif"
+CONTAINER_PATH="${HOME}/rgp-neural-architectures/containers/${CONTAINER_NAME}"
+WORK_DIR="${PBS_O_WORKDIR}"
+SCRATCH_DIR="${SCRATCH}/rgp-h1-${PBS_JOBID}"
+
+mkdir -p "${SCRATCH_DIR}" "${WORK_DIR}/logs" "${WORK_DIR}/results/h1"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Load Modules
+# ─────────────────────────────────────────────────────────────────────────────
+module purge
+module load singularity
+module load cuda/11.8
+
+echo "=== GPU Information ==="
+nvidia-smi
+
+# ─────────────────────────────────────────────────────────────────────────────
+# Run H1
+# ─────────────────────────────────────────────────────────────────────────────
+echo ""
+echo "╔════════════════════════════════════════════════════════════════╗"
+echo "║  RGP H1: Scale Correspondence Experiment                       ║"
+echo "╚════════════════════════════════════════════════════════════════╝"
+echo ""
+echo "Job ID: ${PBS_JOBID}"
+echo "Start Time: $(date)"
+echo ""
+
+cd "${WORK_DIR}"
+
+singularity exec --nv \
+    --bind "${SCRATCH_DIR}:/workspace/data" \
+    --bind "${WORK_DIR}/results:/workspace/results" \
+    --bind "${WORK_DIR}/logs:/workspace/logs" \
+    "${CONTAINER_PATH}" \
+    make reproduce_h1
+
+EXIT_CODE=$?
+
+echo ""
+echo "=== Job Summary ==="
+echo "Exit Code: ${EXIT_CODE}"
+echo "End Time: $(date)"
+
+rm -rf "${SCRATCH_DIR}"
+exit ${EXIT_CODE}

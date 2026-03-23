@@ -1,0 +1,52 @@
+# config/architectures/baselines.yaml
+# Baseline architectures for H3 comparative evaluation.
+# Paper Table 1: ResNet-50, DenseNet-121, Wavelet-CNN, Tensor-Net vs RG-Net
+
+resnet50:
+  type: resnet_baseline
+  depth: 50
+  width: 512
+  init: kaiming_normal
+  parameters_approx: 25.6e6
+
+densenet121:
+  type: densenet_baseline
+  growth_rate: 32
+  n_dense_layers: [6, 12, 24, 16]   # DenseNet-121 config
+  parameters_approx: 18.0e6
+
+# Paper baselines (match Table 1 exactly)
+wavelet_cnn:
+  type: wavelet_baseline
+  hidden_dim: 256
+  n_scales: 4
+  depth_per_scale: 3
+  parameters_approx: 22.1e6
+
+tensor_net:
+  type: tensor_net_baseline
+  hidden_dim: 512
+  depth: 4
+  bond_dim: 32
+  parameters_approx: 19.3e6
+
+# RG-Net (ours) - for H3 comparison
+rg_net_h3:
+  type: rg_net_standard
+  depth: 100
+  width: 512
+  activation: tanh
+  sigma_w: 1.4
+  sigma_b: 0.3
+  parameters_approx: 18.2e6
+
+# Additional baselines (used in ablation, not primary H3 comparison)
+mlp:
+  type: mlp_baseline
+  depth: 10
+  width: 512
+  init: kaiming_normal
+
+vgg:
+  type: vgg_baseline
+  variant: vgg16

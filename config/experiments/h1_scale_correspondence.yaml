@@ -1,0 +1,51 @@
+# config/experiments/h1_scale_correspondence.yaml
+# H1: Scale Correspondence Validation
+# Full experiment parameters.
+
+experiment:
+  name: h1_scale_correspondence
+  hypothesis: "H1: xi(k) = xi_0 * exp(-k / k_c) with R^2 > 0.95"
+  seed: 42
+
+model:
+  type: rg_net_standard
+  depth: 100
+  width: 512
+  activation: tanh
+  sigma_w: 1.4  # critical init for tanh
+  sigma_b: 0.3  # critical init for tanh
+
+training:
+  epochs: 100
+  batch_size: 128
+  optimizer: adam
+  lr: 1.0e-3
+  weight_decay: 1.0e-4
+  lr_scheduler: cosine
+
+data:
+  dataset: hierarchical_mnist
+  train_samples: 50000
+  val_samples: 10000
+  num_workers: 4
+  correlation_structure: multiscale
+  correlation_length_target: 10.0
+
+analysis:
+  correlation_length:
+    method: exponential_decay_fitter
+    n_layers_to_analyze: 100
+    estimators: [fisher_spectrum, exponential_decay, transfer_matrix, mle]
+    r2_threshold: 0.95
+    ks_pvalue_threshold: 0.05
+  widths: [64, 128, 256, 512]
+  n_seeds: 10
+  fisher_mc_samples: 1000
+  bootstrap_n_resamples: 1000
+
+output:
+  results_dir: results/h1
+  checkpoint_dir: checkpoints/h1
+  log_dir: logs/h1
+  save_frequency: 10  # epochs
+ 

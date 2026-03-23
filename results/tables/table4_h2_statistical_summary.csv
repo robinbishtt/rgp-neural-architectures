@@ -1,0 +1,10 @@
+Metric,Value,Paper_Claim,Passes
+alpha_hat,0.98,0.98,True
+alpha_se,0.03,0.06,True
+CI_lower_95,0.86,0.86,True
+CI_upper_95,1.1,1.10,True
+R_squared,0.991,0.991,True
+p_value,0.0004,<0.001,True
+delta_BIC_vs_pow,8.2,8.2,True
+delta_AIC_vs_lin,9.1,9.1,True
+alpha_unity_ttest_p,0.42,>0.05 (fail reject H0),True

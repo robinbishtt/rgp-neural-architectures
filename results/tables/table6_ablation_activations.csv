@@ -1,0 +1,4 @@
+Activation,Sigma_w_star,Chi1_at_critical,Xi_depth,H1_R2,H1_Passes
+tanh,1.481,1.0,100.0,0.997,True
+relu,1.414,1.0,50.0,0.991,True
+gelu,1.31,0.998,62.5,0.989,True

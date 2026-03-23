@@ -1,0 +1,33 @@
+# config/experiments/ablation_studies.yaml
+# Ablation study definitions with component masks.
+
+experiment:
+  name: ablation_studies
+  seed: 42
+
+ablations:
+  rg_operators:
+    remove: [rg_specific_scaling]
+    baseline: mlp_baseline
+  skip_connections:
+    remove: [residual_connections]
+  scale_awareness:
+    remove: [scale_dependent_pooling]
+  critical_init:
+    use_standard_init: true
+  multiscale_fusion:
+    remove: [multiscale_feature_fusion]
+  depth_sweep:
+    depths: [10, 25, 50, 100, 200]
+
+training:
+  epochs: 50
+  batch_size: 128
+  optimizer: adam
+  lr: 1.0e-3
+  n_seeds: 5
+
+output:
+  results_dir: results/ablations
+  log_dir: logs/ablations
+ 

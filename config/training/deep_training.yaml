@@ -1,0 +1,33 @@
+# Training configuration for deep networks (L=500-1000)
+# Inherits from base_training.yaml, overrides memory-sensitive settings
+
+defaults:
+  - base_training
+
+training:
+  batch_size: 64
+  num_workers: 8
+  epochs: 50
+
+optimizer:
+  type: adam
+  lr: 3.0e-4
+
+mixed_precision:
+  enabled: true
+  dtype: bfloat16
+
+gradient_checkpointing:
+  enabled: true
+  segments: 10           # checkpointing every N layers
+
+memory:
+  estimate_before_run: true
+  fallback_to_checkpointing: true
+  min_free_vram_gb: 4.0
+
+logging:
+  log_every_n_steps: 10
+  save_every_n_epochs: 5
+  keep_last_n_checkpoints: 5
+ 

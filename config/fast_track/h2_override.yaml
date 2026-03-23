@@ -1,0 +1,15 @@
+# config/fast_track/h2_override.yaml
+# H2-specific fast-track overrides.
+
+defaults:
+  - override
+
+_override_:
+  model:
+    depths: [10, 20]
+  data:
+    correlation_lengths: [5.0, 10.0]
+  analysis:
+    bootstrap_n_resamples: 100
+    n_seeds: 3
+ 

@@ -1,0 +1,107 @@
+# =============================================================================
+# RGP Neural Architectures - Docker Compose
+#
+# Usage:
+#   docker-compose run gpu make reproduce_fast
+#   docker-compose run cpu make test_unit
+#   docker-compose up jupyter
+#   docker-compose up tensorboard
+# =============================================================================
+
+version: "3.9"
+
+services:
+
+  # ---------------------------------------------------------------------------
+  # GPU training service
+  # ---------------------------------------------------------------------------
+  gpu:
+    build:
+      context: ..
+      dockerfile: containers/Dockerfile
+    image: rgp-neural:latest
+    container_name: rgp-gpu
+    runtime: nvidia
+    environment:
+      PYTHONPATH: /workspace
+      CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+      NVIDIA_VISIBLE_DEVICES: all
+      NVIDIA_DRIVER_CAPABILITIES: compute,utility
+    volumes:
+      - ./data:/workspace/data
+      - ./results:/workspace/results
+      - ./figures/out:/workspace/figures/out
+      - ./checkpoints:/workspace/checkpoints
+      - ./logs:/workspace/logs
+    shm_size: "8gb"
+    ulimits:
+      memlock: -1
+      stack: 67108864
+    command: make reproduce_fast
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+
+  # ---------------------------------------------------------------------------
+  # CPU-only service
+  # ---------------------------------------------------------------------------
+  cpu:
+    build:
+      context: ..
+      dockerfile: containers/Dockerfile.cpu
+    image: rgp-neural:cpu
+    container_name: rgp-cpu
+    environment:
+      PYTHONPATH: /workspace
+      CUBLAS_WORKSPACE_CONFIG: ":4096:8"
+    volumes:
+      - ./data:/workspace/data
+      - ./results:/workspace/results
+      - ./figures/out:/workspace/figures/out
+      - ./checkpoints:/workspace/checkpoints
+      - ./logs:/workspace/logs
+    command: make reproduce_fast
+
+  # ---------------------------------------------------------------------------
+  # Jupyter Lab
+  # ---------------------------------------------------------------------------
+  jupyter:
+    image: rgp-neural:cpu
+    container_name: rgp-jupyter
+    environment:
+      PYTHONPATH: /workspace
+      JUPYTER_TOKEN: rgp2026
+    volumes:
+      - ./notebooks:/workspace/notebooks
+      - ./data:/workspace/data
+      - ./results:/workspace/results
+      - ./figures/out:/workspace/figures/out
+    ports:
+      - "8888:8888"
+    command: >
+      jupyter lab
+        --ip=0.0.0.0
+        --port=8888
+        --no-browser
+        --allow-root
+        --notebook-dir=/workspace/notebooks
+
+  # ---------------------------------------------------------------------------
+  # TensorBoard monitoring
+  # ---------------------------------------------------------------------------
+  tensorboard:
+    image: rgp-neural:cpu
+    container_name: rgp-tensorboard
+    volumes:
+      - ./logs:/workspace/logs
+    ports:
+      - "6006:6006"
+    command: >
+      tensorboard
+        --logdir=/workspace/logs
+        --host=0.0.0.0
+        --port=6006

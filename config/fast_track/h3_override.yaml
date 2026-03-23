@@ -1,0 +1,15 @@
+# config/fast_track/h3_override.yaml
+# H3-specific fast-track overrides.
+
+defaults:
+  - override
+
+_override_:
+  data:
+    train_samples: 100
+    val_samples: 50
+    ood_shift_levels: [0.0, 0.5, 1.0]
+  analysis:
+    n_seeds: 3
+    bootstrap_n_resamples: 100
+ 

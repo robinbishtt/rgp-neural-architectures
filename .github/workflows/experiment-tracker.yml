@@ -1,0 +1,85 @@
+name: Experiments
+
+on:
+  push:
+    branches: [main]
+    paths: ['experiments/**', 'src/**', 'config/**']
+  workflow_dispatch:
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  validate-experiments:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install CPU-only PyTorch
+        run: |
+          pip install torch==2.0.1+cpu torchvision==0.15.2+cpu \
+            --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -e .
+
+      - name: List experiment scripts
+        run: |
+          echo "Available experiments:"
+          ls -la experiments/h1_scale_correspondence/
+          ls -la experiments/h2_depth_scaling/
+          ls -la experiments/h3_multiscale_generalization/
+
+      - name: Smoke test — imports and constants
+        run: |
+          python -c "
+          import os, sys
+          import experiments
+          print('experiments package: OK')
+
+          from src.core.correlation.two_point import chi1_gauss_hermite
+          print('src.core imports: OK')
+
+          exp_dirs = [d for d in os.listdir('experiments')
+                      if os.path.isdir(os.path.join('experiments', d))
+                      and not d.startswith('__')]
+          print(f'Experiment directories: {len(exp_dirs)}')
+          for d in sorted(exp_dirs):
+              print(f'  {d}')
+          "
+
+      - name: Validate YAML configs
+        run: |
+          python -c "
+          import os, yaml
+
+          def validate_dir(config_dir):
+              if not os.path.exists(config_dir):
+                  return
+              for root, dirs, files in os.walk(config_dir):
+                  for fname in sorted(files):
+                      if not fname.endswith('.yaml'):
+                          continue
+                      path = os.path.join(root, fname)
+                      with open(path) as f:
+                          yaml.safe_load(f)
+                      print(f'  OK: {path}')
+
+          validate_dir('config')
+          print('All YAML configs valid.')
+          "
+
+      - name: Syntax-check experiment modules
+        run: |
+          find experiments/ -name '*.py' ! -name '__init__.py' | while read f; do
+            python -m py_compile \"\$f\" && echo \"  OK: \$f\"
+          done

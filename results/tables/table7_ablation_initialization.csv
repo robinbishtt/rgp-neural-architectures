@@ -1,0 +1,6 @@
+Config,Sigma_w,Sigma_b,Chi1,Xi_depth,H1_R2_mean,H1_R2_std,H1_Passes
+critical,1.4,0.3,0.894,8.6,0.997,0.001,True
+ordered_weak,1.0,0.0,0.456,0.6,0.823,0.04,False
+deep_ordered,0.5,0.0,0.114,0.2,0.612,0.08,False
+near_critical,1.6,0.2,1.02,-49,0.701,0.12,False
+chaotic,2.0,0.5,1.28,-3.6,0.453,0.15,False

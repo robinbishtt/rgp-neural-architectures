@@ -1,0 +1,29 @@
+# config/experiments/baseline_comparison.yaml
+# Baseline architecture comparison parameters.
+
+experiment:
+  name: baseline_comparison
+  seed: 42
+
+baselines:
+  - {type: resnet_baseline, depth: 50}
+  - {type: densenet_baseline, growth_rate: 32}
+  - {type: mlp_baseline, depth: 10, width: 512}
+  - {type: vgg_baseline, variant: vgg16}
+
+training:
+  epochs: 100
+  batch_size: 128
+  optimizer: adam
+  lr: 1.0e-3
+  lr_scheduler: cosine
+
+data:
+  datasets: [hierarchical_mnist, hierarchical_cifar, synthetic_hierarchy]
+  train_samples: 50000
+  val_samples: 10000
+
+output:
+  results_dir: results/baselines
+  log_dir: logs/baselines
+ 

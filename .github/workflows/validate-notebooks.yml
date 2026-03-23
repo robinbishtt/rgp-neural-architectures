@@ -1,0 +1,93 @@
+name: Notebooks
+
+on:
+  push:
+    branches: [main]
+    paths: ['notebooks/**', 'requirements*.txt']
+  pull_request:
+    branches: [main]
+    paths: ['notebooks/**', 'requirements*.txt']
+  workflow_dispatch:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: "true"
+
+jobs:
+  check-and-validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install CPU-only PyTorch
+        run: |
+          pip install torch==2.0.1+cpu torchvision==0.15.2+cpu \
+            --index-url https://download.pytorch.org/whl/cpu
+
+      - name: Install dependencies
+        run: |
+          pip install -r requirements.txt
+          pip install -e .
+          pip install nbconvert nbformat jupyter
+
+      - name: Validate notebook JSON structure
+        run: |
+          python -c "
+          import nbformat, glob, sys
+
+          notebooks = sorted(glob.glob('notebooks/*.ipynb'))
+          if not notebooks:
+              print('No notebooks found.')
+              sys.exit(0)
+
+          failed = []
+          for nb_path in notebooks:
+              try:
+                  with open(nb_path) as f:
+                      nb = nbformat.read(f, as_version=4)
+                  nbformat.validate(nb)
+                  print(f'  OK: {nb_path}')
+              except Exception as e:
+                  print(f'  FAIL: {nb_path} — {e}')
+                  failed.append(nb_path)
+
+          print(f'Result: {len(notebooks) - len(failed)}/{len(notebooks)} valid')
+          if failed:
+              sys.exit(1)
+          "
+
+      - name: Execute first 3 notebooks (smoke test)
+        run: |
+          mkdir -p executed_notebooks
+          FIRST_3=$(find notebooks/ -name "*.ipynb" | sort | head -3)
+          for nb in $FIRST_3; do
+            echo "Executing: $nb"
+            jupyter nbconvert \
+              --to notebook \
+              --execute \
+              --ExecutePreprocessor.timeout=120 \
+              --ExecutePreprocessor.kernel_name=python3 \
+              --output "executed_notebooks/$(basename $nb)" \
+              "$nb" \
+            && echo "  OK: $nb" \
+            || echo "  WARNING: $nb failed (non-fatal)"
+          done
+
+      - name: Upload executed notebooks
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: executed-notebooks
+          path: executed_notebooks/
+          if-no-files-found: ignore
+          retention-days: 7

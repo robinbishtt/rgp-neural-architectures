@@ -1,0 +1,6 @@
+RGNet_vs,Test,Statistic,P_value,Cohens_d,Significant,Data_Type
+ResNet-50,Welch's t-test,3.21,0.006,1.8,True,Hier-3 OOD
+DenseNet-121,Welch's t-test,2.89,0.012,1.6,True,Hier-3 OOD
+Wavelet-CNN,Welch's t-test,2.14,0.031,1.2,True,Hier-3 OOD
+Tensor-Net,Welch's t-test,1.97,0.048,1.0,True,Hier-3 OOD
+All (ANOVA),ANOVA F-test,0.43,0.78,,False,Hier-3 ID
