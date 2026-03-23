@@ -194,17 +194,6 @@ rgp-neural-architectures/
 
 See [`docs/PAPER_CODE_CORRESPONDENCE.md`](docs/PAPER_CODE_CORRESPONDENCE.md) for a complete
 mapping from every paper claim to the implementing code.
-
-**Key fixes in this release vs initial submission:**
-
-| Issue | Fix |
-|---|---|
-| Fisher metric direction | Corrected to pullback g=J^T G J (was pushforward) |
-| H3 baselines | Wavelet-CNN + Tensor-Net replacing MLP + VGG |
-| H3 primary test | Welch's t-test (paper) replacing Wilcoxon |
-| H2 L_min threshold | 95% accuracy (paper) from 85% |
-| σ_w, σ_b defaults | (1.4, 0.3) everywhere from (1.0, 0.05) |
-
 ---
 
 ---
