@@ -1,10 +1,7 @@
-"""tests/integration/test_training_convergence.py"""
 import pytest
 torch = pytest.importorskip("torch", reason="torch not installed")
 import torch
 import torch.nn as nn
-
-
 def test_model_loss_decreases():
     model = nn.Linear(8, 2)
     opt   = torch.optim.SGD(model.parameters(), lr=0.1)
@@ -14,5 +11,4 @@ def test_model_loss_decreases():
         loss = nn.CrossEntropyLoss()(model(x), y)
         loss.backward(); opt.step(); opt.zero_grad()
         losses.append(loss.item())
-    assert losses[-1] < losses[0] * 1.5  # should not diverge
- 
+    assert losses[-1] < losses[0] * 1.5  

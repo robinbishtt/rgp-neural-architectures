@@ -1,5 +1,3 @@
-# config/experiments/finite_size_scaling.yaml
-# Finite-size scaling (FSS) study: critical exponent extraction.
 
 experiment:
   name: finite_size_scaling
@@ -18,4 +16,4 @@ fss:
 output:
   results_dir: results/fss
   log_dir: logs/fss
- 
+

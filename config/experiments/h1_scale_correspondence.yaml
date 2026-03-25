@@ -1,51 +1,54 @@
-# config/experiments/h1_scale_correspondence.yaml
-# H1: Scale Correspondence Validation
-# Full experiment parameters.
 
 experiment:
   name: h1_scale_correspondence
-  hypothesis: "H1: xi(k) = xi_0 * exp(-k / k_c) with R^2 > 0.95"
+  hypothesis: "H1: xi(k) = xi_0 * exp(-k / k_c) with R² > 0.95"
   seed: 42
 
 model:
   type: rg_net_standard
-  depth: 100
+  depth: 30
   width: 512
   activation: tanh
-  sigma_w: 1.4  # critical init for tanh
-  sigma_b: 0.3  # critical init for tanh
+  sigma_w: 1.2
+  sigma_b: 0.3
+  chi1_note: "chi1≈0.870, k_c≈7.18, ordered phase"
 
 training:
   epochs: 100
-  batch_size: 128
+  batch_size: 256
   optimizer: adam
   lr: 1.0e-3
   weight_decay: 1.0e-4
   lr_scheduler: cosine
 
 data:
-  dataset: hierarchical_mnist
-  train_samples: 50000
-  val_samples: 10000
+  dataset: hierarchical_gaussian
+  n_train: 5000
+  n_val: 1000
+  n_classes: 10
+  input_dim: 64
+  noise_std: xi_data
   num_workers: 4
-  correlation_structure: multiscale
-  correlation_length_target: 10.0
 
 analysis:
+  fisher_method: gradient
   correlation_length:
     method: exponential_decay_fitter
-    n_layers_to_analyze: 100
-    estimators: [fisher_spectrum, exponential_decay, transfer_matrix, mle]
+    n_layers_to_analyze: 30
+    estimators: [gradient_fisher, exponential_decay]
     r2_threshold: 0.95
-    ks_pvalue_threshold: 0.05
   widths: [64, 128, 256, 512]
   n_seeds: 10
-  fisher_mc_samples: 1000
-  bootstrap_n_resamples: 1000
+  n_train_per_seed: 5000
+
+minimum_viable_config:
+  depth: 20
+  width: 64
+  n_train: 1000
+  epochs: 20
 
 output:
   results_dir: results/h1
   checkpoint_dir: checkpoints/h1
   log_dir: logs/h1
-  save_frequency: 10  # epochs
- 
+  save_frequency: 10

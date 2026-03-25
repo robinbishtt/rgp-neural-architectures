@@ -1,10 +1,7 @@
-"""tests/integration/test_data_to_model.py"""
 import pytest
 torch = pytest.importorskip("torch", reason="torch not installed")
 import torch
 import torch.nn as nn
-
-
 def test_synthetic_data_loads_and_trains():
     from src.datasets.synthetic_hierarchy import SyntheticHierarchy
     from torch.utils.data import DataLoader
@@ -18,4 +15,3 @@ def test_synthetic_data_loads_and_trains():
         loss.backward(); opt.step(); opt.zero_grad()
         assert not torch.isnan(loss)
         break
- 

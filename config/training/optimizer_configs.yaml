@@ -1,4 +1,3 @@
-# Optimizer configurations for all experiments
 
 optimizers:
 
@@ -46,7 +45,7 @@ optimizers:
   layer_wise:
     type: layer_wise
     base_lr: 1.0e-3
-    decay_factor: 0.9     # lr at layer k = base_lr * decay_factor^k
+    decay_factor: 0.9
     weight_decay: 1.0e-4
 
 schedulers:
@@ -66,4 +65,4 @@ schedulers:
     patience: 10
     factor: 0.5
     min_lr: 1.0e-7
- 
+

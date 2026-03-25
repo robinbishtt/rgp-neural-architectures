@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-# Run H2 Depth Scaling Law validation
-# Full run: 24-36 hours on RTX 3090; fast-track: 3-5 minutes
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODE="${1:---full}"

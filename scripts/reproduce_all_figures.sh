@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-# scripts/reproduce_all_figures.sh - Regenerates all figures from results/.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 echo "=== Generating all figures ==="

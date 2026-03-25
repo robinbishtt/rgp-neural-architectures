@@ -1,5 +1,3 @@
-# config/fast_track/h1_override.yaml
-# H1-specific fast-track overrides.
 
 defaults:
   - override
@@ -13,4 +11,4 @@ _override_:
     n_seeds: 3
     fisher_mc_samples: 100
     bootstrap_n_resamples: 100
- 
+

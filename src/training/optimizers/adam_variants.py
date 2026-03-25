@@ -1,28 +1,10 @@
-"""
-src/training/optimizers/adam_variants.py
-
-Adam-family optimizers: standard Adam, AMSGrad, AdaBound variants.
-"""
 from __future__ import annotations
 import torch
 from torch.optim import Adam
-
-
 def build_adam(params, lr: float = 1e-3, weight_decay: float = 1e-4,
                amsgrad: bool = False) -> Adam:
-    """Standard Adam or AMSGrad variant."""
     return Adam(params, lr=lr, weight_decay=weight_decay, amsgrad=amsgrad)
-
-
 class AdaBound(torch.optim.Optimizer):
-    """
-    AdaBound: adaptive gradient clipping that transitions to SGD.
-    Combines Adam's fast convergence with SGD's good generalization.
-
-    From: Luo et al. (2019) "Adaptive Gradient Methods with Dynamic Bound
-    of Learning Rate"
-    """
-
     def __init__(self, params, lr: float = 1e-3, betas=(0.9, 0.999),
                  final_lr: float = 0.1, gamma: float = 1e-3,
                  eps: float = 1e-8, weight_decay: float = 0.0) -> None:
@@ -30,7 +12,6 @@ class AdaBound(torch.optim.Optimizer):
                         gamma=gamma, eps=eps, weight_decay=weight_decay)
         super().__init__(params, defaults)
         self.base_lrs = [g["lr"] for g in self.param_groups]
-
     def step(self, closure=None):
         loss = closure() if closure is not None else None
         for group, base_lr in zip(self.param_groups, self.base_lrs):
@@ -59,4 +40,3 @@ class AdaBound(torch.optim.Optimizer):
                     p.data.mul_(1 - group["lr"] * group["weight_decay"])
                 p.data.addcmul_(state["exp_avg"] / bc1, step_size_clipped, value=-1)
         return loss
- 

@@ -1,10 +1,3 @@
-"""
-src/training/learning_rate_scheduler.py
-
-Composite learning rate scheduler registry for RGP experiments.
-Provides a unified factory interface for all LR schedules used across
-H1, H2, H3 validation experiments.
-"""
 from __future__ import annotations
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import (
@@ -12,8 +5,6 @@ from torch.optim.lr_scheduler import (
 )
 from src.training.optimizers.warmup_scheduler import LinearWarmupScheduler
 from src.training.optimizers.cosine_annealing import CosineAnnealingWithRestarts
-
-
 def build_scheduler(
     optimizer:    Optimizer,
     schedule:     str,
@@ -21,22 +12,7 @@ def build_scheduler(
     warmup_steps: int   = 0,
     **kwargs,
 ) -> _LRScheduler:
-    """
-    Factory function: construct LR scheduler from string name.
-
-    Args:
-        optimizer:    PyTorch optimizer
-        schedule:     one of "cosine", "warmup_cosine", "step", "plateau",
-                      "warmup_cosine_restarts", "constant"
-        total_steps:  total number of training steps
-        warmup_steps: steps for linear warmup (used if schedule includes "warmup")
-        **kwargs:     additional arguments passed to the underlying scheduler
-
-    Returns:
-        Configured LR scheduler.
-    """
     schedule = schedule.lower()
-
     if schedule == "cosine":
         return CosineAnnealingLR(
             optimizer, T_max=total_steps,
@@ -70,4 +46,3 @@ def build_scheduler(
         return StepLR(optimizer, step_size=total_steps + 1, gamma=1.0)
     else:
         raise ValueError(f"Unknown LR schedule: '{schedule}'")
- 

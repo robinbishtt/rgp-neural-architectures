@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-# scripts/reproduce_extended_data.sh - Extended Data figures only.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 echo "=== Generating Extended Data figures ==="

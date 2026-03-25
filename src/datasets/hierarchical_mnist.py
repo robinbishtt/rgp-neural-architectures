@@ -1,19 +1,7 @@
-"""
-src/datasets/hierarchical_mnist.py
-
-MNIST augmented with controlled correlation structure.
-"""
 from __future__ import annotations
 import torch
 from torch.utils.data import Dataset
-
-
 class HierarchicalMNIST(Dataset):
-    """
-    MNIST with added multi-scale correlation structure.
-    Adds Gaussian spatial correlations at configurable length scales.
-    """
-
     def __init__(
         self,
         root: str = "data/",
@@ -27,9 +15,7 @@ class HierarchicalMNIST(Dataset):
                           transform=transforms.ToTensor())
         self.xi   = correlation_length
         self.rng  = torch.Generator().manual_seed(seed)
-
     def _add_correlations(self, x: torch.Tensor) -> torch.Tensor:
-        """Add spatially correlated noise at scale xi."""
         noise = torch.randn(x.shape, generator=self.rng) * 0.1
         kernel_size = max(3, int(self.xi) * 2 + 1)
         if kernel_size % 2 == 0:
@@ -40,11 +26,8 @@ class HierarchicalMNIST(Dataset):
         kernel = k1d.outer(k1d).unsqueeze(0).unsqueeze(0)
         corr_noise = F.conv2d(noise.unsqueeze(0), kernel, padding=kernel_size // 2)[0]
         return x + corr_noise
-
     def __len__(self) -> int:
         return len(self.base)
-
     def __getitem__(self, idx: int):
         x, y = self.base[idx]
         return self._add_correlations(x).view(-1), y
- 

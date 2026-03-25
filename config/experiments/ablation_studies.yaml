@@ -1,5 +1,3 @@
-# config/experiments/ablation_studies.yaml
-# Ablation study definitions with component masks.
 
 experiment:
   name: ablation_studies
@@ -30,4 +28,4 @@ training:
 output:
   results_dir: results/ablations
   log_dir: logs/ablations
- 
+

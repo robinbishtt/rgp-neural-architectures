@@ -1,10 +1,7 @@
-"""tests/ablation/test_skip_connections.py"""
 import pytest
 torch = pytest.importorskip("torch", reason="torch not installed")
 import torch
 from src.rg_flow.operators.operators import StandardRGOperator, ResidualRGOperator
-
-
 def test_residual_vs_standard_gradient_flow():
     depth  = 15
     width  = 32
@@ -18,4 +15,3 @@ def test_residual_vs_standard_gradient_flow():
             h = l(h)
         h.sum().backward()
         assert xc.grad is not None
- 

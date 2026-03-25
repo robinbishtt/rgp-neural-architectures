@@ -1,48 +1,20 @@
-"""
-src/core/correlation_length.py
-
-Correlation length estimation methods.
-
-ξ(k) = ξ₀ · exp(−k / k_c),  k_c = −1 / log(χ₁)
-
-Estimators:
-  - FisherSpectrumMethod      : ξ = [∫ ρ(λ) λ⁻¹ dλ]^{-1/2}
-  - ExponentialDecayFitter    : fits ξ(k) = ξ₀ exp(−k/k_c)
-  - MaximumLikelihoodEstimator: MLE with confidence intervals
-  - TransferMatrixMethod      : eigenvalue ratios of transfer matrices
-"""
-
 from __future__ import annotations
-
 from dataclasses import dataclass
 from typing import Tuple
-
 import numpy as np
 from scipy.optimize import curve_fit
-
-
 @dataclass
 class CorrelationLengthResult:
-    xi_values:  np.ndarray   # per-layer ξ(k)
-    xi_0:       float        # fitted ξ₀
-    k_c:        float        # fitted k_c
-    r2:         float        # goodness of fit
-    chi1:       float        # criticality parameter
+    xi_values:  np.ndarray   
+    xi_0:       float        
+    k_c:        float        
+    r2:         float        
+    chi1:       float        
     xi_0_ci:    Tuple[float, float] = (0.0, 0.0)
     k_c_ci:     Tuple[float, float] = (0.0, 0.0)
-
-
 def _exp_decay(k: np.ndarray, xi_0: float, k_c: float) -> np.ndarray:
     return xi_0 * np.exp(-k / k_c)
-
-
 class FisherSpectrumMethod:
-    """
-    ξ(k) = [∫ ρ_k(λ) λ⁻¹ dλ]^{-1/2}
-
-    Uses the Fisher metric eigenvalue density ρ_k(λ) at each layer.
-    """
-
     def estimate(self, eigenvalue_lists: list) -> np.ndarray:
         xi_values = []
         for ev in eigenvalue_lists:
@@ -54,31 +26,15 @@ class FisherSpectrumMethod:
                 inv_mean = np.mean(1.0 / ev)
                 xi_values.append(float(1.0 / np.sqrt(inv_mean + 1e-12)))
         return np.array(xi_values)
-
-
 class ExponentialDecayFitter:
-    """
-    Fits ξ(k) = ξ₀ · exp(−k / k_c) via nonlinear least squares.
-    """
-
     def fit(self, layers_or_xi: np.ndarray,
              xi_values: np.ndarray = None) -> CorrelationLengthResult:
-        """
-        Fit xi(k) = xi_0 * exp(-k/k_c).
-
-        Accepts two call signatures:
-          fit(xi_values)          - layers are 0, 1, 2, ... (auto-generated)
-          fit(layers, xi_values)  - explicit layer indices
-        """
         if xi_values is None:
-            # Single-arg call: fit(xi_values)
             xi = np.asarray(layers_or_xi, dtype=float)
             k  = np.arange(len(xi), dtype=float)
         else:
-            # Two-arg call: fit(layers, xi_values)
             k  = np.asarray(layers_or_xi, dtype=float)
             xi = np.asarray(xi_values, dtype=float)
-
         try:
             popt, pcov = curve_fit(
                 _exp_decay, k, xi,
@@ -94,13 +50,11 @@ class ExponentialDecayFitter:
             xi_0, k_c = xi[0], float(len(xi))
             xi_0_ci = (0.0, 0.0)
             k_c_ci  = (0.0, 0.0)
-
         xi_pred  = _exp_decay(k, xi_0, k_c)
         ss_res   = ((xi - xi_pred) ** 2).sum()
         ss_tot   = ((xi - xi.mean()) ** 2).sum()
         r2       = 1.0 - ss_res / max(ss_tot, 1e-12)
         chi1     = float(np.exp(-1.0 / k_c)) if k_c > 0 else 0.0
-
         return CorrelationLengthResult(
             xi_values=xi,
             xi_0=float(xi_0),
@@ -110,43 +64,25 @@ class ExponentialDecayFitter:
             xi_0_ci=xi_0_ci,
             k_c_ci=k_c_ci,
         )
-
-
 class MaximumLikelihoodEstimator:
-    """
-    MLE for exponential decay with log-normal noise assumption.
-    Returns MLEs and 95% confidence intervals via profile likelihood.
-    """
-
     def fit(self, xi_values: np.ndarray) -> CorrelationLengthResult:
         k   = np.arange(len(xi_values), dtype=float)
         xi  = np.asarray(xi_values, dtype=float)
         log_xi = np.log(xi + 1e-12)
-
-        # Linear regression in log space: log(ξ) = log(ξ₀) − k/k_c
         A    = np.vstack([np.ones_like(k), -k]).T
         coef, _, _, _ = np.linalg.lstsq(A, log_xi, rcond=None)
         log_xi0, inv_kc = coef
         xi_0  = float(np.exp(log_xi0))
         k_c   = float(1.0 / max(inv_kc, 1e-6))
         chi1  = float(np.exp(-1.0 / k_c))
-
         xi_pred = _exp_decay(k, xi_0, k_c)
         ss_res  = ((xi - xi_pred) ** 2).sum()
         ss_tot  = ((xi - xi.mean()) ** 2).sum()
         r2      = 1.0 - ss_res / max(ss_tot, 1e-12)
-
         return CorrelationLengthResult(
             xi_values=xi, xi_0=xi_0, k_c=k_c, r2=float(r2), chi1=chi1,
         )
-
-
 class TransferMatrixMethod:
-    """
-    Estimates ξ from eigenvalue ratios of layer transfer matrices.
-    ξ(k) = −1 / log(|λ₂/λ₁|)
-    """
-
     def estimate(self, transfer_matrices: list) -> np.ndarray:
         xi_values = []
         for T in transfer_matrices:
@@ -162,4 +98,3 @@ class TransferMatrixMethod:
             else:
                 xi_values.append(1.0)
         return np.array(xi_values)
- 

@@ -1,12 +1,7 @@
-"""src/core/lyapunov - Lyapunov spectrum via QR algorithms."""
-
-# All imports are lazy to avoid loading torch when not needed.
-# Direct imports below are still available via standard import syntax.
-
 def __getattr__(name):
     import importlib
     _LAZY = {
-        'ParallelQRAlgorithm': ('src.core.lyapunov.parallel_qr', 'ParallelQRAlgorithm'),
+        : ('src.core.lyapunov.parallel_qr', 'ParallelQRAlgorithm'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

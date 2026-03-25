@@ -1,5 +1,3 @@
-# config/telemetry/backends.yaml
-# Telemetry backend selection and configuration.
 
 backends:
   default: [tensorboard, jsonl]
@@ -24,10 +22,10 @@ mlflow:
 jsonl:
   enabled: true
   path: logs/telemetry.jsonl
-  flush_every: 10  # steps
+  flush_every: 10
 
 logging:
   level: INFO
   format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
   file: logs/run.log
- 
+

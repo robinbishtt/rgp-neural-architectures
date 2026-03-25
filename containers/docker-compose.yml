@@ -1,20 +1,8 @@
-# =============================================================================
-# RGP Neural Architectures - Docker Compose
-#
-# Usage:
-#   docker-compose run gpu make reproduce_fast
-#   docker-compose run cpu make test_unit
-#   docker-compose up jupyter
-#   docker-compose up tensorboard
-# =============================================================================
 
 version: "3.9"
 
 services:
 
-  # ---------------------------------------------------------------------------
-  # GPU training service
-  # ---------------------------------------------------------------------------
   gpu:
     build:
       context: ..
@@ -46,9 +34,6 @@ services:
               count: all
               capabilities: [gpu]
 
-  # ---------------------------------------------------------------------------
-  # CPU-only service
-  # ---------------------------------------------------------------------------
   cpu:
     build:
       context: ..
@@ -66,9 +51,6 @@ services:
       - ./logs:/workspace/logs
     command: make reproduce_fast
 
-  # ---------------------------------------------------------------------------
-  # Jupyter Lab
-  # ---------------------------------------------------------------------------
   jupyter:
     image: rgp-neural:cpu
     container_name: rgp-jupyter
@@ -90,9 +72,6 @@ services:
         --allow-root
         --notebook-dir=/workspace/notebooks
 
-  # ---------------------------------------------------------------------------
-  # TensorBoard monitoring
-  # ---------------------------------------------------------------------------
   tensorboard:
     image: rgp-neural:cpu
     container_name: rgp-tensorboard

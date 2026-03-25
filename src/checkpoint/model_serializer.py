@@ -1,18 +1,9 @@
-"""
-src/checkpoint/model_serializer.py
-
-ModelStateSerializer: saves/loads model weights and optimizer state.
-"""
 from __future__ import annotations
 from pathlib import Path
 from typing import Optional
 import torch
 import torch.nn as nn
-
-
 class ModelStateSerializer:
-    """Serializes model weights and optimizer state to/from disk."""
-
     def save(
         self,
         model: nn.Module,
@@ -24,7 +15,6 @@ class ModelStateSerializer:
         torch.save(model_state, path / "model.pt")
         if optimizer is not None:
             torch.save(optimizer.state_dict(), path / "optimizer.pt")
-
     def load(
         self,
         model: nn.Module,
@@ -38,4 +28,3 @@ class ModelStateSerializer:
         target.load_state_dict(state_dict)
         if optimizer is not None and (path / "optimizer.pt").exists():
             optimizer.load_state_dict(torch.load(path / "optimizer.pt", map_location=map_location))
- 

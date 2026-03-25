@@ -1,18 +1,9 @@
-#!/usr/bin/env bash
-# =============================================================================
-# scripts/run_full_validation.sh
-#
-# Complete validation suite: unit, integration, stability, scaling, ablation,
-# robustness, spectral, and validation tests. Also runs hypothesis validation.
-#
-# Usage: bash scripts/run_full_validation.sh [--skip-slow]
-# =============================================================================
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 SKIP_SLOW=false
-while [[ $# -gt 0 ]]; do
+while [[ $
     case $1 in
         --skip-slow) SKIP_SLOW=true; shift ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;

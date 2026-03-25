@@ -1,31 +1,14 @@
-"""
-ablation/run_skip_connection_ablation.py
-
-Ablation Study 6: Skip Connection Effect on Deep Networks.
-
-Compares: no skip, skip every 5, skip every 10, skip every 20.
-For depth=100, xi_data=50.0.
-
-Hypothesis: skip connections help stabilize gradient flow but do not
-change the fundamental logarithmic depth scaling.
-"""
 from __future__ import annotations
 import numpy as np
 import json
 from pathlib import Path
-
-
-SKIP_INTERVALS = [None, 5, 10, 20, 50]  # None = no skip
+SKIP_INTERVALS = [None, 5, 10, 20, 50]  
 DEPTH = 100
 SIGMA_W = 1.4
-
-
 def simulate_gradient_norm(depth: int, skip_interval: None | int, sigma_w: float,
                             seed: int = 42) -> float:
-    """Simulate gradient norm at layer 0 for a random network."""
     rng = np.random.default_rng(seed)
     grad = np.ones(32) / 32**0.5
-
     for ell in range(depth, 0, -1):
         W = rng.standard_normal((32, 32)) * (sigma_w / 32**0.5)
         h = np.tanh(W @ rng.standard_normal(32))
@@ -34,10 +17,7 @@ def simulate_gradient_norm(depth: int, skip_interval: None | int, sigma_w: float
         grad = J.T @ grad
         if skip_interval and ell % skip_interval == 0:
             grad = grad * 0.5 + np.ones(32) * 0.5 / 32**0.5
-
     return float(np.linalg.norm(grad))
-
-
 def run_skip_ablation(fast_track: bool = False) -> dict:
     n_seeds = 2 if fast_track else 10
     depth   = 20 if fast_track else DEPTH
@@ -46,17 +26,15 @@ def run_skip_ablation(fast_track: bool = False) -> dict:
         norms = [simulate_gradient_norm(depth, skip, SIGMA_W, seed=s) for s in range(n_seeds)]
         name = f"skip_{skip}" if skip else "no_skip"
         results[name] = {
-            "skip_interval": skip,
-            "grad_norm_mean": float(np.mean(norms)),
-            "grad_norm_std":  float(np.std(norms)),
-            "vanishing": bool(np.mean(norms) < 1e-4),
-            "exploding": bool(np.mean(norms) > 100),
+            : skip,
+            : float(np.mean(norms)),
+            :  float(np.std(norms)),
+            : bool(np.mean(norms) < 1e-4),
+            : bool(np.mean(norms) > 100),
         }
         status = "VANISHING" if results[name]["vanishing"] else ("EXPLODING" if results[name]["exploding"] else "STABLE")
         print(f"  {name:<15}: grad_norm={np.mean(norms):.6f}±{np.std(norms):.4f}  [{status}]")
     return results
-
-
 if __name__ == "__main__":
     import argparse
     p = argparse.ArgumentParser()

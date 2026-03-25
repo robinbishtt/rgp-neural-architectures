@@ -1,12 +1,10 @@
-"""src/core - Mathematical foundations. All torch imports are lazy."""
 from src.core.rg_flow_solver import RGFlowSolver, BetaFunctionSolver
 from src.core.correlation.two_point import chi1_gauss_hermite, critical_sigma_w2
-
 def __getattr__(name):
     import importlib
     _LAZY = {
-        'FisherMetric':          ('src.core.fisher.fisher_metric', 'FisherMetric'),
-        'FisherEigenvalueAnalyzer': ('src.core.fisher.eigenvalue_analyzer', 'FisherEigenvalueAnalyzer'),
+        :          ('src.core.fisher.fisher_metric', 'FisherMetric'),
+        : ('src.core.fisher.eigenvalue_analyzer', 'FisherEigenvalueAnalyzer'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

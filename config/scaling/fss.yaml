@@ -1,5 +1,3 @@
-# config/scaling/fss.yaml
-# Finite-size scaling analysis configuration.
 
 fss:
   ansatz: sigmoid
@@ -19,4 +17,4 @@ critical_exponents:
   gamma:
     description: "Susceptibility exponent"
     expected_range: [1.0, 2.5]
- 
+

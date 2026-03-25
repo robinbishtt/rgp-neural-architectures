@@ -1,4 +1,3 @@
-# RG operator configuration variants
 
 operators:
 
@@ -30,10 +29,9 @@ operators:
     context_dim: 16
     description: Data-adaptive coarse-graining via hypernetwork
 
-# Sweep configuration for operator ablation studies
 ablation_sweep:
   operators: [standard, residual, attention, wavelet, learned]
   depths: [10, 50, 100]
   width: 256
   n_seeds: 5
- 
+

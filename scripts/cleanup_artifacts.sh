@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-# scripts/cleanup_artifacts.sh - Remove generated files for clean state.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 echo "Removing generated artifacts..."

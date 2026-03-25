@@ -1,18 +1,9 @@
-#!/usr/bin/env bash
-# =============================================================================
-# scripts/validate_hypotheses.sh
-#
-# Orchestrates H1, H2, H3 validation with statistical significance checks.
-# Reports pass/fail per hypothesis with p-values and effect sizes.
-#
-# Usage: bash scripts/validate_hypotheses.sh [--fast-track]
-# =============================================================================
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 FAST_TRACK=""
-while [[ $# -gt 0 ]]; do
+while [[ $
     case $1 in
         --fast-track) FAST_TRACK="--fast-track"; shift ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;

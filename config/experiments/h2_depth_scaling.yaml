@@ -1,6 +1,3 @@
-# config/experiments/h2_depth_scaling.yaml
-# H2: Depth Scaling Law Validation
-# Full experiment parameters.
 
 experiment:
   name: h2_depth_scaling
@@ -11,8 +8,8 @@ model:
   type: rg_net_variable
   width: 512
   activation: tanh
-  sigma_w: 1.4  # critical init for tanh
-  sigma_b: 0.3  # critical init for tanh
+  sigma_w: 1.4
+  sigma_b: 0.3
   depths: [10, 20, 50, 100, 200, 500]
 
 training:
@@ -21,13 +18,12 @@ training:
   optimizer: adam
   lr: 1.0e-3
   lr_scheduler: cosine
-  accuracy_threshold: 0.95  # paper: minimum depth achieving >=95% accuracy
+  accuracy_threshold: 0.95
 
 data:
   dataset: hierarchical_mnist
   train_samples: 50000
   val_samples: 10000
-  # Matches Hier-1 to Hier-5 datasets (paper sec 5, Table 1)
   correlation_lengths: [5.0, 15.0, 50.0, 100.0, 200.0]
   xi_target: 1.0
 
@@ -45,4 +41,4 @@ output:
   results_dir: results/h2
   checkpoint_dir: checkpoints/h2
   log_dir: logs/h2
- 
+

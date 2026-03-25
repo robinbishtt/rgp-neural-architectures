@@ -1,23 +1,9 @@
-"""
-src/datasets/synthetic_hierarchy.py
-
-Fully synthetic hierarchical dataset with exact correlation structure control.
-"""
 from __future__ import annotations
 from typing import Tuple
 import numpy as np
 import torch
 from torch.utils.data import Dataset
-
-
 class SyntheticHierarchy(Dataset):
-    """
-    Synthetic multi-scale dataset where correlation length is exactly controlled.
-
-    Generates samples x = Σ_j a_j φ_j(scale_j) where φ_j are scale-j basis
-    functions and a_j ~ N(0, σ_j²). The label is determined by the dominant scale.
-    """
-
     def __init__(
         self,
         n_samples:     int   = 10000,
@@ -32,7 +18,6 @@ class SyntheticHierarchy(Dataset):
         self.data, self.labels = self._generate(
             n_samples, n_features, n_scales, correlation_length, n_classes
         )
-
     def _generate(self, n, d, n_scales, xi, n_classes) -> Tuple[torch.Tensor, torch.Tensor]:
         data = np.zeros((n, d))
         labels = np.zeros(n, dtype=int)
@@ -48,10 +33,7 @@ class SyntheticHierarchy(Dataset):
                     data[i, idx[:min(len(idx), d)]] += c
             labels[i] = dominant * (n_classes // n_scales)
         return torch.tensor(data, dtype=torch.float32), torch.tensor(labels)
-
     def __len__(self) -> int:
         return len(self.data)
-
     def __getitem__(self, idx: int):
         return self.data[idx], self.labels[idx]
- 

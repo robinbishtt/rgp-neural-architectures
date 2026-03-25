@@ -1,10 +1,7 @@
-"""tests/integration/test_checkpoint_save_load.py"""
 import pytest
 torch = pytest.importorskip("torch", reason="torch not installed")
 import torch
 import torch.nn as nn
-
-
 import tempfile
 def test_checkpoint_save_and_load():
     from src.checkpoint.checkpoint_manager import CheckpointManager
@@ -16,4 +13,3 @@ def test_checkpoint_save_and_load():
         nn.init.zeros_(model.weight)
         cm.load(model=model)
         assert torch.allclose(model.weight.data, w_before, atol=1e-6)
- 

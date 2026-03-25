@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-# Run H3 Multi-Scale Generalisation validation
-# Full run: 6-8 hours on RTX 3090; fast-track: 3-5 minutes
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODE="${1:---full}"

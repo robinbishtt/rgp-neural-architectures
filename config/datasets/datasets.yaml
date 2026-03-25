@@ -1,20 +1,9 @@
-# config/datasets/datasets.yaml
-#
-# Dataset registry for RGP Neural Architectures experiments.
-#
-# Each entry specifies the dataset class, constructor parameters, and
-# the correlation-length profile used for H1/H2/H3 validation.
-# The 'xi_data' field is the ground-truth initial correlation length ξ₀
-# used in H2 (L_min ~ log(ξ_data / ξ_target)) and measured during H1.
 
 defaults:
   - _self_
 
 datasets:
 
-  # -----------------------------------------------------------------------
-  # 1. Synthetic Hierarchical Dataset  (primary validation dataset)
-  # -----------------------------------------------------------------------
   synthetic_hierarchy:
     class: src.datasets.synthetic_hierarchy.SyntheticHierarchyDataset
     params:
@@ -29,9 +18,6 @@ datasets:
       h2:  { xi_data: [2.0, 5.0, 10.0, 20.0, 50.0, 100.0] }
       h3:  { ood_shift_magnitudes: [0.0, 0.1, 0.3, 0.5, 0.7, 1.0] }
 
-  # -----------------------------------------------------------------------
-  # 2. Hierarchical MNIST  (shallow hierarchy; fast-track default)
-  # -----------------------------------------------------------------------
   hierarchical_mnist:
     class: src.datasets.hierarchical_mnist.HierarchicalMNIST
     params:
@@ -43,9 +29,6 @@ datasets:
       h2:  { xi_data: [2.0, 4.0, 8.0, 12.0] }
       h3:  { ood_shift_magnitudes: [0.0, 0.2, 0.5, 1.0] }
 
-  # -----------------------------------------------------------------------
-  # 3. Hierarchical CIFAR-10/100  (medium hierarchy; primary benchmark)
-  # -----------------------------------------------------------------------
   hierarchical_cifar10:
     class: src.datasets.hierarchical_cifar.HierarchicalCIFAR
     params:
@@ -70,14 +53,11 @@ datasets:
       h2:  { xi_data: [5.0, 10.0, 25.0, 50.0] }
       h3:  { ood_shift_magnitudes: [0.0, 0.25, 0.5, 0.75, 1.0] }
 
-  # -----------------------------------------------------------------------
-  # 4. ImageNet Hierarchy  (deep hierarchy; main paper results)
-  # -----------------------------------------------------------------------
   imagenet_hierarchy:
     class: src.datasets.imagenet_hierarchy.ImageNetHierarchy
     params:
       root:               data/imagenet
-      use_synthetic:      false      # set true for fast-track
+      use_synthetic:      false
       n_samples_synthetic: 10_000
       image_size:         224
     variants:
@@ -86,9 +66,6 @@ datasets:
       h3:  { ood_shift_magnitudes: [0.0, 0.1, 0.2, 0.4, 0.6, 0.8, 1.0],
              correlation_levels:   [1, 2, 3] }
 
-  # -----------------------------------------------------------------------
-  # 5. Medical Hierarchy  (domain generalisation benchmark; H3 Extended)
-  # -----------------------------------------------------------------------
   medical_hierarchy:
     class: src.datasets.medical_hierarchy.MedicalHierarchyDataset
     params:
@@ -98,9 +75,6 @@ datasets:
     variants:
       h3:  { ood_shift_magnitudes: [0.0, 0.3, 0.6, 1.0] }
 
-# -----------------------------------------------------------------------
-# Data loader defaults (overridden per-experiment in config/training/)
-# -----------------------------------------------------------------------
 loader_defaults:
   batch_size:   256
   num_workers:  4
@@ -109,9 +83,6 @@ loader_defaults:
   persistent_workers: true
   drop_last:    false
 
-# -----------------------------------------------------------------------
-# Fast-track overrides (used when fast_track=true in experiment config)
-# -----------------------------------------------------------------------
 fast_track_overrides:
   batch_size:         64
   num_workers:        2
@@ -119,4 +90,4 @@ fast_track_overrides:
   n_samples_val:      200
   n_samples_test:     200
   use_synthetic:      true
- 
+

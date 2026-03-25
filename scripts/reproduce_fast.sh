@@ -1,23 +1,9 @@
-#!/usr/bin/env bash
-# =============================================================================
-# scripts/reproduce_fast.sh
-#
-# Fast-track verification pipeline: L=10, width=64, 2 epochs.
-# Completes in 3-5 minutes on any hardware (CPU included).
-# All outputs tagged [FAST_TRACK_UNVERIFIED].
-#
-# Usage:
-#   bash scripts/reproduce_fast.sh
-#   bash scripts/reproduce_fast.sh --hypothesis h1
-#   bash scripts/reproduce_fast.sh --hypothesis h2
-#   bash scripts/reproduce_fast.sh --hypothesis h3
-# =============================================================================
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 HYPOTHESIS="all"
-while [[ $# -gt 0 ]]; do
+while [[ $
     case $1 in
         --hypothesis) HYPOTHESIS="$2"; shift 2 ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;

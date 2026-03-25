@@ -1,5 +1,3 @@
-#!/usr/bin/env bash
-# scripts/reproduce_tables.sh - Generates all LaTeX tables from results/.
 set -euo pipefail
 cd "$(dirname "$0")/.."
 echo "=== Generating tables ==="

@@ -1,14 +1,10 @@
-"""tests/robustness/test_gradient_clipping_effect.py"""
 import pytest
 torch = pytest.importorskip("torch", reason="torch not installed")
 import torch
 import torch.nn as nn
 import torch.optim as optim
-
-
 class TestGradientClippingEffect:
     def test_clipped_gradients_bounded(self):
-        """After gradient clipping, max gradient norm should not exceed clip value."""
         from src.architectures.rg_net.rg_net_standard import RGNetStandard
         from src.training.training_utils import clip_gradients
         torch.manual_seed(4)
@@ -23,9 +19,7 @@ class TestGradientClippingEffect:
             if p.grad is not None:
                 total += p.grad.norm().item() ** 2
         total_norm = total ** 0.5
-        assert total_norm <= clip_val + 1e-5, \
-            f"Gradient norm {total_norm:.4f} exceeds clip value {clip_val}"
-
+        assert total_norm <= clip_val + 1e-5,            f"Gradient norm {total_norm:.4f} exceeds clip value {clip_val}"
     def test_training_stable_with_clipping(self):
         from src.architectures.rg_net.rg_net_standard import RGNetStandard
         from src.training.training_utils import clip_gradients
@@ -40,4 +34,3 @@ class TestGradientClippingEffect:
             clip_gradients(model, max_norm=1.0)
             opt.step()
             assert not torch.isnan(loss)
- 

@@ -1,77 +1,41 @@
-"""
-figures/extended_data/run_extended_figure11.py
-
-Extended Data Figure 11 - OOD Generalization Under Continuous Correlation Shift
-
-
-OOD generalisation under continuous correlation structure shift:
-  a) Accuracy vs shift magnitude for RG-Net vs all baselines
-  b) Degradation rate (slope of acc vs shift) compared across architectures
-  c) Feature space visualisation (PCA) showing representation stability
-  d) Per-class accuracy under maximal shift (ξ_shift = 5 × ξ_train)
-
-Usage
------
-    python figures/extended_data/run_extended_figure11.py \
-        --results results/ --output figures/out/ed_fig11.pdf
-    python figures/extended_data/run_extended_figure11.py --fast-track
-"""
 from __future__ import annotations
-
 import argparse
 import sys
 from pathlib import Path
-
 import matplotlib.pyplot as plt
 import numpy as np
-
 _ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(_ROOT))
-
 from figures.styles import use_publication_style
 from figures.styles.font_config import (
     DOUBLE_COL_WIDTH,
     add_panel_label,
     remove_top_right_spines,
 )
-
 _FIG_NUM = 11
-
-
 def _synthetic_data(fast_track: bool = False) -> dict:
-    """Generate synthetic data for Extended Data Figure 11."""
     rng       = np.random.default_rng(_FIG_NUM)
     n_layers  = 8 if fast_track else 30
     n_seeds   = 3 if fast_track else 15
     widths    = [64, 128] if fast_track else [64, 128, 256, 512]
-
     return dict(
         n_layers = n_layers,
         n_seeds  = n_seeds,
         widths   = widths,
         rng      = rng,
     )
-
-
 def _build_figure(d: dict, fast_track: bool = False) -> plt.Figure:
-    """Construct the four-panel Extended Data Figure 11."""
     use_publication_style()
-
     fig, axes = plt.subplots(
         2, 2,
         figsize=(DOUBLE_COL_WIDTH, DOUBLE_COL_WIDTH * 0.85),
         constrained_layout=True,
     )
     axs = axes.flatten()
-
     rng      = d["rng"]
     n_layers = d["n_layers"]
     widths   = d["widths"]
     colors   = ["#4878CF", "#6ACC65", "#D65F5F", "#B47CC7"]
-
-    # ----------------------------------------------------------------
-    # Panel a
-    # ----------------------------------------------------------------
     ax = axs[0]
     k  = np.arange(n_layers)
     for i, w in enumerate(widths):
@@ -83,10 +47,6 @@ def _build_figure(d: dict, fast_track: bool = False) -> plt.Figure:
     ax.legend(fontsize=7, frameon=False)
     remove_top_right_spines(ax)
     add_panel_label(ax, "a")
-
-    # ----------------------------------------------------------------
-    # Panel b
-    # ----------------------------------------------------------------
     ax = axs[1]
     for i, w in enumerate(widths):
         x_vals = np.linspace(0, 3, 50)
@@ -97,10 +57,6 @@ def _build_figure(d: dict, fast_track: bool = False) -> plt.Figure:
     ax.set_ylabel("Metric (panel b)")
     remove_top_right_spines(ax)
     add_panel_label(ax, "b")
-
-    # ----------------------------------------------------------------
-    # Panel c
-    # ----------------------------------------------------------------
     ax = axs[2]
     x_c = np.logspace(-0.5, 1.5, 20)
     y_c = 1.0 * np.log(x_c) + 3.0 + rng.normal(0, 0.3, 20)
@@ -112,10 +68,6 @@ def _build_figure(d: dict, fast_track: bool = False) -> plt.Figure:
     ax.legend(fontsize=7, frameon=False)
     remove_top_right_spines(ax)
     add_panel_label(ax, "c")
-
-    # ----------------------------------------------------------------
-    # Panel d
-    # ----------------------------------------------------------------
     ax = axs[3]
     arch_labels = ["RG-Net", "ResNet", "DenseNet", "VGG", "MLP"]
     vals        = [rng.normal(0.85 - 0.04 * i, 0.01, d["n_seeds"]) for i in range(5)]
@@ -130,11 +82,8 @@ def _build_figure(d: dict, fast_track: bool = False) -> plt.Figure:
     ax.set_ylabel("Metric (panel d)")
     remove_top_right_spines(ax)
     add_panel_label(ax, "d")
-
     fig.suptitle("OOD Generalisation Under Continuous Correlation Shift", fontsize=9, y=1.01)
     return fig
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--results",    type=Path, default=_ROOT / "results")
@@ -142,15 +91,11 @@ def main() -> None:
                         default=_ROOT / "figures" / "out" / f"ed_fig{_FIG_NUM}.pdf")
     parser.add_argument("--fast-track", action="store_true")
     args = parser.parse_args()
-
     args.output.parent.mkdir(parents=True, exist_ok=True)
     d   = _synthetic_data(args.fast_track)
     fig = _build_figure(d, args.fast_track)
     fig.savefig(args.output, dpi=300, bbox_inches="tight")
     print(f"Saved Extended Data Figure {_FIG_NUM} → {args.output}")
     plt.close(fig)
-
-
 if __name__ == "__main__":
     main()
- 

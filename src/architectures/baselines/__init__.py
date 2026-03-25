@@ -1,13 +1,12 @@
-"""src/architectures/baselines - Baseline architectures. Lazy-loaded."""
 def __getattr__(name):
     import importlib
     _LAZY = {
-        'ResNetBaseline':     ('src.architectures.baselines.resnet_baseline', 'ResNetBaseline'),
-        'DenseNetBaseline':   ('src.architectures.baselines.densenet_baseline', 'DenseNetBaseline'),
-        'MLPBaseline':        ('src.architectures.baselines.mlp_baseline', 'MLPBaseline'),
-        'VGGBaseline':        ('src.architectures.baselines.vgg_baseline', 'VGGBaseline'),
-        'WaveletCNNBaseline': ('src.architectures.baselines.wavelet_baseline', 'WaveletCNNBaseline'),
-        'TensorNetBaseline':  ('src.architectures.baselines.tensor_net_baseline', 'TensorNetBaseline'),
+        :     ('src.architectures.baselines.resnet_baseline', 'ResNetBaseline'),
+        :   ('src.architectures.baselines.densenet_baseline', 'DenseNetBaseline'),
+        :        ('src.architectures.baselines.mlp_baseline', 'MLPBaseline'),
+        :        ('src.architectures.baselines.vgg_baseline', 'VGGBaseline'),
+        : ('src.architectures.baselines.wavelet_baseline', 'WaveletCNNBaseline'),
+        :  ('src.architectures.baselines.tensor_net_baseline', 'TensorNetBaseline'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

@@ -1,13 +1,9 @@
-"""tests/stability/test_activation_statistics.py"""
 import pytest
 torch = pytest.importorskip("torch", reason="torch not installed")
 import torch
 import torch.nn as nn
-
-
 class TestActivationStatistics:
     def test_unit_variance_at_critical_init(self):
-        """At critical initialization, pre-activation variance should be ~1 across layers."""
         from src.architectures.rg_net.rg_net_standard import RGNetStandard
         torch.manual_seed(0)
         model = RGNetStandard(input_dim=64, n_classes=10)
@@ -24,14 +20,10 @@ class TestActivationStatistics:
         for h in hooks:
             h.remove()
         if variances:
-            # Check variance doesn't explode or vanish by more than 3 orders of magnitude
             max_var = max(variances)
             min_var = min(variances)
-            assert max_var / (min_var + 1e-12) < 1e3, \
-                f"Activation variance range too large: min={min_var:.4f}, max={max_var:.4f}"
-
+            assert max_var / (min_var + 1e-12) < 1e3,                f"Activation variance range too large: min={min_var:.4f}, max={max_var:.4f}"
     def test_no_dead_neurons(self):
-        """No neuron should have exactly zero activation variance (dead neuron)."""
         from src.architectures.rg_net.rg_net_standard import RGNetStandard
         torch.manual_seed(1)
         model = RGNetStandard(input_dim=32, n_classes=4)
@@ -50,6 +42,4 @@ class TestActivationStatistics:
         for i, v in enumerate(variances):
             dead = (v < 1e-8).sum().item()
             total = v.numel()
-            assert dead / total < 0.5, \
-                f"Layer {i}: {dead}/{total} neurons are dead"
- 
+            assert dead / total < 0.5,                f"Layer {i}: {dead}/{total} neurons are dead"

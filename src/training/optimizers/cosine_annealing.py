@@ -1,30 +1,9 @@
-"""
-src/training/optimizers/cosine_annealing.py
-
-CosineAnnealingWithRestarts: SGDR-style cosine annealing with warm restarts
-(Loshchilov & Hutter, 2017) adapted for the RGP training protocol.
-
-Used as the default LR schedule for full-depth (L=100-1000) training runs.
-"""
 from __future__ import annotations
 import math
 from typing import List, Optional
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
-
-
 class CosineAnnealingWithRestarts(_LRScheduler):
-    """
-    Cosine annealing with warm restarts (SGDR).
-
-    At each restart the learning rate resets to η_max and follows
-    a cosine decay to η_min over the next T_i steps, where T_i can
-    be multiplied by T_mult after each restart.
-
-    Reference: Loshchilov & Hutter (2017). SGDR: Stochastic Gradient
-               Descent with Warm Restarts. ICLR 2017.
-    """
-
     def __init__(
         self,
         optimizer:  Optimizer,
@@ -39,14 +18,12 @@ class CosineAnnealingWithRestarts(_LRScheduler):
         self.T_cur    = 0
         self.T_i      = T_0
         super().__init__(optimizer, last_epoch)
-
     def get_lr(self) -> List[float]:
         cos_factor = (1.0 + math.cos(math.pi * self.T_cur / self.T_i)) / 2.0
         return [
             self.eta_min + (base_lr - self.eta_min) * cos_factor
             for base_lr in self.base_lrs
         ]
-
     def step(self, epoch: Optional[int] = None) -> None:
         if self.T_cur == self.T_i:
             self.T_cur = 0
@@ -54,4 +31,3 @@ class CosineAnnealingWithRestarts(_LRScheduler):
         else:
             self.T_cur += 1
         super().step(epoch)
- 

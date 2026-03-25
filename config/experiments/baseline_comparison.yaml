@@ -1,5 +1,3 @@
-# config/experiments/baseline_comparison.yaml
-# Baseline architecture comparison parameters.
 
 experiment:
   name: baseline_comparison
@@ -26,4 +24,4 @@ data:
 output:
   results_dir: results/baselines
   log_dir: logs/baselines
- 
+

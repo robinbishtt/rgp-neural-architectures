@@ -1,16 +1,8 @@
-"""
-src/architectures/baselines/densenet_baseline.py
-
-DenseNet baseline: dense skip connections to all previous layers.
-"""
 from __future__ import annotations
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-
 class DenseNetBaseline(nn.Module):
-    """DenseNet-style MLP with dense feature reuse. Concatenates all prior activations."""
     def __init__(self, in_features: int = 784, n_classes: int = 10,
                  depth: int = 20, growth_rate: int = 32) -> None:
         super().__init__()
@@ -21,7 +13,6 @@ class DenseNetBaseline(nn.Module):
             self.layers.append(nn.Linear(in_ch, growth_rate))
             in_ch += growth_rate
         self.head = nn.Linear(in_ch, n_classes)
-
     def forward(self, x):
         h = F.relu(self.input_proj(x))
         features = [h]
@@ -29,4 +20,3 @@ class DenseNetBaseline(nn.Module):
             h_new = F.relu(layer(torch.cat(features, dim=-1)))
             features.append(h_new)
         return self.head(torch.cat(features, dim=-1))
- 

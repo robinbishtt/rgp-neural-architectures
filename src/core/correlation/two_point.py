@@ -1,137 +1,98 @@
-"""
-src/core/correlation.py
-
-Two-point correlation function and χ₁ computation via Gauss-Hermite quadrature.
-
-χ₁ = σ_w² · E[φ'(z)²]  where z ~ N(0, q*)
-"""
-
 from __future__ import annotations
-
 import numpy as np
 from numpy.polynomial.hermite import hermgauss
-
-
-def chi1_gauss_hermite(
+def _fixed_point_variance(
     sigma_w2: float,
+    sigma_b2: float,
     nonlinearity: str = "tanh",
     n_points: int = 50,
-    q_star: float = 1.0,
+    tol: float = 1e-10,
+    max_iter: int = 1000,
 ) -> float:
-    """
-    Compute χ₁ = σ_w² · E[φ'(z)²] via Gauss-Hermite quadrature.
-
-    ∫ φ'(√(2q*) t)² · exp(−t²) dt / √π
-
-    Parameters
-    ----------
-    sigma_w2     : weight variance σ_w²
-    nonlinearity : "tanh" | "relu" | "gelu"
-    n_points     : quadrature order
-    q_star       : fixed-point variance
-
-    Returns
-    -------
-    chi1 : float
-    """
     x_gh, w_gh = hermgauss(n_points)
-    z = np.sqrt(2.0 * q_star) * x_gh
-
+    q = 1.0  
+    for _ in range(max_iter):
+        z     = np.sqrt(2.0 * max(q, 1e-12)) * x_gh
+        phi_z = _phi(z, nonlinearity)
+        q_new = sigma_w2 * np.dot(w_gh, phi_z ** 2) / np.sqrt(np.pi) + sigma_b2
+        if abs(q_new - q) < tol:
+            return float(q_new)
+        q = q_new
+    return float(q)
+def _phi(z: np.ndarray, nonlinearity: str) -> np.ndarray:
     if nonlinearity == "tanh":
-        phi_prime = 1.0 - np.tanh(z) ** 2
-    elif nonlinearity == "relu":
-        phi_prime = (z > 0).astype(float)
-    elif nonlinearity == "gelu":
+        return np.tanh(z)
+    if nonlinearity == "relu":
+        return np.maximum(z, 0.0)
+    if nonlinearity == "gelu":
         from scipy.special import erf
-        phi_prime = 0.5 * (1.0 + erf(z / np.sqrt(2.0))) + \
-                    z * np.exp(-0.5 * z ** 2) / np.sqrt(2.0 * np.pi)
-    else:
-        raise ValueError(f"Unknown nonlinearity: {nonlinearity!r}")
-
-    integrand = phi_prime ** 2
-    integral  = np.dot(w_gh, integrand) / np.sqrt(np.pi)
-    return float(sigma_w2 * integral)
-
-
-def critical_sigma_w2(
-    nonlinearity: str = "tanh",
-    n_points: int = 50,
-    tol: float = 1e-6,
+        return 0.5 * z * (1.0 + erf(z / np.sqrt(2.0)))
+    raise ValueError(f"Unknown nonlinearity: {nonlinearity!r}")
+def _dphi(z: np.ndarray, nonlinearity: str) -> np.ndarray:
+    if nonlinearity == "tanh":
+        return 1.0 - np.tanh(z) ** 2
+    if nonlinearity == "relu":
+        return (z > 0).astype(float)
+    if nonlinearity == "gelu":
+        from scipy.special import erf
+        cdf = 0.5 * (1.0 + erf(z / np.sqrt(2.0)))
+        pdf = np.exp(-0.5 * z ** 2) / np.sqrt(2.0 * np.pi)
+        return cdf + z * pdf
+    raise ValueError(f"Unknown nonlinearity: {nonlinearity!r}")
+def chi1_gauss_hermite(
+    sigma_w2:     float,
+    nonlinearity: str   = "tanh",
+    n_points:     int   = 50,
+    q_star:       float = None,
+    sigma_b2:     float = 0.09,   
 ) -> float:
-    """
-    Find σ_w² such that χ₁ = 1 (critical initialisation).
-    Uses bisection.
-    """
-    lo, hi = 0.0, 10.0
-    for _ in range(80):
-        mid = 0.5 * (lo + hi)
-        c   = chi1_gauss_hermite(mid, nonlinearity, n_points)
-        if abs(c - 1.0) < tol:
-            return mid
-        if c < 1.0:
+    if q_star is None:
+        q_star = _fixed_point_variance(sigma_w2, sigma_b2, nonlinearity, n_points)
+    x_gh, w_gh = hermgauss(n_points)
+    z    = np.sqrt(2.0 * max(q_star, 1e-12)) * x_gh
+    dphi = _dphi(z, nonlinearity)
+    return float(sigma_w2 * np.dot(w_gh, dphi ** 2) / np.sqrt(np.pi))
+def critical_sigma_w2(
+    nonlinearity: str   = "tanh",
+    n_points:     int   = 50,
+    sigma_b2:     float = 0.09,
+    tol:          float = 1e-8,
+) -> float:
+    lo, hi = 0.01, 20.0
+    for _ in range(100):
+        mid  = 0.5 * (lo + hi)
+        chi1 = chi1_gauss_hermite(mid, nonlinearity, n_points, sigma_b2=sigma_b2)
+        if abs(chi1 - 1.0) < tol:
+            return float(mid)
+        if chi1 < 1.0:
             lo = mid
         else:
             hi = mid
-    return 0.5 * (lo + hi)
-
-
-class TwoPointCorrelation:
-    """
-    Layer-wise two-point correlation C^(k) = ⟨h^(k)(x) · h^(k)(x')⟩.
-    Computed via mean-field recursion.
-    """
-
-    def __init__(
-        self,
-        sigma_w2: float = 1.0,
-        sigma_b2: float = 0.05,
-        nonlinearity: str = "tanh",
-        n_quadrature: int = 50,
-    ) -> None:
-        self.sigma_w2    = sigma_w2
-        self.sigma_b2    = sigma_b2
-        self.nonlinearity = nonlinearity
-        self.n_quadrature = n_quadrature
-
-    def propagate(
-        self,
-        q11: float,  # ⟨h(x)²⟩
-        q12: float,  # ⟨h(x)h(x')⟩
-        q22: float,  # ⟨h(x')²⟩
-    ):
-        """One recursion step of the mean-field correlation propagation."""
-        x_gh, w_gh = hermgauss(self.n_quadrature)
-
-        def _integrate(fn):
-            return float(np.dot(w_gh, fn(x_gh)) / np.sqrt(np.pi))
-
-        sigma = np.sqrt(max(2.0 * q11, 1e-12))
-
-        if self.nonlinearity == "tanh":
-            def fn11(t):
-                return np.tanh(sigma * t) ** 2
-        elif self.nonlinearity == "relu":
-            def fn11(t):
-                return np.maximum(sigma * t, 0) ** 2
+    return float(0.5 * (lo + hi))
+def ordered_sigma_w_for_target_chi1(
+    target_chi1:  float,
+    nonlinearity: str   = "tanh",
+    sigma_b2:     float = 0.09,
+    n_points:     int   = 50,
+    tol:          float = 1e-8,
+) -> float:
+    assert 0.0 < target_chi1 < 1.0, "target_chi1 must be in (0, 1) for ordered phase"
+    sw2_crit = critical_sigma_w2(nonlinearity, n_points, sigma_b2)
+    lo, hi = 0.01, sw2_crit
+    for _ in range(100):
+        mid  = 0.5 * (lo + hi)
+        chi1 = chi1_gauss_hermite(mid, nonlinearity, n_points, sigma_b2=sigma_b2)
+        if abs(chi1 - target_chi1) < tol:
+            return float(mid ** 0.5)
+        if chi1 > target_chi1:
+            hi = mid
         else:
-            def fn11(t):
-                return np.tanh(sigma * t) ** 2
-
-        new_q11 = self.sigma_w2 * _integrate(fn11) + self.sigma_b2
-        new_q12 = new_q11 * (q12 / max(q11, 1e-12))  # linear approx
-        new_q22 = new_q11
-
-        return new_q11, new_q12, new_q22
-
-    def run(self, n_layers: int, c12_init: float = 0.9) -> np.ndarray:
-        """
-        Return correlation coefficient c^(k) = q12^(k) / sqrt(q11 q22) for each layer.
-        """
-        q11, q12, q22 = 1.0, c12_init, 1.0
-        c12_vals = [c12_init]
-        for _ in range(n_layers):
-            q11, q12, q22 = self.propagate(q11, q12, q22)
-            c12 = q12 / np.sqrt(max(q11 * q22, 1e-12))
-            c12_vals.append(float(np.clip(c12, -1.0, 1.0)))
-        return np.array(c12_vals)
- 
+            lo = mid
+    return float((0.5 * (lo + hi)) ** 0.5)
+def recommended_sigma_w(k_c_target: float, sigma_b: float = 0.3) -> float:
+    if k_c_target <= 0:
+        raise ValueError(f"k_c_target must be positive, got {k_c_target}")
+    target_chi1 = float(np.exp(-1.0 / k_c_target))
+    return ordered_sigma_w_for_target_chi1(
+        target_chi1, sigma_b2=sigma_b ** 2
+    )

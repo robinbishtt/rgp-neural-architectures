@@ -1,25 +1,12 @@
-"""
-src/datasets/loaders/streaming_loader.py
-
-Out-of-core streaming DataLoader for datasets exceeding available RAM.
-"""
 from __future__ import annotations
 from pathlib import Path
 import torch
 from torch.utils.data import DataLoader, IterableDataset
-
-
 class StreamingHDF5Dataset(IterableDataset):
-    """
-    Streaming reader for HDF5 datasets larger than available RAM.
-    Reads chunks from disk on demand.
-    """
-
     def __init__(self, hdf5_path: str, chunk_size: int = 1024) -> None:
         super().__init__()
         self.path       = Path(hdf5_path)
         self.chunk_size = chunk_size
-
     def __iter__(self):
         import h5py
         with h5py.File(self.path, "r") as f:
@@ -32,14 +19,9 @@ class StreamingHDF5Dataset(IterableDataset):
                 y = torch.tensor(labels[start:end], dtype=torch.long)
                 for i in range(len(x)):
                     yield x[i], y[i]
-
-
 class StreamingDataLoader(DataLoader):
-    """DataLoader backed by StreamingHDF5Dataset for out-of-core processing."""
-
     def __init__(self, hdf5_path: str, batch_size: int = 256,
                  num_workers: int = 4, **kwargs) -> None:
         dataset = StreamingHDF5Dataset(hdf5_path)
         super().__init__(dataset, batch_size=batch_size,
                          num_workers=num_workers, **kwargs)
- 

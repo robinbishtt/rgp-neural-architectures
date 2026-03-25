@@ -1,7 +1,3 @@
-# config/fast_track/override.yaml
-# Base fast-track overrides applied to ALL experiments.
-# Reduces scale parameters while preserving pipeline logic.
-# Expected runtime: 3-5 minutes on any hardware.
 
 _override_:
   model:
@@ -16,4 +12,4 @@ _override_:
     num_workers: 0
   fast_track: true
   fast_track_tag: "[FAST_TRACK_UNVERIFIED]"
- 
+

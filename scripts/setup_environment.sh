@@ -1,19 +1,10 @@
-#!/usr/bin/env bash
-# =============================================================================
-# scripts/setup_environment.sh
-#
-# Initial environment setup: installs dependencies, validates Python version,
-# creates required directory structure, and verifies GPU availability.
-#
-# Usage: bash scripts/setup_environment.sh [--cpu-only]
-# =============================================================================
 
 set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 CPU_ONLY=false
-while [[ $# -gt 0 ]]; do
+while [[ $
     case $1 in
         --cpu-only) CPU_ONLY=true; shift ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;
@@ -23,7 +14,6 @@ done
 echo "=== RGP Neural Architectures - Environment Setup ==="
 cd "$PROJECT_ROOT"
 
-# Python version check
 PYTHON_VERSION=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
 if python3 -c "import sys; exit(0 if (sys.version_info.major==3 and sys.version_info.minor>=9) else 1)"; then
     echo "Python $PYTHON_VERSION - OK"
@@ -32,7 +22,6 @@ else
     exit 1
 fi
 
-# Install PyTorch
 if [[ "$CPU_ONLY" == true ]]; then
     echo "Installing PyTorch (CPU only)..."
     pip install torch==2.0.1+cpu torchvision==0.15.2+cpu \
@@ -45,15 +34,12 @@ else
         --index-url https://download.pytorch.org/whl/cpu
 fi
 
-# Install project dependencies
 echo "Installing project dependencies..."
 pip install -r requirements.txt
 
-# Install project in editable mode
 echo "Installing rgp-neural-architectures in editable mode..."
 pip install -e ".[dev]"
 
-# Create required directories
 echo "Creating directory structure..."
 mkdir -p results/h1 results/h2 results/h3 results/fss results/jacobian
 mkdir -p figures/out
@@ -61,7 +47,6 @@ mkdir -p checkpoints
 mkdir -p logs
 mkdir -p data
 
-# Environment validation
 echo ""
 echo "=== Validating environment ==="
 python3 -c "

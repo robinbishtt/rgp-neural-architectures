@@ -1,17 +1,8 @@
-#!/usr/bin/env bash
-# =============================================================================
-# scripts/download_pretrained_checkpoints.sh
-#
-# Downloads pre-trained checkpoints from Zenodo/OSF for reviewer verification.
-# Allows generating all figures without re-training (10-15 minutes).
-#
-# Usage: bash scripts/download_pretrained_checkpoints.sh [--output-dir DIR]
-# =============================================================================
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 OUTPUT_DIR="checkpoints/pretrained"
-while [[ $# -gt 0 ]]; do
+while [[ $
     case $1 in
         --output-dir) OUTPUT_DIR="$2"; shift 2 ;;
         *) echo "Unknown option: $1" >&2; exit 1 ;;

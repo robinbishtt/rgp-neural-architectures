@@ -1,20 +1,9 @@
-#!/usr/bin/env bash
-# reproduce.sh - One-command reproduction of all paper results.
-#
-# Usage:
-#   bash reproduce.sh              Full reproduction (24-72 hours, requires GPU)
-#   bash reproduce.sh --fast-track Fast-track (< 5 minutes, CPU-only)
-#   bash reproduce.sh --h1         H1 only
-#   bash reproduce.sh --h2         H2 only
-#   bash reproduce.sh --h3         H3 only
-#   bash reproduce.sh --figures    Figures only (requires existing results/)
 
 set -euo pipefail
 cd "$(dirname "$0")"
 
-# ── Parse arguments ───────────────────────────────────────────────────
 MODE="full"
-while [[ $# -gt 0 ]]; do
+while [[ $
     case "$1" in
         --fast-track) MODE="fast" ;;
         --h1)         MODE="h1"   ;;
@@ -36,19 +25,16 @@ echo "  Mode: $MODE"
 echo "========================================================"
 echo ""
 
-# ── Step 0: Smoke test ────────────────────────────────────────────────
 echo "[0/5] Verifying pipeline..."
 python3 scripts/verify_pipeline.py
 echo ""
 
-# ── Step 0.5: Proof-of-life (fast-track only) ─────────────────────────
 if [ "$MODE" = "fast" ]; then
     echo "[0.5/5] Proof-of-life: real small training run (depth=3, width=32)..."
     python3 scripts/proof_of_life_training.py --depth 3 --width 32 --epochs 3
     echo ""
 fi
 
-# ── Helper functions ──────────────────────────────────────────────────
 run_h1() {
     echo "[1/5] H1: Scale Correspondence"
     if [ "$MODE" = "fast" ]; then
@@ -102,7 +88,6 @@ run_ablations() {
     fi
 }
 
-# ── Execute ───────────────────────────────────────────────────────────
 case "$MODE" in
     fast)
         run_h1; run_h2; run_h3; run_figures

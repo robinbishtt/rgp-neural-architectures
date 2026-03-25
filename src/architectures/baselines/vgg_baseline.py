@@ -1,14 +1,6 @@
-"""
-src/architectures/baselines/vgg_baseline.py
-
-VGG-style MLP baseline with block structure and BatchNorm.
-"""
 from __future__ import annotations
 import torch.nn as nn
-
-
 class VGGBaseline(nn.Module):
-    """VGG-style MLP: deep blocks with BatchNorm and Dropout."""
     def __init__(self, in_features: int = 784, n_classes: int = 10,
                  n_blocks: int = 5, block_depth: int = 2, width: int = 512) -> None:
         super().__init__()
@@ -19,7 +11,5 @@ class VGGBaseline(nn.Module):
             blocks.append(nn.Dropout(0.3))
         blocks.append(nn.Linear(width, n_classes))
         self.net = nn.Sequential(*blocks)
-
     def forward(self, x):
         return self.net(x)
- 

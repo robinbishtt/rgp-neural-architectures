@@ -1,12 +1,11 @@
-"""src/core/jacobian - Jacobian computation. Lazy-loaded (requires torch)."""
 def __getattr__(name):
     import importlib
     _LAZY = {
-        'AutogradJacobian':         ('src.core.jacobian.jacobian', 'AutogradJacobian'),
-        'JVPJacobian':              ('src.core.jacobian.jacobian', 'JVPJacobian'),
-        'VJPJacobian':              ('src.core.jacobian.jacobian', 'VJPJacobian'),
-        'FiniteDifferenceJacobian': ('src.core.jacobian.jacobian', 'FiniteDifferenceJacobian'),
-        'CumulativeJacobian':       ('src.core.jacobian.jacobian', 'CumulativeJacobian'),
+        :         ('src.core.jacobian.jacobian', 'AutogradJacobian'),
+        :              ('src.core.jacobian.jacobian', 'JVPJacobian'),
+        :              ('src.core.jacobian.jacobian', 'VJPJacobian'),
+        : ('src.core.jacobian.jacobian', 'FiniteDifferenceJacobian'),
+        :       ('src.core.jacobian.jacobian', 'CumulativeJacobian'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

@@ -1,4 +1,3 @@
-# Base training configuration shared across all experiments
 
 training:
   seed: 42
@@ -22,7 +21,7 @@ scheduler:
 
 mixed_precision:
   enabled: false
-  dtype: float16        # float16 | bfloat16
+  dtype: float16
 
 gradient_checkpointing:
   enabled: false
@@ -37,4 +36,4 @@ early_stopping:
   patience: 15
   min_delta: 1.0e-4
   monitor: val_loss
- 
+

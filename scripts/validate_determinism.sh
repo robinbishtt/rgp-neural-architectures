@@ -1,19 +1,10 @@
-#!/usr/bin/env bash
-# =============================================================================
-# scripts/validate_determinism.sh
-#
-# Verifies bit-exact reproducibility across two independent runs with the
-# same master seed. Tests Python, NumPy, PyTorch CPU, and CUDA RNGs.
-#
-# Usage: bash scripts/validate_determinism.sh [--seed 42] [--n-trials 3]
-# =============================================================================
 
 set -euo pipefail
 cd "$(dirname "$0")/.."
 
 SEED=42
 N_TRIALS=3
-while [[ $# -gt 0 ]]; do
+while [[ $
     case $1 in
         --seed)     SEED="$2";     shift 2 ;;
         --n-trials) N_TRIALS="$2"; shift 2 ;;

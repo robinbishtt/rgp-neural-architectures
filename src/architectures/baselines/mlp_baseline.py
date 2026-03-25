@@ -1,14 +1,6 @@
-"""
-src/architectures/baselines/mlp_baseline.py
-
-Standard MLP baseline with no structural priors.
-"""
 from __future__ import annotations
 import torch.nn as nn
-
-
 class MLPBaseline(nn.Module):
-    """Plain MLP with ReLU activations. Xavier initialization."""
     def __init__(self, in_features: int = 784, n_classes: int = 10,
                  depth: int = 5, width: int = 512) -> None:
         super().__init__()
@@ -20,7 +12,5 @@ class MLPBaseline(nn.Module):
         for m in self.modules():
             if isinstance(m, nn.Linear):
                 nn.init.xavier_uniform_(m.weight)
-
     def forward(self, x):
         return self.net(x)
- 

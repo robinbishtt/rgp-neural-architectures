@@ -1,5 +1,3 @@
-# config/experiments/extended_data_reproduction.yaml
-# Extended Data figure reproduction parameters.
 
 experiment:
   name: extended_data_reproduction
@@ -37,4 +35,4 @@ extended_figures:
 output:
   results_dir: results/extended_data
   figures_dir: figures/out
- 
+

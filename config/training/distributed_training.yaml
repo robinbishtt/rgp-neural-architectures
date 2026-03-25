@@ -1,16 +1,15 @@
-# Distributed training configuration (multi-GPU)
 
 defaults:
   - base_training
 
 distributed:
-  backend: nccl             # nccl | gloo | mpi
-  n_gpus: auto              # auto-detect or specify integer
+  backend: nccl
+  n_gpus: auto
   sync_batch_norm: true
   find_unused_parameters: false
 
 training:
-  batch_size: 512           # effective batch size across all GPUs
+  batch_size: 512
   num_workers: 8
 
 optimizer:
@@ -20,9 +19,9 @@ optimizer:
 
 gradient_accumulation:
   enabled: false
-  steps: 4                  # accumulate over N micro-batches
+  steps: 4
 
 launch:
   method: torchrun
   n_procs_per_node: auto
- 
+

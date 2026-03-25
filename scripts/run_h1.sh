@@ -1,6 +1,3 @@
-#!/usr/bin/env bash
-# Run H1 Scale Correspondence validation
-# Full run: 4-6 hours on RTX 3090; fast-track: 3-5 minutes any hardware
 set -euo pipefail
 cd "$(dirname "$0")/.."
 MODE="${1:---full}"

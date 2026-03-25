@@ -1,17 +1,12 @@
-"""src/orchestration - Workflow orchestration via DAG execution."""
-
-# All imports are lazy to avoid loading torch when not needed.
-# Direct imports below are still available via standard import syntax.
-
 def __getattr__(name):
     import importlib
     _LAZY = {
-        'DAGExecutor': ('src.orchestration.dag_executor', 'DAGExecutor'),
-        'Task': ('src.orchestration.dag_executor', 'Task'),
-        'build_full_pipeline': ('src.orchestration.pipeline', 'build_full_pipeline'),
-        'build_fast_track_pipeline': ('src.orchestration.pipeline', 'build_fast_track_pipeline'),
-        'compose_config': ('src.orchestration.hydra_config', 'compose_config'),
-        'fast_track_overrides': ('src.orchestration.hydra_config', 'fast_track_overrides'),
+        : ('src.orchestration.dag_executor', 'DAGExecutor'),
+        : ('src.orchestration.dag_executor', 'Task'),
+        : ('src.orchestration.pipeline', 'build_full_pipeline'),
+        : ('src.orchestration.pipeline', 'build_fast_track_pipeline'),
+        : ('src.orchestration.hydra_config', 'compose_config'),
+        : ('src.orchestration.hydra_config', 'fast_track_overrides'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

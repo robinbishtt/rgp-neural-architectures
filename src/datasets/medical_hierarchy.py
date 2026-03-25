@@ -1,23 +1,7 @@
-"""
-src/datasets/medical_hierarchy.py
-
-Medical imaging dataset with anatomical hierarchy (organ -> sub-region -> cell).
-Uses synthetic generation when real data unavailable.
-"""
 from __future__ import annotations
 from torch.utils.data import Dataset
 from src.datasets.synthetic_hierarchy import SyntheticHierarchy
-
-
 class MedicalHierarchy(Dataset):
-    """
-    Multi-scale medical imaging dataset.
-
-    In the absence of real medical data (requires IRB/license), generates
-    synthetic data with anatomy-inspired correlation structure. Structure:
-    coarse scale (organ) -> mid scale (tissue) -> fine scale (cell).
-    """
-
     def __init__(
         self,
         n_samples: int = 5000,
@@ -37,10 +21,7 @@ class MedicalHierarchy(Dataset):
             )
         else:
             raise NotImplementedError("Real medical data loading requires IRB approval.")
-
     def __len__(self) -> int:
         return len(self._base)
-
     def __getitem__(self, idx: int):
         return self._base[idx]
- 

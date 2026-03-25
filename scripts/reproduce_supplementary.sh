@@ -1,15 +1,3 @@
-#!/usr/bin/env bash
-# scripts/reproduce_supplementary.sh
-#
-# Reproduces all supplementary figures (S1-S4) and tables (S1-S4) in one shot.
-# Requires: Python 3.10+, numpy, scipy, matplotlib (see requirements.txt).
-#
-# Fast-track mode (~2 min, synthetic data - no GPU required):
-#   bash scripts/reproduce_supplementary.sh --fast-track
-#
-# Full quality mode (requires real experiment results in results/):
-#   bash scripts/reproduce_supplementary.sh
-#
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -23,8 +11,8 @@ RESULTS_ROOT="results"
 for arg in "$@"; do
     case "$arg" in
         --fast-track) FAST_TRACK=1 ;;
-        --output=*)   OUTPUT_DIR="${arg#*=}" ;;
-        --results=*)  RESULTS_ROOT="${arg#*=}" ;;
+        --output=*)   OUTPUT_DIR="${arg
+        --results=*)  RESULTS_ROOT="${arg
         -h|--help)
             echo "Usage: $0 [--fast-track] [--output=DIR] [--results=DIR]"
             exit 0

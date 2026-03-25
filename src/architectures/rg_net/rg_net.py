@@ -1,31 +1,10 @@
-"""
-src/architectures/rg_net/rg_net.py
-
-RG-Net architecture variants.
-
-Variants:
-  RGNetShallow    - L=2-5   layers (baseline)
-  RGNetStandard   - L=10-50 layers (main experiments)
-  RGNetDeep       - L=50-200 layers (scaling study)
-  RGNetUltraDeep  - L=200-1000 layers (extreme depth, gradient checkpointing)
-  RGNetVariableWidth - width schedule adapts to ξ_data
-  RGNetMultiScale - parallel streams at multiple resolutions
-  RGNetResidual   - skip connections every D_skip layers
-"""
-
 from __future__ import annotations
-
 import math
 from typing import List
-
 import torch
 import torch.nn as nn
 import torch.utils.checkpoint as cp
-
-
 class RGLayer(nn.Module):
-    """Single RG transformation layer: h^(k) = σ(W_k h^(k-1) + b_k)."""
-
     def __init__(
         self,
         in_features: int,
@@ -39,21 +18,11 @@ class RGLayer(nn.Module):
         self.act    = {"tanh": nn.Tanh(), "relu": nn.ReLU(), "gelu": nn.GELU()}.get(
             activation, nn.Tanh()
         )
-        # Critical initialisation
         nn.init.normal_(self.linear.weight, std=sigma_w / math.sqrt(in_features))
         nn.init.normal_(self.linear.bias,   std=sigma_b)
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.act(self.linear(x))
-
-
-# ---------------------------------------------------------------------------
-# Variant 1: Shallow
-# ---------------------------------------------------------------------------
-
 class RGNetShallow(nn.Module):
-    """RG-Net with L=2-5 layers. Used as baseline."""
-
     def __init__(
         self,
         input_dim: int,
@@ -69,20 +38,11 @@ class RGNetShallow(nn.Module):
             layers.append(RGLayer(hidden_dim, hidden_dim, activation))
         self.layers = nn.ModuleList(layers)
         self.head   = nn.Linear(hidden_dim, output_dim)
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         for layer in self.layers:
             x = layer(x)
         return self.head(x)
-
-
-# ---------------------------------------------------------------------------
-# Variant 2: Standard
-# ---------------------------------------------------------------------------
-
 class RGNetStandard(nn.Module):
-    """RG-Net with L=10-50 layers. Main experiment model."""
-
     def __init__(
         self,
         input_dim: int,
@@ -98,21 +58,12 @@ class RGNetStandard(nn.Module):
             for _ in range(depth)
         ])
         self.head   = nn.Linear(hidden_dim, output_dim)
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = torch.tanh(self.embed(x))
         for layer in self.layers:
             x = layer(x)
         return self.head(x)
-
-
-# ---------------------------------------------------------------------------
-# Variant 3: Deep
-# ---------------------------------------------------------------------------
-
 class RGNetDeep(nn.Module):
-    """RG-Net with L=50-200 layers. Scaling study model."""
-
     def __init__(
         self,
         input_dim: int,
@@ -129,7 +80,6 @@ class RGNetDeep(nn.Module):
             RGLayer(hidden_dim, hidden_dim, activation) for _ in range(depth)
         ])
         self.head = nn.Linear(hidden_dim, output_dim)
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = torch.tanh(self.embed(x))
         residual = x
@@ -139,18 +89,7 @@ class RGNetDeep(nn.Module):
                 x = x + residual
                 residual = x
         return self.head(x)
-
-
-# ---------------------------------------------------------------------------
-# Variant 4: UltraDeep (gradient checkpointing)
-# ---------------------------------------------------------------------------
-
 class RGNetUltraDeep(nn.Module):
-    """
-    RG-Net with L=200-1000 layers. Uses gradient checkpointing to reduce
-    activation memory by ~60% at cost of ~25% extra compute.
-    """
-
     def __init__(
         self,
         input_dim: int,
@@ -167,7 +106,6 @@ class RGNetUltraDeep(nn.Module):
         ])
         self.head       = nn.Linear(hidden_dim, output_dim)
         self.segments   = checkpoint_segments
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = torch.tanh(self.embed(x))
         functions = list(self.layers)
@@ -179,18 +117,7 @@ class RGNetUltraDeep(nn.Module):
             else:
                 x = seg(x)
         return self.head(x)
-
-
-# ---------------------------------------------------------------------------
-# Variant 5: VariableWidth
-# ---------------------------------------------------------------------------
-
 class RGNetVariableWidth(nn.Module):
-    """
-    RG-Net with width schedule that mirrors the correlation-length decay.
-    Width shrinks geometrically from max_width to min_width over depth.
-    """
-
     def __init__(
         self,
         input_dim: int,
@@ -206,29 +133,16 @@ class RGNetVariableWidth(nn.Module):
             for k in range(depth)
         ]
         dims = [input_dim] + widths
-
         layers: List[nn.Module] = []
         for i in range(depth):
             layers.append(RGLayer(dims[i], dims[i + 1], activation))
         self.layers = nn.ModuleList(layers)
         self.head   = nn.Linear(widths[-1], output_dim)
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         for layer in self.layers:
             x = layer(x)
         return self.head(x)
-
-
-# ---------------------------------------------------------------------------
-# Variant 6: MultiScale
-# ---------------------------------------------------------------------------
-
 class RGNetMultiScale(nn.Module):
-    """
-    RG-Net with parallel processing streams at different scale depths.
-    Combines representations from depth L/4, L/2, 3L/4, L before head.
-    """
-
     def __init__(
         self,
         input_dim: int,
@@ -244,7 +158,6 @@ class RGNetMultiScale(nn.Module):
         ])
         self.checkpoints = {depth // 4, depth // 2, 3 * depth // 4, depth - 1}
         self.head = nn.Linear(hidden_dim * len(self.checkpoints), output_dim)
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         collected = []
         for i, layer in enumerate(self.layers):
@@ -252,15 +165,7 @@ class RGNetMultiScale(nn.Module):
             if i in self.checkpoints:
                 collected.append(x)
         return self.head(torch.cat(collected, dim=-1))
-
-
-# ---------------------------------------------------------------------------
-# Variant 7: Residual
-# ---------------------------------------------------------------------------
-
 class RGNetResidual(nn.Module):
-    """RG-Net with residual connections every D_skip layers."""
-
     def __init__(
         self,
         input_dim: int,
@@ -277,7 +182,6 @@ class RGNetResidual(nn.Module):
         ])
         self.skip_int = skip_interval
         self.head     = nn.Linear(hidden_dim, output_dim)
-
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         x = torch.tanh(self.embed(x))
         skip = x
@@ -287,26 +191,16 @@ class RGNetResidual(nn.Module):
                 x = x + skip
                 skip = x
         return self.head(x)
-
-
-# ---------------------------------------------------------------------------
-# Factory
-# ---------------------------------------------------------------------------
-
 _VARIANTS = {
-    "shallow":       RGNetShallow,
-    "standard":      RGNetStandard,
-    "deep":          RGNetDeep,
-    "ultra_deep":    RGNetUltraDeep,
-    "variable_width": RGNetVariableWidth,
-    "multiscale":    RGNetMultiScale,
-    "residual":      RGNetResidual,
+    :       RGNetShallow,
+    :      RGNetStandard,
+    :          RGNetDeep,
+    :    RGNetUltraDeep,
+    : RGNetVariableWidth,
+    :    RGNetMultiScale,
+    :      RGNetResidual,
 }
-
-
 def build_rg_net(variant: str, **kwargs) -> nn.Module:
-    """Factory function for RG-Net variants."""
     if variant not in _VARIANTS:
         raise ValueError(f"Unknown variant {variant!r}. Choose from: {list(_VARIANTS)}")
     return _VARIANTS[variant](**kwargs)
- 

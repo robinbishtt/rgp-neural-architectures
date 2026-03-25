@@ -1,29 +1,7 @@
-"""
-src/training/optimizers/warmup_scheduler.py
-
-WarmupScheduler: linear learning rate warmup combined with configurable
-decay schedule. Essential for training ultra-deep RG-Net architectures
-(L=500+) where cold-start with full learning rate causes gradient explosions.
-"""
 from __future__ import annotations
 from torch.optim import Optimizer
 from torch.optim.lr_scheduler import _LRScheduler
-
-
 class LinearWarmupScheduler(_LRScheduler):
-    """
-    Linear warmup followed by configurable decay.
-
-    Phase 1 (0 ≤ step < warmup_steps):
-        lr = base_lr * step / warmup_steps
-    Phase 2 (step ≥ warmup_steps):
-        lr = base_lr * decay_fn(step - warmup_steps)
-
-    For deep RG-Net training, warmup_steps = 100-500 is recommended
-    to allow the critical initialization to stabilize before full-rate
-    gradient updates begin.
-    """
-
     def __init__(
         self,
         optimizer:     Optimizer,
@@ -38,7 +16,6 @@ class LinearWarmupScheduler(_LRScheduler):
         self.max_steps     = max_steps
         self.min_lr_ratio  = min_lr_ratio
         super().__init__(optimizer, last_epoch)
-
     def get_lr(self):
         step = self.last_epoch
         if step < self.warmup_steps:
@@ -57,6 +34,4 @@ class LinearWarmupScheduler(_LRScheduler):
             factor = 1.0
         else:
             factor = 1.0
-
         return [base_lr * factor for base_lr in self.base_lrs]
- 

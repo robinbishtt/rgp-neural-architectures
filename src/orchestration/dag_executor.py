@@ -1,15 +1,7 @@
-"""
-src/orchestration/dag_executor.py
-
-Directed Acyclic Graph execution engine for pipeline orchestration.
-Chains Tier 1 -> Tier 5 operations with dependency tracking.
-"""
 from __future__ import annotations
 import time
 from dataclasses import dataclass, field
 from typing import Any, Callable, Dict, List, Optional, Set
-
-
 @dataclass
 class Task:
     name: str
@@ -18,25 +10,12 @@ class Task:
     result: Any = None
     elapsed: float = 0.0
     status: str = "pending"
-
-
 class DAGExecutor:
-    """
-    Topological-sort DAG executor.
-
-    Registers tasks with dependency lists and executes them in
-    dependency-respecting order. Provides progress reporting and
-    failure isolation.
-    """
-
     def __init__(self) -> None:
         self._tasks: Dict[str, Task] = {}
-
     def register(self, name: str, fn: Callable, deps: Optional[List[str]] = None) -> None:
         self._tasks[name] = Task(name=name, fn=fn, deps=deps or [])
-
     def run(self, target: Optional[str] = None) -> Dict[str, Any]:
-        """Execute DAG (or subgraph up to target). Returns results dict."""
         order = self._topological_sort(target)
         results: Dict[str, Any] = {}
         for task_name in order:
@@ -54,16 +33,13 @@ class DAGExecutor:
                 task.elapsed = time.time() - t0
             results[task_name] = task.result
         return results
-
     def _topological_sort(self, target: Optional[str] = None) -> List[str]:
         if target is not None:
             needed = self._reachable_deps(target)
         else:
             needed = set(self._tasks.keys())
-
         visited: Set[str] = set()
         order: List[str] = []
-
         def dfs(name: str) -> None:
             if name in visited:
                 return
@@ -71,11 +47,9 @@ class DAGExecutor:
                 dfs(dep)
             visited.add(name)
             order.append(name)
-
         for name in needed:
             dfs(name)
         return [n for n in order if n in needed]
-
     def _reachable_deps(self, name: str) -> Set[str]:
         reached: Set[str] = {name}
         stack = [name]
@@ -86,11 +60,9 @@ class DAGExecutor:
                     reached.add(dep)
                     stack.append(dep)
         return reached
-
     def status_report(self) -> str:
         lines = [f"{'Task':<30} {'Status':<10} {'Time':>8}"]
         lines.append("-" * 52)
         for name, task in self._tasks.items():
             lines.append(f"{name:<30} {task.status:<10} {task.elapsed:>7.2f}s")
         return "\n".join(lines)
- 

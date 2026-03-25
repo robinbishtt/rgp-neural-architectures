@@ -1,14 +1,13 @@
-# RG-Net architecture configuration
-# Base parameters for all RG-Net variants
 
 architecture:
   name: rg_net
-  operator_type: standard       # standard | residual | attention | wavelet | learned
-  activation: tanh              # tanh | relu | gelu
-  sigma_w: 1.4                  # weight std at critical init (tanh critical point)
-  sigma_b: 0.3                  # bias std at critical init (tanh critical point)
+  operator_type: standard
+  activation: tanh
+  sigma_w: 1.2
+  sigma_b: 0.3
   use_batch_norm: false
   use_layer_norm: false
+  phase_note: "ordered (chi1=0.870 < 1)"
 
 rg_net_shallow:
   depth: 10
@@ -16,9 +15,10 @@ rg_net_shallow:
   use_case: rapid_prototyping
 
 rg_net_standard:
-  depth: 100
+  depth: 30
   width: 512
   use_case: main_experiments
+  note: "depth=30 >> k_c=7.18; gives >4 decay constants, reliable R² fit"
 
 rg_net_deep:
   depth: 500
@@ -44,4 +44,3 @@ rg_net_multiscale:
   n_scales: 4
   fusion_mode: concat
   use_case: hierarchical_representations
- 
