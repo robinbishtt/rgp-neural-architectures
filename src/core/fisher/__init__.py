@@ -1,10 +1,10 @@
 def __getattr__(name):
     import importlib
     _LAZY = {
-        :             ('src.core.fisher.fisher_metric', 'FisherMetric'),
-        :         ('src.core.fisher.fisher_base', 'FisherMetricBase'),
-        : ('src.core.fisher.eigenvalue_analyzer', 'FisherEigenvalueAnalyzer'),
-        : ('src.core.fisher.analytic', 'FisherAnalyticCalculator'),
+        'FisherMetric':             ('src.core.fisher.fisher_metric', 'FisherMetric'),
+        'FisherMetricBase':         ('src.core.fisher.fisher_base', 'FisherMetricBase'),
+        'FisherEigenvalueAnalyzer': ('src.core.fisher.eigenvalue_analyzer', 'FisherEigenvalueAnalyzer'),
+        'FisherAnalyticCalculator': ('src.core.fisher.analytic', 'FisherAnalyticCalculator'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

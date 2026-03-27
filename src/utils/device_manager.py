@@ -35,12 +35,12 @@ class DeviceManager:
             idx = device.index or 0
             props = torch.cuda.get_device_properties(idx)
             info.update({
-                :                props.name,
-                :     props.total_memory / 1e9,
-                :               props.major,
-                :               props.minor,
-                : props.multi_processor_count,
-                :        torch.version.cuda,
+                "name":            props.name,
+                "memory_gb":       props.total_memory / 1e9,
+                "compute_major":   props.major,
+                "compute_minor":   props.minor,
+                "n_multiprocessors": props.multi_processor_count,
+                "cuda_version":    torch.version.cuda,
             })
         elif device.type == "mps":
             info["name"] = "Apple Silicon MPS"

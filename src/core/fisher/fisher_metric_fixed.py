@@ -113,11 +113,22 @@ class JacobianPullbackFisher:
         G_prev: "torch.Tensor",
         J_k: "torch.Tensor",
     ) -> "torch.Tensor":
+        """Compute G^(ℓ) = (J^(ℓ))ᵀ G^(ℓ-1) J^(ℓ) with PSD enforcement.
+
+        Args:
+            G_prev: Metric on the output space, shape (d_out, d_out).
+            J_k:    Layer Jacobian J^(ℓ) = Diag(φ'(z)) W^(ℓ),
+                    shape (d_out, d_in).
+
+        Returns:
+            Pulled-back metric of shape (d_in, d_in) with eigenvalues
+            clamped to ≥ 1e-12 for numerical stability.
+        """
         import torch
         G_k = J_k.T @ G_prev @ J_k   
         ev, V = torch.linalg.eigh(G_k)
         ev    = torch.clamp(ev, min=1e-12)
-        return V @ torch.diag(ev) @ V.T
+        return (V * ev) @ V.T
     def compute_metric_profile(
         self,
         model: "nn.Module",
@@ -176,7 +187,7 @@ class FisherMetric:
         if self.clip_eigenvalues:
             ev, V = torch.linalg.eigh(G_k)
             ev    = torch.clamp(ev, min=self.min_eigenvalue)
-            G_k   = V @ torch.diag(ev) @ V.T
+            G_k   = (V * ev) @ V.T
         return G_k
     def compute_from_model(
         self,

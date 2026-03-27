@@ -4,23 +4,23 @@ import torch.nn as nn
 class LearnedRGOperator(nn.Module):
     def __init__(
         self,
-        in_dim:       int,
+        input_dim:    int,
         out_dim:      int,
         hyper_hidden: int  = 32,
     ) -> None:
         super().__init__()
-        self.in_dim  = in_dim
+        self.in_dim  = input_dim
         self.out_dim = out_dim
         n_stats = 3
-        n_params = out_dim * in_dim + out_dim  
+        n_params = out_dim * input_dim + out_dim  
         self.hyper_net = nn.Sequential(
             nn.Linear(n_stats, hyper_hidden),
             nn.Tanh(),
             nn.Linear(hyper_hidden, n_params),
         )
-        self.baseline = nn.Linear(in_dim, out_dim)
+        self.baseline = nn.Linear(input_dim, out_dim)
         self.activation = nn.Tanh()
-        nn.init.normal_(self.baseline.weight, std=1.0 / in_dim ** 0.5)
+        nn.init.normal_(self.baseline.weight, std=1.0 / input_dim ** 0.5)
         nn.init.zeros_(self.baseline.bias)
         nn.init.zeros_(self.hyper_net[-1].weight)
         nn.init.zeros_(self.hyper_net[-1].bias)

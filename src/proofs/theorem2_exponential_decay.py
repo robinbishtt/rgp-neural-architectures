@@ -29,8 +29,8 @@ def verify_exponential_decay(chi1: float = 0.8, n_layers: int = 30) -> bool:
     return bool(abs(kc_fitted - kc_analytic) / kc_analytic < 0.05)
 def run_all_verifications() -> dict:
     results = {
-        : verify_exponential_decay(0.8),
-        : verify_exponential_decay(0.5),
+        "decay_chi1_0p8": verify_exponential_decay(0.8),
+        "decay_chi1_0p5": verify_exponential_decay(0.5),
     }
     results["all_pass"] = all(results.values())
     return results

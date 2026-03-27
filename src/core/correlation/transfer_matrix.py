@@ -10,13 +10,15 @@ class TransferMatrixMethod:
     def compute_from_jacobian(
         self, J: torch.Tensor
     ) -> float:
-        J_np  = J.detach().cpu().numpy()
+        J_np  = J.detach().cpu().float().numpy()
         svs   = np.linalg.svd(J_np, compute_uv=False)
         if len(svs) < 2 or svs[0] < 1e-12:
             return float("inf")
-        ratio = svs[1] / (svs[0] + 1e-12)
+        ratio = float(svs[1]) / float(svs[0])
+        if ratio >= 1.0:
+            return float("inf")
         ratio = np.clip(ratio, 1e-12, 1.0 - 1e-12)
-        return float(-1.0 / np.log(ratio + 1e-12))
+        return float(-1.0 / np.log(ratio))
     def compute_depth_profile(
         self,
         model: nn.Module,

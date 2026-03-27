@@ -192,13 +192,13 @@ class RGNetResidual(nn.Module):
                 skip = x
         return self.head(x)
 _VARIANTS = {
-    :       RGNetShallow,
-    :      RGNetStandard,
-    :          RGNetDeep,
-    :    RGNetUltraDeep,
-    : RGNetVariableWidth,
-    :    RGNetMultiScale,
-    :      RGNetResidual,
+    'shallow':        RGNetShallow,
+    'standard':       RGNetStandard,
+    'deep':           RGNetDeep,
+    'ultra_deep':     RGNetUltraDeep,
+    'variable_width': RGNetVariableWidth,
+    'multiscale':     RGNetMultiScale,
+    'residual':       RGNetResidual,
 }
 def build_rg_net(variant: str, **kwargs) -> nn.Module:
     if variant not in _VARIANTS:

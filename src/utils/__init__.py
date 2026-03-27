@@ -2,8 +2,8 @@ from src.utils.seed_registry import SeedRegistry
 def __getattr__(name):
     import importlib
     _LAZY = {
-        : ('src.utils.device_manager', 'DeviceManager'),
-        :   ('src.utils.provenance', 'DataAuditor'),
+        'DeviceManager': ('src.utils.device_manager', 'DeviceManager'),
+        'DataAuditor':   ('src.utils.provenance', 'DataAuditor'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

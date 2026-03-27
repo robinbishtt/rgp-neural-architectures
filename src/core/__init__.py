@@ -3,8 +3,8 @@ from src.core.correlation.two_point import chi1_gauss_hermite, critical_sigma_w2
 def __getattr__(name):
     import importlib
     _LAZY = {
-        :          ('src.core.fisher.fisher_metric', 'FisherMetric'),
-        : ('src.core.fisher.eigenvalue_analyzer', 'FisherEigenvalueAnalyzer'),
+        'FisherMetric':             ('src.core.fisher.fisher_metric', 'FisherMetric'),
+        'FisherEigenvalueAnalyzer': ('src.core.fisher.eigenvalue_analyzer', 'FisherEigenvalueAnalyzer'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]
