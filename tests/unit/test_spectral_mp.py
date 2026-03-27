@@ -4,7 +4,7 @@ def test_mp_pdf_integrates_to_one():
     mp   = MarchenkoPasturDistribution(beta=0.5, sigma2=1.0)
     x    = np.linspace(mp.lam_minus * 0.99, mp.lam_plus * 1.01, 5000)
     rho  = mp.pdf(x)
-    area = np.trapezoid(rho, x)
+    area = np.trapz(rho, x)
     assert abs(area - 1.0) < 0.01, f"MP PDF area={area:.4f} != 1.0"
 def test_mp_lam_pm_correct():
     sigma2 = 1.0
