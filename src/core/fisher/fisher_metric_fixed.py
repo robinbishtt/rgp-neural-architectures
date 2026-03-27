@@ -115,10 +115,15 @@ class JacobianPullbackFisher:
     ) -> "torch.Tensor":
         """Compute G^(ℓ) = (J^(ℓ))ᵀ G^(ℓ-1) J^(ℓ) with PSD enforcement.
 
+        Here layer ℓ maps from d_in-dimensional input space to d_out-dimensional
+        output space.  G^(ℓ-1) lives on the output space (shape d_out × d_out)
+        and the result G^(ℓ) lives on the input space (shape d_in × d_in).
+
         Args:
-            G_prev: Metric on the output space, shape (d_out, d_out).
+            G_prev: Metric on layer ℓ's output space, shape (d_out, d_out).
             J_k:    Layer Jacobian J^(ℓ) = Diag(φ'(z)) W^(ℓ),
-                    shape (d_out, d_in).
+                    shape (d_out, d_in), mapping input perturbations to output
+                    perturbations.
 
         Returns:
             Pulled-back metric of shape (d_in, d_in) with eigenvalues

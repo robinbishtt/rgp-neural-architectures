@@ -62,9 +62,10 @@ class FisherMetric:
 
         Uses the spectral decomposition G = V Λ Vᵀ and replaces each
         λ_i < ``min_eigenvalue`` with ``min_eigenvalue``.  The reconstruction
-        uses ``(V * ev) @ V.T`` which avoids forming a dense diagonal matrix
-        via ``torch.diag`` and is therefore O(n²) rather than O(n²·n) in
-        memory.
+        uses ``(V * ev) @ V.T`` which avoids forming a dense n×n diagonal
+        matrix via ``torch.diag`` (O(n²) intermediate storage) and instead
+        broadcasts element-wise at O(n) extra storage before the O(n³)
+        matrix multiply.
         """
         ev, V = torch.linalg.eigh(G)
         ev    = torch.clamp(ev, min=self.min_eigenvalue)
