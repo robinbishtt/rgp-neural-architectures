@@ -1,12 +1,10 @@
-from src.utils.seed_registry import SeedRegistry
 def __getattr__(name):
     import importlib
     _LAZY = {
-        : ('src.utils.device_manager', 'DeviceManager'),
-        :   ('src.utils.provenance',     'DataAuditor'),
-        :        ('src.utils.logging.complexity_tracker', 'ComplexityTracker'),
         : ('src.utils.logging.complexity_tracker', 'FisherInformationMonitor'),
         : ('src.utils.logging.complexity_tracker', 'CorrelationLengthMonitor'),
+        :        ('src.utils.logging.complexity_tracker', 'ComplexityTracker'),
+        :       ('src.utils.logging.complexity_tracker', 'RealTimeVisualizer'),
         :          ('src.utils.logging.complexity_tracker', 'RGFlowValidator'),
     }
     if name in _LAZY:
@@ -15,4 +13,4 @@ def __getattr__(name):
             return getattr(importlib.import_module(mod_name), attr)
         except ImportError:
             raise ImportError(f"{name!r} requires torch")
-    raise AttributeError(f"module 'src.utils' has no attribute {name!r}")
+    raise AttributeError(f"module 'src.utils.logging' has no attribute {name!r}")
