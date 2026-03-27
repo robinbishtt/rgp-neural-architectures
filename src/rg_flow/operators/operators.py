@@ -12,24 +12,24 @@ class StandardRGOperator(nn.Module):
     χ₁ = σ_w² · E[φ'(z)²] ≈ 1 (edge-of-chaos).
 
     Args:
-        input_dim:  Input feature dimension d_{ℓ-1}.
-        out_dim:    Output feature dimension d_ℓ.
+        in_features: Input feature dimension d_{ℓ-1}.
+        out_features: Output feature dimension d_ℓ.
         activation: Nonlinearity name: ``'tanh'``, ``'relu'``, or ``'gelu'``.
         sigma_w:    Weight standard deviation *before* the 1/√N normalisation.
-                    The actual ``nn.Linear`` weight std is ``sigma_w / sqrt(input_dim)``.
+                    The actual ``nn.Linear`` weight std is ``sigma_w / sqrt(in_features)``.
         sigma_b:    Bias initialisation standard deviation.
     """
 
     def __init__(
         self,
-        input_dim: int,
-        out_dim: int,
+        in_features: int,
+        out_features: int,
         activation: str = "tanh",
         sigma_w: float = 1.4,
         sigma_b: float = 0.3,
     ) -> None:
         super().__init__()
-        self.linear = nn.Linear(input_dim, out_dim)
+        self.linear = nn.Linear(in_features, out_features)
         self.act_fn = self._get_activation(activation)
         self._init_critical(sigma_w, sigma_b)
     def _get_activation(self, name: str) -> Callable:
@@ -44,23 +44,23 @@ class ResidualRGOperator(nn.Module):
     """RG-Operator with a skip (residual) connection.
 
     Computes h^(ℓ) = σ(W^(ℓ) h^(ℓ-1) + b^(ℓ)) + P h^(ℓ-1), where P is a
-    learned linear projection when ``input_dim != out_dim`` and the identity
+    learned linear projection when ``in_features != out_features`` and the identity
     otherwise.  The skip connection stabilises gradient flow through very deep
     stacks (L ≫ 1) and prevents the metric-contraction factor χ₁ from
     collapsing to zero when the activation saturates.
 
     Args:
-        input_dim:  Input feature dimension d_{ℓ-1}.
-        out_dim:    Output feature dimension d_ℓ.
+        in_features:  Input feature dimension d_{ℓ-1}.
+        out_features: Output feature dimension d_ℓ.
         activation: Nonlinearity applied inside the main branch.
     """
 
-    def __init__(self, input_dim: int, out_dim: int, activation: str = "tanh") -> None:
+    def __init__(self, in_features: int, out_features: int, activation: str = "tanh") -> None:
         super().__init__()
-        self.op = StandardRGOperator(input_dim, out_dim, activation)
+        self.op = StandardRGOperator(in_features, out_features, activation)
         self.proj = (
-            nn.Linear(input_dim, out_dim, bias=False)
-            if input_dim != out_dim else nn.Identity()
+            nn.Linear(in_features, out_features, bias=False)
+            if in_features != out_features else nn.Identity()
         )
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.op(x) + self.proj(x)
