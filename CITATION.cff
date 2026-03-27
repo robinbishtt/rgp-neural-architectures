@@ -11,7 +11,7 @@ version: "1.0.0"
 doi: "10.5281/zenodo.XXXXXXX"
 license: MIT
 date-released: "2026-02-28"
-url: "https://anonymous.4open.science/r/rgp-neural-architectures-BB30"
+url: "https://github.com/robinbishtt/rgp-neural-architectures"
 type: software
 keywords:
   - deep-learning

@@ -13,8 +13,6 @@
 *A rigorous, fully reproducible framework connecting renormalization-group (RG) transformations
 from statistical physics to the hierarchical depth structure of deep neural networks.*
 
-**Anonymous Submission**
-
 </div>
 
 ---
@@ -78,7 +76,7 @@ RG-Net outperforms matched baselines on OOD tasks requiring multi-scale reasonin
 ### Installation
 
 ```bash
-git clone https://anonymous.4open.science/r/rgp-neural-architectures-BB30
+git clone https://github.com/robinbishtt/rgp-neural-architectures
 cd rgp-neural-architectures
 
 # GPU (CUDA 11.8)
@@ -277,8 +275,7 @@ singularity run --nv rgp-neural.sif make reproduce_fast
 @software{rgp_neural_architectures_2026,
   title  = {Renormalization-Group Principles for Deep Neural Architectures},
   year   = {2026},
-  url    = {https://anonymous.4open.science/r/rgp-neural-architectures-BB30},
-  note   = {Anonymous Submission},
+  url    = {https://github.com/robinbishtt/rgp-neural-architectures},
 }
 ```
 
@@ -289,4 +286,4 @@ singularity run --nv rgp-neural.sif make reproduce_fast
 [MIT License](LICENSE) - see the [LICENSE](LICENSE) file.
 
 Code and pre-trained configurations:
-**[https://anonymous.4open.science/r/rgp-neural-architectures-BB30](https://anonymous.4open.science/r/rgp-neural-architectures-BB30)**
+**[https://github.com/robinbishtt/rgp-neural-architectures](https://github.com/robinbishtt/rgp-neural-architectures)**

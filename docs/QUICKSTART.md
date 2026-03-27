@@ -21,7 +21,7 @@ Confirm you have the following before starting.
 ## Step 1  Clone the Repository
 
 ```bash
-git clone https://anonymous.4open.science/r/rgp-neural-architectures-BB30
+git clone https://github.com/robinbishtt/rgp-neural-architectures
 cd rgp-neural-architectures
 ```
 

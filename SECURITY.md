@@ -12,7 +12,7 @@ The table below lists which versions of this project currently receive security 
 
 If you discover a security vulnerability in this repository, please report it responsibly. **Do not open a public GitHub issue** for security-related matters.
 
-Report vulnerabilities by opening a [GitHub Security Advisory](https://anonymous.4open.science/r/rgp-neural-architectures-BB30) through the repository's Security tab. This channel is private and ensures the issue is reviewed before any public disclosure.
+Report vulnerabilities by opening a [GitHub Security Advisory](https://github.com/robinbishtt/rgp-neural-architectures) through the repository's Security tab. This channel is private and ensures the issue is reviewed before any public disclosure.
 
 Include the following in your report:
 
