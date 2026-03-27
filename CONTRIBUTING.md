@@ -17,7 +17,7 @@ Fork the repository on GitHub, then clone your fork locally.
 ```bash
 git clone https://github.com/<your-username>/rgp-neural-architectures.git
 cd rgp-neural-architectures
-git remote add upstream https://github.com/robinbishtt/rgp-neural-architectures
+git remote add upstream https://anonymous.4open.science/r/rgp-neural-architectures-BB30
 ```
 
 Create a dedicated branch for your change. Use descriptive names that reflect the scope of the work.

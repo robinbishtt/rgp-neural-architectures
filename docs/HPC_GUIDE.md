@@ -73,7 +73,7 @@ singularity --version  # Should be >= 3.8
 ### Option 1: Local Build (Requires sudo)
 ```bash
 # Clone repository
-git clone https://github.com/robinbishtt/rgp-neural-architectures
+git clone https://anonymous.4open.science/r/rgp-neural-architectures-BB30
 cd rgp-neural-architectures
 
 # Build container
@@ -374,7 +374,7 @@ If you use this container for your research, please cite:
   title = {RGP Neural Architectures: Renormalization-Group Principles for Deep Neural Networks},
   year = {2026},
   doi = {10.5281/zenodo.XXXXXXX},
-  url = {https://github.com/robinbishtt/rgp-neural-architectures
+  url = {https://anonymous.4open.science/r/rgp-neural-architectures-BB30
 }
 ```
 

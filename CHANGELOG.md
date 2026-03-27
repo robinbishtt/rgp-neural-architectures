@@ -43,7 +43,7 @@ Version numbers follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 - Created `src/proofs/proof_utils.py` with `VerificationResult` and `ProofLogger` classes.
 - Consolidated `MarchenkoPasturDistribution`: `spectral.py` now re-exports from canonical `marchenko_pastur.py`.
 - Fixed `compute_from_model()` approximation note in `fisher_metric.py`.
-- Fixed `CITATION.cff`: replaced placeholder URL with the canonical repository URL.
+- Fixed `CITATION.cff`: replaced placeholder URL with actual anonymous repo URL.
 
 **New files added:**
 - 18 Jupyter notebooks (`notebooks/`) covering every theorem, hypothesis, and experiment.
@@ -135,6 +135,6 @@ Initial public release.
 
 ---
 
-[Unreleased]: https://github.com/robinbishtt/rgp-neural-architectures
-[1.0.0]: https://github.com/robinbishtt/rgp-neural-architectures
+[Unreleased]: https://anonymous.4open.science/r/rgp-neural-architectures-BB30
+[1.0.0]: https://anonymous.4open.science/r/rgp-neural-architectures-BB30
  
