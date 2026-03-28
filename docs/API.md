@@ -1,5 +1,7 @@
 # API Reference
 
+> Part of the [RGP documentation set](README.md).
+
 ## Core Mathematics (`src/core/`)
 
 ### Fisher Information

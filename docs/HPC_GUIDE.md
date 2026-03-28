@@ -1,5 +1,7 @@
 # RGP Neural Architectures  HPC Deployment Guide
 
+> Part of the [RGP documentation set](README.md).
+
 **Renormalization-Group Principles for Deep Neural Network Depth**
 
 This guide provides comprehensive instructions for deploying and running RGP experiments on High-Performance Computing (HPC) clusters using Singularity/Apptainer containers.

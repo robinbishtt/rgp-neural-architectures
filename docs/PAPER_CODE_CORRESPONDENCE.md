@@ -1,5 +1,7 @@
 # Paper–Code Correspondence
 
+> Part of the [RGP documentation set](README.md).
+
 This document maps every major claim in the paper to the code that implements or validates it.
 
 ## Main Theorems

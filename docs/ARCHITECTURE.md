@@ -1,5 +1,7 @@
 # Architecture
 
+> Part of the [RGP documentation set](README.md).
+
 This document describes the complete six-tier system design of the RGP Neural Architectures codebase and the rationale behind every structural decision. It is intended for contributors who want to understand how the 250-file repository is organized, and for reviewers who want to verify that every experimental claim has a corresponding implementation.
 
 ---

@@ -1,5 +1,7 @@
 # Reproducibility
 
+> Part of the [RGP documentation set](README.md).
+
 > **This repository provides two independent verification paths:**
 > **(a)** A fast-track numerical solver that verifies theoretical bounds in under 5 minutes
 > by integrating the derived RG beta-function equations - no GPU required.

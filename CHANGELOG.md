@@ -8,7 +8,10 @@ Version numbers follow [Semantic Versioning](https://semver.org/spec/v2.0.0.html
 
 ## [Unreleased]
 
-*Planned for next release.*
+### Changed
+
+- Redesigned `README.md` into a concise, production-style project overview with clear quickstart, command references, and normalized repository structure.
+- Added `docs/README.md` as a documentation index to improve discoverability and navigation across all docs.
 
 ---
 

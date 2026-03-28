@@ -1,5 +1,7 @@
 # Installation Guide
 
+> Part of the [RGP documentation set](README.md).
+
 ## Requirements
 
 | Component | Version | Notes |

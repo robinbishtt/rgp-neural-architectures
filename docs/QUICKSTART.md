@@ -1,5 +1,7 @@
 # Quickstart Guide
 
+> Part of the [RGP documentation set](README.md).
+
 This guide takes you from a fresh clone to a running pipeline verification in under ten minutes. It covers three paths: a CPU-only fast-track for reviewers, a GPU install for researchers, and a container-based setup for HPC environments.
 
 ---

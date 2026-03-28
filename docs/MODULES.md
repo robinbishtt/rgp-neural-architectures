@@ -1,5 +1,7 @@
 # Module Reference
 
+> Part of the [RGP documentation set](README.md).
+
 This document provides an API reference for all public classes and functions in the `src/` directory. It is organized by tier and submodule, matching the directory structure of the repository.
 
 ---
