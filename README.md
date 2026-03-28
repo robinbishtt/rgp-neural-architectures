@@ -99,7 +99,7 @@ make verify_pipeline    # Smoke test: 7 checks, < 60 seconds
 make reproduce_fast     # Full fast-track: H1 + H2 + H3 + figures, 3-5 min
 ```
 
-All fast-track outputs are tagged `[FAST_TRACK_UNVERIFIED]`.
+All fast-track outputs are tagged `[FAST_TRACK]`.
 
 ### Full Reproduction
 
