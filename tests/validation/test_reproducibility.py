@@ -54,6 +54,7 @@ class TestReproducibility:
         _set_seed(7)
         x = torch.randn(16, 8)
         y = torch.randint(0, 2, (16,))
+        _set_seed(7)
         model = nn.Sequential(nn.Linear(8, 8), nn.Tanh(), nn.Linear(8, 2))
         opt   = torch.optim.SGD(model.parameters(), lr=0.01)
         losses_uninterrupted = []

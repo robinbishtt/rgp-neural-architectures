@@ -23,7 +23,7 @@ class AutogradJacobian:
         Returns:
             Jacobian matrix of shape ``(n_out, n_in)``.
         """
-        x = x.detach().clone().requires_grad_(True)
+        x = x.clone().requires_grad_(True)
         y = fn(x)
         n_in  = x.numel()
         n_out = y.numel()

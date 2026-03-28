@@ -5,6 +5,7 @@ from typing import Callable
 import torch
 logger = logging.getLogger(__name__)
 class DataIntegrityError(Exception):
+    pass
 class NaNRecoveryHandler:
     def __init__(self, patience: int = 3, lr_scale: float = 0.5) -> None:
         self.patience  = patience
