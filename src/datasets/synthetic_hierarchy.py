@@ -31,7 +31,7 @@ class SyntheticHierarchy(Dataset):
                 for k, c in enumerate(coef):
                     idx = np.linspace(0, d - 1, scale_len, dtype=int)
                     data[i, idx[:min(len(idx), d)]] += c
-            labels[i] = dominant * (n_classes // n_scales)
+            labels[i] = dominant % n_classes
         return torch.tensor(data, dtype=torch.float32), torch.tensor(labels)
     def __len__(self) -> int:
         return len(self.data)

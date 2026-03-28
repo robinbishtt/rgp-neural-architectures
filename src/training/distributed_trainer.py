@@ -23,10 +23,10 @@ def detect_distributed_env() -> Dict[str, int]:
     world_size = int(os.environ.get("WORLD_SIZE", 1))
     n_gpus     = torch.cuda.device_count()
     return {
-        :        rank,
-        :  local_rank,
-        :  world_size,
-        : n_gpus,
+        "rank":        rank,
+        "local_rank":  local_rank,
+        "world_size":  world_size,
+        "n_gpus":      n_gpus,
     }
 def is_distributed() -> bool:
     return dist.is_available() and dist.is_initialized()
@@ -41,6 +41,7 @@ def init_distributed(backend: str = "nccl", timeout_minutes: int = 30) -> Dict[s
     if env["world_size"] > 1:
         if not dist.is_available():
             raise RuntimeError(
+                "torch.distributed is not available; cannot initialize distributed training."
             )
         if backend == "nccl" and env["n_gpus_node"] == 0:
             warnings.warn("No GPUs found; falling back from nccl to gloo.", stacklevel=2)
@@ -52,7 +53,7 @@ def init_distributed(backend: str = "nccl", timeout_minutes: int = 30) -> Dict[s
         if env["n_gpus_node"] > 0:
             torch.cuda.set_device(env["local_rank"])
         logger.info(
-            ,
+            "Distributed: rank=%d/%d  local_rank=%d  backend=%s",
             env["rank"], env["world_size"], env["local_rank"], backend,
         )
     return env
@@ -246,7 +247,7 @@ class DDPTrainer:
         self._best_val_acc = 0.0
         if is_main_rank():
             logger.info(
-                ,
+                "DDPTrainer: world_size=%d  lr=%.2e (effective=%.2e)  batch/gpu=%d  eff_batch=%d",
                 self.world_size, cfg.lr, effective_lr,
                 cfg.batch_size_per_gpu,
                 cfg.batch_size_per_gpu * self.world_size,
@@ -294,7 +295,7 @@ class DDPTrainer:
                     self._save_checkpoint(epoch, val_acc, best=True)
             if is_main_rank() and epoch % self.cfg.log_interval == 0:
                 logger.info(
-                    ,
+                    "Epoch [%d/%d]  train=%.4f  val=%.4f  acc=%.4f  best=%.4f",
                     epoch, self.cfg.n_epochs,
                     train_loss, val_loss, val_acc, self._best_val_acc,
                 )
@@ -343,10 +344,10 @@ class DDPTrainer:
         fname = "best.pt" if best else f"epoch_{epoch:04d}.pt"
         unwrapped = self.model.module if hasattr(self.model, "module") else self.model
         torch.save({
-            :   epoch,
-            : val_acc,
-            :   unwrapped.state_dict(),
-            :   self.optimizer.state_dict(),
+            "epoch":               epoch,
+            "val_acc":             val_acc,
+            "model_state_dict":    unwrapped.state_dict(),
+            "optimizer_state_dict": self.optimizer.state_dict(),
         }, ckpt_dir / fname)
     def unwrapped_model(self) -> nn.Module:
         return self.model.module if hasattr(self.model, "module") else self.model
@@ -380,7 +381,7 @@ def auto_select_trainer(
     if is_main_rank():
         model_mb = estimate_model_gb(model, dtype) * 1000
         logger.info(
-            ,
+            "Auto-select: n_gpus=%d  world=%d  model=%.1fMB  strategy=%s  device=%s",
             n_gpus, env["world_size"], model_mb, strategy, device,
         )
     return strategy, device, env
@@ -429,3 +430,22 @@ def launch_command(
             f"--master_addr={master_addr} --master_port={master_port} "
             f"{script}"
         )
+
+class DistributedTrainer:
+    """Lightweight wrapper for single-process or distributed training.
+
+    Used primarily for testing and single-node setups where full DDP
+    is not needed but distributed-training utilities are still exercised.
+
+    Args:
+        rank:       Process rank (default 0 for single-process).
+        world_size: Total number of processes (default 1).
+    """
+
+    def __init__(self, rank: int = 0, world_size: int = 1) -> None:
+        self.rank       = rank
+        self.world_size = world_size
+
+    def is_main_rank(self) -> bool:
+        """Return True iff this is the primary (rank-0) process."""
+        return self.rank == 0

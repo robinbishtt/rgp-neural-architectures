@@ -14,13 +14,13 @@ def _populate_registry() -> None:
     from src.architectures.rg_net.rg_net_variable_width import RGNetVariableWidth
     from src.architectures.rg_net.rg_net_multiscale     import RGNetMultiScale
     _VARIANT_REGISTRY.update({
-        :        RGNetShallow,
-        :       RGNetStandard,
-        :           RGNetDeep,
-        :     RGNetUltraDeep,
-        :      RGNetUltraDeep,   
-        : RGNetVariableWidth,
-        :     RGNetMultiScale,
+        "shallow":        RGNetShallow,
+        "standard":       RGNetStandard,
+        "deep":           RGNetDeep,
+        "ultra_deep":     RGNetUltraDeep,
+        "ultra-deep":     RGNetUltraDeep,
+        "variable_width": RGNetVariableWidth,
+        "multiscale":     RGNetMultiScale,
     })
 class RGNetFactory:
     @classmethod
@@ -60,7 +60,7 @@ class RGNetFactory:
             **kwargs,
         )
         logger.info(
-            ,
+            "Built %s | depth=%d | width=%d | params=%s",
             variant_cls.__name__, depth, hidden_dim,
             f"{model.count_parameters():,}",
         )
@@ -80,22 +80,22 @@ class RGNetFactory:
             sigma_b    = cfg.get("sigma_b", 0.05),
             **{k: v for k, v in cfg.items()
                if k not in {"variant","input_dim","hidden_dim",
-                            ,"depth","activation","sigma_w","sigma_b"}},
+                            "output_dim","depth","activation","sigma_w","sigma_b"}},
         )
     _DEPTH_RANGES: Dict[str, tuple] = {
-        :        (2,   10),
-        :       (10,  100),
-        :           (100, 500),
-        :     (500, 10_000),
-        :      (500, 10_000),
-        : (2,   10_000),
-        :     (2,   10_000),
+        "shallow":        (2,   10),
+        "standard":       (10,  100),
+        "deep":           (100, 500),
+        "ultra_deep":     (500, 10_000),
+        "ultra-deep":     (500, 10_000),
+        "variable_width": (2,   10_000),
+        "multiscale":     (2,   10_000),
     }
     @classmethod
     def _validate_depth(cls, variant: str, depth: int) -> None:
         lo, hi = cls._DEPTH_RANGES.get(variant, (1, 10_000))
         if not (lo <= depth <= hi):
             logger.warning(
-                ,
+                "Depth %d out of recommended range [%d, %d] for variant '%s'",
                 depth, lo, hi, variant,
             )

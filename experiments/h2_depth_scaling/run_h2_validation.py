@@ -9,20 +9,20 @@ import numpy as np
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO, handlers=[logging.StreamHandler(sys.stdout)])
 FAST_TRACK = {
-    :              [5, 10, 15, 20],
-    :           [2.0, 5.0],
-    :             2,
-    :              2,
-    :  0.70,  
-    :           1.0,
+    "depths":              [5, 10, 15, 20],
+    "xi_values":           [2.0, 5.0],
+    "n_seeds":             2,
+    "n_epochs":            2,
+    "accuracy_threshold":  0.70,
+    "xi_target":           1.0,
 }
 FULL = {
-    :              [10, 20, 50, 100, 200, 500],
-    :           [5.0, 15.0, 50.0, 100.0, 200.0],  
-    :             10,
-    :              100,
-    :  0.95,  
-    :           1.0,
+    "depths":              [10, 20, 50, 100, 200, 500],
+    "xi_values":           [5.0, 15.0, 50.0, 100.0, 200.0],
+    "n_seeds":             10,
+    "n_epochs":            100,
+    "accuracy_threshold":  0.95,
+    "xi_target":           1.0,
 }
 def _accuracy_from_rg_flow(
     depth: int,
@@ -73,10 +73,10 @@ def run_h2_experiment(params: dict, results_dir: Path, fast_track: bool) -> dict
         all_lmin.append(mean_lmin)
         all_xi.append(xi)
         records[f"xi_{xi:.1f}"] = {
-            :            xi,
-            : lmin_per_seed,
-            :     mean_lmin,
-            :      float(np.std(valid_lmin)) if valid_lmin else float("nan"),
+            "xi":            xi,
+            "lmin_per_seed": lmin_per_seed,
+            "lmin_mean":     mean_lmin,
+            "lmin_std":      float(np.std(valid_lmin)) if valid_lmin else float("nan"),
         }
         logger.info("  L_min = %.1f ± %.1f", mean_lmin, np.std(valid_lmin))
     valid_mask = [not np.isnan(l) for l in all_lmin]
@@ -93,15 +93,15 @@ def run_h2_experiment(params: dict, results_dir: Path, fast_track: bool) -> dict
     logger.info("Fitted k_c = %.2f | Pearson r = %.4f | p = %.4f", k_c_fit, r, pval)
     tag = "[FAST_TRACK_UNVERIFIED]" if fast_track else "[VERIFIED]"
     output = {
-        :        tag,
-        : "H2",
-        :     params,
-        :    records,
-        : {
-            :    k_c_fit,
-            :     float(r),
-            :       float(pval),
-            :  bool(abs(r) > 0.90 and pval < 0.05),
+        "tag":      tag,
+        "hypothesis": "H2",
+        "params":   params,
+        "records":  records,
+        "summary": {
+            "k_c_fit":     k_c_fit,
+            "pearson_r":   float(r),
+            "p_value":     float(pval),
+            "significant": bool(abs(r) > 0.90 and pval < 0.05),
         },
     }
     out_path = results_dir / "h2_results.json"

@@ -7,9 +7,9 @@ def test_residual_vs_standard_gradient_flow():
     width  = 32
     std_layers = [StandardRGOperator(width, width) for _ in range(depth)]
     res_layers = [ResidualRGOperator(width, width) for _ in range(depth)]
-    x = torch.randn(1, width, requires_grad=True)
     for group in [std_layers, res_layers]:
-        xc = x.clone().requires_grad_(True)
+        # Use a fresh leaf tensor (detach from any computation graph)
+        xc = torch.randn(1, width, requires_grad=True)
         h  = xc
         for l in group:
             h = l(h)

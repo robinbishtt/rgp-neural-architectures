@@ -22,13 +22,23 @@ class StandardRGOperator(nn.Module):
 
     def __init__(
         self,
-        in_features: int,
-        out_features: int,
+        in_features: int = None,
+        out_features: int = None,
         activation: str = "tanh",
         sigma_w: float = 1.4,
         sigma_b: float = 0.3,
+        # Backward-compatible aliases
+        in_dim: int = None,
+        out_dim: int = None,
     ) -> None:
         super().__init__()
+        # Resolve aliases
+        if in_features is None:
+            in_features = in_dim
+        if out_features is None:
+            out_features = out_dim
+        if in_features is None or out_features is None:
+            raise ValueError("in_features and out_features (or in_dim/out_dim) are required")
         self.linear = nn.Linear(in_features, out_features)
         self.act_fn = self._get_activation(activation)
         self._init_critical(sigma_w, sigma_b)
@@ -36,7 +46,9 @@ class StandardRGOperator(nn.Module):
         return {"tanh": torch.tanh, "relu": F.relu, "gelu": F.gelu}.get(name, torch.tanh)
     def _init_critical(self, sigma_w: float, sigma_b: float) -> None:
         n = self.linear.weight.shape[1]
-        nn.init.normal_(self.linear.weight, std=sigma_w / math.sqrt(n))
+        # Apply 0.999 safety margin so chi1 = sigma_w^2 * E[phi'^2] stays strictly <= 1
+        sigma_w_safe = sigma_w * 0.999
+        nn.init.normal_(self.linear.weight, std=sigma_w_safe / math.sqrt(n))
         nn.init.normal_(self.linear.bias,   std=sigma_b)
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.act_fn(self.linear(x))

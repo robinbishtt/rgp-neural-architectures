@@ -2,11 +2,11 @@ import pytest
 import numpy as np
 from scipy import stats
 ACCURACY_DATA = {
-    :       {"id": 86.4, "ood": 78.9, "std": 1.2},
-    :    {"id": 78.6, "ood": 65.3, "std": 1.5},
-    : {"id": 80.2, "ood": 67.8, "std": 1.4},
-    : {"id": 82.1, "ood": 71.2, "std": 1.3},
-    :  {"id": 84.3, "ood": 73.5, "std": 1.2},
+    "rgnet":       {"id": 86.4, "ood": 78.9, "std": 1.2},
+    "resnet50":    {"id": 78.6, "ood": 65.3, "std": 1.5},
+    "densenet121": {"id": 80.2, "ood": 67.8, "std": 1.4},
+    "wavelet_cnn": {"id": 82.1, "ood": 71.2, "std": 1.3},
+    "tensor_net":  {"id": 84.3, "ood": 73.5, "std": 1.2},
 }
 PAPER_BASELINES = ["resnet50", "densenet121", "wavelet_cnn", "tensor_net"]
 def _sample_accuracy_measurements(mean_pct: float, std_pct: float, n_seeds: int = 10,
@@ -78,9 +78,9 @@ class TestHypothesisH3:
     @pytest.mark.parametrize("baseline", PAPER_BASELINES)
     def test_ood_advantage_amplified_at_higher_hierarchy(self, baseline: str):
         hier1_gaps = {"resnet50": 9.1, "densenet121": 8.6,
-                      : 7.3, "tensor_net": 6.6}
+                      "wavelet_cnn": 7.3, "tensor_net": 6.6}
         hier3_gaps = {"resnet50": 13.3, "densenet121": 12.4,
-                      : 10.9, "tensor_net": 10.8}
+                      "wavelet_cnn": 10.9, "tensor_net": 10.8}
         if baseline in hier1_gaps and baseline in hier3_gaps:
             gap_increases = hier3_gaps[baseline] > hier1_gaps[baseline]
             assert gap_increases, (

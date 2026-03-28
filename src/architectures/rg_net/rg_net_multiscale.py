@@ -6,12 +6,17 @@ from src.rg_flow.operators.operators import StandardRGOperator
 class RGNetMultiScale(nn.Module):
     def __init__(
         self,
-        in_features: int = 784,
+        in_features: int = None,
         n_classes: int = 10,
         depth: int = 100,
         width: int = 256,
         fusion_points: List[float] = (0.25, 0.5, 0.75, 1.0),
+        # Backward-compatible alias
+        input_dim: int = None,
     ) -> None:
+        # Resolve input_dim alias
+        if in_features is None:
+            in_features = input_dim if input_dim is not None else 784
         super().__init__()
         self.fusion_depths = [max(1, int(depth * f)) for f in fusion_points]
         self.depth         = depth

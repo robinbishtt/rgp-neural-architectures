@@ -31,7 +31,7 @@ def _make_and_run_model(seed: int, n_steps: int = 3) -> dict:
         opt.step()
         losses.append(round(loss.item(), 8))
     param_hash = hashlib.md5(
-        .join(p.detach().cpu().numpy().tobytes() for p in model.parameters())
+        b"".join(p.detach().cpu().numpy().tobytes() for p in model.parameters())
     ).hexdigest()
     return {"losses": losses, "param_hash": param_hash}
 class TestReproducibility:
@@ -75,8 +75,8 @@ class TestReproducibility:
             losses_with_resume.append(round(loss2.item(), 8))
             if step == 1:
                 state = {
-                    : model2.state_dict(),
-                    :   opt2.state_dict(),
+                    "model": model2.state_dict(),
+                    "opt":   opt2.state_dict(),
                 }
                 model2.load_state_dict(state["model"])
                 opt2.load_state_dict(state["opt"])
