@@ -68,6 +68,11 @@ class Trainer:
         val_loader: DataLoader,
         criterion: Optional[nn.Module] = None,
     ) -> TrainingResult:
+        if self.model is None or self.optimizer is None or self.scaler is None:
+            raise ValueError(
+                "Trainer is not fully initialized: model, optimizer, and scaler "
+                "must all be available before calling train()."
+            )
         criterion = criterion or nn.CrossEntropyLoss()
         scheduler = CosineAnnealingLR(self.optimizer, T_max=self.cfg.n_epochs)
         result    = TrainingResult()
