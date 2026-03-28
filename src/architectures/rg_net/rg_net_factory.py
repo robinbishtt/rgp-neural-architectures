@@ -103,7 +103,7 @@ class RGNetFactory:
                             "output_dim","depth","activation","sigma_w","sigma_b"}},
         )
     _DEPTH_RANGES: Dict[str, tuple] = {
-        "shallow":        (2,   10),
+        "shallow":        (10,  50),
         "standard":       (10,  100),
         "deep":           (100, 500),
         "ultra_deep":     (500, 10_000),
