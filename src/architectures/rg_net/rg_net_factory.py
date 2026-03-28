@@ -49,20 +49,40 @@ class RGNetFactory:
             )
         cls._validate_depth(variant_key, depth)
         variant_cls = _VARIANT_REGISTRY[variant_key]
-        model = variant_cls(
-            input_dim  = input_dim,
-            hidden_dim = hidden_dim,
-            output_dim = output_dim,
-            depth      = depth,
-            activation = activation,
-            sigma_w    = sigma_w,
-            sigma_b    = sigma_b,
-            **kwargs,
+        if variant_key == "variable_width":
+            model = variant_cls(
+                in_features=input_dim,
+                width_schedule=kwargs.pop("width_schedule", [hidden_dim] * depth),
+                n_classes=output_dim,
+                activation=activation,
+                **kwargs,
+            )
+        elif variant_key == "multiscale":
+            model = variant_cls(
+                in_features=input_dim,
+                n_classes=output_dim,
+                depth=depth,
+                width=hidden_dim,
+                **kwargs,
+            )
+        else:
+            model = variant_cls(
+                input_dim  = input_dim,
+                hidden_dim = hidden_dim,
+                output_dim = output_dim,
+                depth      = depth,
+                activation = activation,
+                sigma_w    = sigma_w,
+                sigma_b    = sigma_b,
+                **kwargs,
+            )
+        params = model.count_parameters() if hasattr(model, "count_parameters") else sum(
+            p.numel() for p in model.parameters() if p.requires_grad
         )
         logger.info(
             "Built %s | depth=%d | width=%d | params=%s",
             variant_cls.__name__, depth, hidden_dim,
-            f"{model.count_parameters():,}",
+            f"{params:,}",
         )
         return model
     @classmethod
