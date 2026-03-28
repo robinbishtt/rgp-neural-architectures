@@ -8,8 +8,8 @@ class AutogradJacobian:
     is prohibitive; prefer :class:`JVPJacobian` (O(n_in) forward passes) when
     n_in < n_out, or :class:`VJPJacobian` when n_out < n_in.
 
-    The input tensor ``x`` is **not** mutated; a detached clone is used
-    internally so that the caller's gradient state is preserved.
+    The input tensor ``x`` is **not** mutated; a clone is used internally.
+    This preserves gradient flow to upstream tensors instead of detaching.
     """
 
     def compute(self, fn, x: torch.Tensor) -> torch.Tensor:
