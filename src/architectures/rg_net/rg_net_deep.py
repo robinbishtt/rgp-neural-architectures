@@ -16,6 +16,7 @@ class RGNetDeep(nn.Module):
         self,
         input_dim: int = None,
         n_classes: int = 10,
+        output_dim: int = None,
         depth: int = 500,
         hidden_dim: int = 512,
         activation: str = "tanh",
@@ -32,6 +33,8 @@ class RGNetDeep(nn.Module):
             input_dim = in_features if in_features is not None else 784
         if width is not None:
             hidden_dim = width
+        if output_dim is not None:
+            n_classes = output_dim
 
         self.use_ckpt = use_gradient_checkpointing
         self.skip_interval = skip_interval
@@ -61,3 +64,6 @@ class RGNetDeep(nn.Module):
                 x = x + residual
                 residual = x
         return self.head(x)
+
+    def count_parameters(self) -> int:
+        return sum(p.numel() for p in self.parameters() if p.requires_grad)

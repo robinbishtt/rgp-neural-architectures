@@ -16,6 +16,7 @@ class RGNetShallow(nn.Module):
         self,
         input_dim: int = None,
         n_classes: int = 10,
+        output_dim: int = None,
         depth: int = 20,
         hidden_dim: int = 128,
         activation: str = "tanh",
@@ -31,6 +32,8 @@ class RGNetShallow(nn.Module):
             input_dim = in_features if in_features is not None else 784
         if width is not None:
             hidden_dim = width
+        if output_dim is not None:
+            n_classes = output_dim
 
         if not (10 <= depth <= 50):
             raise ValueError(f"RGNetShallow expects depth 10-50, got {depth}")
@@ -53,3 +56,6 @@ class RGNetShallow(nn.Module):
         for layer in self.layers:
             x = layer(x)
         return self.head(x)
+
+    def count_parameters(self) -> int:
+        return sum(p.numel() for p in self.parameters() if p.requires_grad)

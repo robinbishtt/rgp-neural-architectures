@@ -16,6 +16,7 @@ class RGNetStandard(nn.Module):
         self,
         input_dim: int = None,
         n_classes: int = 10,
+        output_dim: int = None,
         depth: int = 100,
         hidden_dim: int = 512,
         activation: str = "tanh",
@@ -31,6 +32,8 @@ class RGNetStandard(nn.Module):
             input_dim = in_features if in_features is not None else 784
         if width is not None:
             hidden_dim = width
+        if output_dim is not None:
+            n_classes = output_dim
 
         self.embed = nn.Linear(input_dim, hidden_dim)
         nn.init.normal_(self.embed.weight, std=sigma_w / math.sqrt(input_dim))
@@ -50,3 +53,6 @@ class RGNetStandard(nn.Module):
         for layer in self.layers:
             x = layer(x)
         return self.head(x)
+
+    def count_parameters(self) -> int:
+        return sum(p.numel() for p in self.parameters() if p.requires_grad)

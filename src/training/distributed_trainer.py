@@ -1,4 +1,5 @@
 from __future__ import annotations
+from datetime import timedelta
 import logging
 import math
 import os
@@ -48,7 +49,7 @@ def init_distributed(backend: str = "nccl", timeout_minutes: int = 30) -> Dict[s
             backend = "gloo"
         dist.init_process_group(
             backend=backend,
-            timeout=torch.distributed.timedelta(minutes=timeout_minutes),
+            timeout=timedelta(minutes=timeout_minutes),
         )
         if env["n_gpus"] > 0:
             torch.cuda.set_device(env["local_rank"])

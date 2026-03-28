@@ -16,6 +16,7 @@ class RGNetUltraDeep(nn.Module):
         self,
         input_dim: int = None,
         n_classes: int = 10,
+        output_dim: int = None,
         depth: int = 1000,
         hidden_dim: int = 1024,
         activation: str = "tanh",
@@ -32,6 +33,8 @@ class RGNetUltraDeep(nn.Module):
             input_dim = in_features if in_features is not None else 784
         if width is not None:
             hidden_dim = width
+        if output_dim is not None:
+            n_classes = output_dim
         if depth < 500:
             raise ValueError(f"RGNetUltraDeep expects depth >= 500, got {depth}")
 
@@ -62,3 +65,6 @@ class RGNetUltraDeep(nn.Module):
             else:
                 x = seg(x)
         return self.head(x)
+
+    def count_parameters(self) -> int:
+        return sum(p.numel() for p in self.parameters() if p.requires_grad)

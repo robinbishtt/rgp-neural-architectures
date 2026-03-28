@@ -48,7 +48,7 @@ class TransferMatrixMethod:
     def gap_ratio(
         self, J: torch.Tensor, k: int = 2
     ) -> float:
-        J_np = J.detach().cpu().numpy()
+        J_np = J.detach().cpu().float().numpy()
         svs  = np.linalg.svd(J_np, compute_uv=False)
         if len(svs) < k or svs[0] < EPSILON_STABILITY:
             return 0.0
