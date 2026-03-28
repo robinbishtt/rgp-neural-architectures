@@ -39,32 +39,40 @@ class TrainingResult:
 class Trainer:
     def __init__(
         self,
-        model: nn.Module,
-        cfg: TrainingConfig,
+        model: nn.Module = None,
+        cfg: TrainingConfig = None,
         device: Optional[torch.device] = None,
         checkpoint_dir: Optional[str] = None,
         telemetry=None,
     ) -> None:
         self.model    = model
-        self.cfg      = cfg
+        self.cfg      = cfg or TrainingConfig()
         self.device   = device or torch.device("cpu")
         self.ckpt_dir = Path(checkpoint_dir or "checkpoints")
         self.ckpt_dir.mkdir(parents=True, exist_ok=True)
         self.telemetry = telemetry
-        SeedRegistry.get_instance().set_master_seed(cfg.seed)
-        self.model.to(self.device)
-        self.optimizer = torch.optim.AdamW(
-            model.parameters(), lr=cfg.lr, weight_decay=cfg.weight_decay
-        )
-        self.scaler    = GradScaler(enabled=cfg.use_amp and self.device.type == "cuda")
+        SeedRegistry.get_instance().set_master_seed(self.cfg.seed)
+        self.optimizer = None
+        self.scaler    = None
         self.nan_handler = NaNRecoveryHandler()
         self._best_val_acc = 0.0
+        if self.model is not None:
+            self.model.to(self.device)
+            self.optimizer = torch.optim.AdamW(
+                model.parameters(), lr=self.cfg.lr, weight_decay=self.cfg.weight_decay
+            )
+            self.scaler = GradScaler(enabled=self.cfg.use_amp and self.device.type == "cuda")
     def train(
         self,
         train_loader: DataLoader,
         val_loader: DataLoader,
         criterion: Optional[nn.Module] = None,
     ) -> TrainingResult:
+        if self.model is None or self.optimizer is None or self.scaler is None:
+            raise ValueError(
+                "Trainer is not fully initialized: model, optimizer, and scaler "
+                "must all be available before calling train()."
+            )
         criterion = criterion or nn.CrossEntropyLoss()
         scheduler = CosineAnnealingLR(self.optimizer, T_max=self.cfg.n_epochs)
         result    = TrainingResult()
@@ -83,7 +91,7 @@ class Trainer:
                 self._save_checkpoint(epoch, val_acc)
             if epoch % self.cfg.log_interval == 0:
                 logger.info(
-                    ,
+                    "Epoch [%d/%d]  train_loss=%.4f  val_loss=%.4f  val_acc=%.4f",
                     epoch, self.cfg.n_epochs, train_loss, val_loss, val_acc,
                 )
                 if self.telemetry:
@@ -129,9 +137,9 @@ class Trainer:
         fname = "best.pt" if best else f"epoch_{epoch:04d}.pt"
         path  = self.ckpt_dir / fname
         torch.save({
-            :     epoch,
-            :   val_acc,
-            :     self.model.state_dict(),
-            : self.optimizer.state_dict(),
-            : SeedRegistry.get_instance().snapshot_state(),
+            "epoch":               epoch,
+            "val_acc":             val_acc,
+            "model_state_dict":    self.model.state_dict(),
+            "optimizer_state_dict": self.optimizer.state_dict(),
+            "rng_state":           SeedRegistry.get_instance().snapshot_state(),
         }, str(path))

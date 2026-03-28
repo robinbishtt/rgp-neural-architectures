@@ -31,6 +31,7 @@ class SeedRegistry:
     def get_worker_seed(self, worker_id: int) -> int:
         if self._master_seed is None:
             raise RuntimeError(
+                "Master seed has not been set. Call set_master_seed() first."
             )
         combined = (self._master_seed * 2654435761 + worker_id * 1013904223) & 0xFFFFFFFF
         return int(combined)
@@ -44,11 +45,11 @@ class SeedRegistry:
         return self._step
     def snapshot_state(self) -> Dict[str, Any]:
         state: Dict[str, Any] = {
-            :  self._master_seed,
-            :         self._step,
-            : random.getstate(),
-            :  np.random.get_state(),
-            :  torch.get_rng_state(),
+            "master_seed":  self._master_seed,
+            "step":         self._step,
+            "python_state": random.getstate(),
+            "numpy_state":  np.random.get_state(),
+            "torch_state":  torch.get_rng_state(),
         }
         if torch.cuda.is_available():
             state["cuda_states"] = [

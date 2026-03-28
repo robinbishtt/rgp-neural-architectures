@@ -33,8 +33,10 @@ class RGNetTemplate(nn.Module, abc.ABC):
         self._hook_handles: list = []
     @abc.abstractmethod
     def build_layers(self) -> nn.ModuleList:
+        ...
     @abc.abstractmethod
     def forward(self, x: torch.Tensor) -> torch.Tensor:
+        ...
     def forward_with_activations(
         self, x: torch.Tensor
     ) -> Tuple[torch.Tensor, List[torch.Tensor]]:

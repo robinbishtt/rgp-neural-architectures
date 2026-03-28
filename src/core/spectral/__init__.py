@@ -1,8 +1,8 @@
 def __getattr__(name):
     import importlib
     _LAZY = {
-        : ('src.core.spectral.level_spacing', 'LevelSpacingDistribution'),
-        : ('src.core.spectral.empirical_density', 'empirical_spectral_density'),
+        'LevelSpacingDistribution':  ('src.core.spectral.level_spacing', 'LevelSpacingDistribution'),
+        'empirical_spectral_density': ('src.core.spectral.empirical_density', 'empirical_spectral_density'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

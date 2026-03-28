@@ -8,11 +8,11 @@ class TestBaselineComparison:
         from src.architectures.baselines.transformer_baseline import TransformerBaseline
         from src.architectures.baselines.inception_baseline import InceptionBaseline
         return {
-            :         MLPBaseline(input_dim=input_dim, n_classes=n_classes),
-            :      ResNetBaseline(input_dim=input_dim, n_classes=n_classes),
-            : TransformerBaseline(input_dim=input_dim, n_classes=n_classes,
+            "mlp":         MLPBaseline(input_dim=input_dim, n_classes=n_classes),
+            "resnet":      ResNetBaseline(input_dim=input_dim, n_classes=n_classes),
+            "transformer": TransformerBaseline(input_dim=input_dim, n_classes=n_classes,
                                                d_model=32, n_heads=4, n_layers=2),
-            :   InceptionBaseline(input_dim=input_dim, n_classes=n_classes),
+            "inception":   InceptionBaseline(input_dim=input_dim, n_classes=n_classes),
         }
     def test_all_output_correct_shape(self):
         torch.manual_seed(5)

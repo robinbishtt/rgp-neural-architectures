@@ -22,16 +22,17 @@ class SyntheticHierarchy(Dataset):
         data = np.zeros((n, d))
         labels = np.zeros(n, dtype=int)
         for i in range(n):
-            dominant = self.rng.integers(n_scales)
+            label_i = self.rng.integers(n_classes)
+            dominant_scale = label_i % n_scales
             for s in range(n_scales):
                 scale_len = max(1, int(xi * (2.0 ** (s - n_scales // 2))))
                 freq      = d // (scale_len * 2)
-                amplitude = 1.0 if s == dominant else 0.3
+                amplitude = 1.0 if s == dominant_scale else 0.3
                 coef      = self.rng.standard_normal(max(1, freq)) * amplitude
                 for k, c in enumerate(coef):
                     idx = np.linspace(0, d - 1, scale_len, dtype=int)
                     data[i, idx[:min(len(idx), d)]] += c
-            labels[i] = dominant * (n_classes // n_scales)
+            labels[i] = label_i
         return torch.tensor(data, dtype=torch.float32), torch.tensor(labels)
     def __len__(self) -> int:
         return len(self.data)

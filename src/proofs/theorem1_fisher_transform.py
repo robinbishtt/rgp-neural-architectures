@@ -57,8 +57,8 @@ def verify_identity_initial() -> bool:
     return bool(np.allclose(G1, np.eye(n), atol=1e-12))
 def run_all_verifications() -> dict:
     results = {
-        : verify_pushforward_numerically(n=32, seed=42),
-        :       verify_identity_initial(),
+        "verify_pushforward_numerically": verify_pushforward_numerically(n=32, seed=42),
+        "verify_identity_initial":        verify_identity_initial(),
     }
     results["all_pass"] = all(results.values())
     return results

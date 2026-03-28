@@ -24,8 +24,8 @@ def verify_logarithmic_scaling(
     return float(r2) >= r2_threshold
 def run_all_verifications() -> dict:
     results = {
-        : verify_logarithmic_scaling(kc=5.0),
-        : verify_logarithmic_scaling(kc=10.0),
+        "scaling_kc_5p0":  verify_logarithmic_scaling(kc=5.0),
+        "scaling_kc_10p0": verify_logarithmic_scaling(kc=10.0),
     }
     results["all_pass"] = all(results.values())
     return results

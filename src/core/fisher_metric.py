@@ -23,7 +23,7 @@ class FisherMetric:
     def _clip(self, G: torch.Tensor) -> torch.Tensor:
         ev, V = torch.linalg.eigh(G)
         ev    = torch.clamp(ev, min=self.min_eigenvalue)
-        return V @ torch.diag(ev) @ V.T
+        return (V * ev) @ V.T
     def compute_from_model(
         self,
         model: nn.Module,

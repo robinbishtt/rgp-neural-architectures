@@ -1,10 +1,10 @@
 def __getattr__(name):
     import importlib
     _LAZY = {
-        : ('src.proofs.theorem1_fisher_transform', 'run_all_verifications'),
-        : ('src.proofs.theorem2_exponential_decay', 'run_all_verifications'),
-        : ('src.proofs.theorem3_depth_scaling', 'run_all_verifications'),
-        : ('src.proofs.lemma_critical_init', 'run_all_verifications'),
+        'run_theorem1_verifications': ('src.proofs.theorem1_fisher_transform', 'run_all_verifications'),
+        'run_theorem2_verifications': ('src.proofs.theorem2_exponential_decay', 'run_all_verifications'),
+        'run_theorem3_verifications': ('src.proofs.theorem3_depth_scaling', 'run_all_verifications'),
+        'run_lemma_verifications':    ('src.proofs.lemma_critical_init', 'run_all_verifications'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

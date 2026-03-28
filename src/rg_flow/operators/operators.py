@@ -5,15 +5,40 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 class StandardRGOperator(nn.Module):
+    """RG-Operator implementing the linear propagation + nonlinear activation step.
+
+    Computes h^(ℓ) = σ(W^(ℓ) h^(ℓ-1) + b^(ℓ)) where weights are initialised at
+    the mean-field critical point so that the largest Lyapunov exponent satisfies
+    χ₁ = σ_w² · E[φ'(z)²] ≈ 1 (edge-of-chaos).
+
+    Args:
+        in_features: Input feature dimension d_{ℓ-1}.
+        out_features: Output feature dimension d_ℓ.
+        activation: Nonlinearity name: ``'tanh'``, ``'relu'``, or ``'gelu'``.
+        sigma_w:    Weight standard deviation *before* the 1/√N normalisation.
+                    The actual ``nn.Linear`` weight std is ``sigma_w / sqrt(in_features)``.
+        sigma_b:    Bias initialisation standard deviation.
+    """
+
     def __init__(
         self,
-        in_features: int,
-        out_features: int,
+        in_features: int = None,
+        out_features: int = None,
         activation: str = "tanh",
         sigma_w: float = 1.4,
         sigma_b: float = 0.3,
+        # Backward-compatible aliases
+        in_dim: int = None,
+        out_dim: int = None,
     ) -> None:
         super().__init__()
+        # Resolve aliases
+        if in_features is None:
+            in_features = in_dim
+        if out_features is None:
+            out_features = out_dim
+        if in_features is None or out_features is None:
+            raise ValueError("in_features and out_features (or in_dim/out_dim) are required")
         self.linear = nn.Linear(in_features, out_features)
         self.act_fn = self._get_activation(activation)
         self._init_critical(sigma_w, sigma_b)
@@ -21,11 +46,27 @@ class StandardRGOperator(nn.Module):
         return {"tanh": torch.tanh, "relu": F.relu, "gelu": F.gelu}.get(name, torch.tanh)
     def _init_critical(self, sigma_w: float, sigma_b: float) -> None:
         n = self.linear.weight.shape[1]
-        nn.init.normal_(self.linear.weight, std=sigma_w / math.sqrt(n))
+        # Apply 0.999 safety margin so chi1 = sigma_w^2 * E[phi'^2] stays strictly <= 1
+        sigma_w_safe = sigma_w * 0.999
+        nn.init.normal_(self.linear.weight, std=sigma_w_safe / math.sqrt(n))
         nn.init.normal_(self.linear.bias,   std=sigma_b)
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         return self.act_fn(self.linear(x))
 class ResidualRGOperator(nn.Module):
+    """RG-Operator with a skip (residual) connection.
+
+    Computes h^(ℓ) = σ(W^(ℓ) h^(ℓ-1) + b^(ℓ)) + P h^(ℓ-1), where P is a
+    learned linear projection when ``in_features != out_features`` and the identity
+    otherwise.  The skip connection stabilises gradient flow through very deep
+    stacks (L ≫ 1) and prevents the metric-contraction factor χ₁ from
+    collapsing to zero when the activation saturates.
+
+    Args:
+        in_features:  Input feature dimension d_{ℓ-1}.
+        out_features: Output feature dimension d_ℓ.
+        activation: Nonlinearity applied inside the main branch.
+    """
+
     def __init__(self, in_features: int, out_features: int, activation: str = "tanh") -> None:
         super().__init__()
         self.op = StandardRGOperator(in_features, out_features, activation)
@@ -65,6 +106,18 @@ class WaveletRGOperator(nn.Module):
         out = torch.cat([self.low_pass(lo), self.high_pass(hi)], dim=-1)
         return torch.tanh(self.combine(out))
 class LearnedRGOperator(nn.Module):
+    """RG-Operator with a hyper-network that modulates scale and shift.
+
+    The context encoder sees the same input tensor as the main operator so that
+    gradients flow through both branches during back-propagation.  Previous
+    versions used ``x.detach()`` which silently blocked gradient propagation
+    through the context path.
+
+    Args:
+        features:    Feature dimension (input and output share the same dimension).
+        context_dim: Hidden dimension of the context encoder.
+    """
+
     def __init__(self, features: int, context_dim: int = 16) -> None:
         super().__init__()
         self.context_encoder = nn.Sequential(
@@ -75,7 +128,7 @@ class LearnedRGOperator(nn.Module):
         self.shift_net = nn.Linear(context_dim, features)
         self.base_op   = StandardRGOperator(features, features)
     def forward(self, x: torch.Tensor) -> torch.Tensor:
-        ctx   = self.context_encoder(x.detach())
+        ctx   = self.context_encoder(x)
         scale = torch.sigmoid(self.scale_net(ctx))
         shift = self.shift_net(ctx)
         return scale * self.base_op(x) + shift

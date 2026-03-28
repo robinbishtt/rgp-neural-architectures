@@ -188,11 +188,11 @@ def compute_bic_comparison(
     bic_pow, coef_pow = _bic(A_pow, l_min)
     bic_lin, coef_lin = _bic(A_lin, l_min)
     return {
-        : round(bic_log, 3),
-        : round(bic_pow, 3),
-        :      round(bic_lin, 3),
-        : round(bic_pow - bic_log, 3),
-        : round(bic_lin - bic_log, 3),
-        :     bool(bic_log < bic_pow and bic_log < bic_lin),
-        : "ΔBIC > 0 means logarithmic model is preferred. Paper: ΔBIC=8.2",
+        "bic_log":               round(bic_log, 3),
+        "bic_pow":               round(bic_pow, 3),
+        "bic_lin":               round(bic_lin, 3),
+        "delta_bic_pow":         round(bic_pow - bic_log, 3),
+        "delta_bic_lin":         round(bic_lin - bic_log, 3),
+        "logarithmic_preferred": bool(bic_log < bic_pow and bic_log < bic_lin),
+        "note": "ΔBIC > 0 means logarithmic model is preferred. Paper: ΔBIC=8.2",
     }

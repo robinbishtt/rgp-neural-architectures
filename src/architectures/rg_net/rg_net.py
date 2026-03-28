@@ -45,13 +45,24 @@ class RGNetShallow(nn.Module):
 class RGNetStandard(nn.Module):
     def __init__(
         self,
-        input_dim: int,
-        hidden_dim: int,
-        output_dim: int,
+        input_dim: int = None,
+        hidden_dim: int = None,
+        output_dim: int = None,
         depth: int = 20,
         activation: str = "tanh",
+        # Backward-compatible aliases
+        in_features: int = None,
+        n_classes: int = None,
+        width: int = None,
     ) -> None:
         super().__init__()
+        # Resolve aliases
+        if input_dim is None:
+            input_dim = in_features if in_features is not None else 784
+        if hidden_dim is None:
+            hidden_dim = width if width is not None else 512
+        if output_dim is None:
+            output_dim = n_classes if n_classes is not None else 10
         self.embed  = nn.Linear(input_dim, hidden_dim)
         self.layers = nn.ModuleList([
             RGLayer(hidden_dim, hidden_dim, activation)
@@ -192,13 +203,13 @@ class RGNetResidual(nn.Module):
                 skip = x
         return self.head(x)
 _VARIANTS = {
-    :       RGNetShallow,
-    :      RGNetStandard,
-    :          RGNetDeep,
-    :    RGNetUltraDeep,
-    : RGNetVariableWidth,
-    :    RGNetMultiScale,
-    :      RGNetResidual,
+    'shallow':        RGNetShallow,
+    'standard':       RGNetStandard,
+    'deep':           RGNetDeep,
+    'ultra_deep':     RGNetUltraDeep,
+    'variable_width': RGNetVariableWidth,
+    'multiscale':     RGNetMultiScale,
+    'residual':       RGNetResidual,
 }
 def build_rg_net(variant: str, **kwargs) -> nn.Module:
     if variant not in _VARIANTS:

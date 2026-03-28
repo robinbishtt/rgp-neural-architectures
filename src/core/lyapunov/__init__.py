@@ -1,7 +1,7 @@
 def __getattr__(name):
     import importlib
     _LAZY = {
-        : ('src.core.lyapunov.parallel_qr', 'ParallelQRAlgorithm'),
+        'ParallelQRAlgorithm': ('src.core.lyapunov.parallel_qr', 'ParallelQRAlgorithm'),
     }
     if name in _LAZY:
         mod_name, attr = _LAZY[name]

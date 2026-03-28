@@ -14,9 +14,9 @@ def verify_infinite_correlation_at_critical() -> bool:
     return all(xi_values[i + 1] > xi_values[i] for i in range(len(xi_values) - 1))
 def run_all_verifications() -> dict:
     results = {
-        : verify_critical_sigma_w("tanh"),
-        : verify_critical_sigma_w("relu"),
-        :  verify_infinite_correlation_at_critical(),
+        "critical_tanh":      verify_critical_sigma_w("tanh"),
+        "critical_relu":      verify_critical_sigma_w("relu"),
+        "infinite_correlation": verify_infinite_correlation_at_critical(),
     }
     results["all_pass"] = all(results.values())
     return results

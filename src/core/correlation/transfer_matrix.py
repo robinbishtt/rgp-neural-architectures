@@ -2,6 +2,11 @@ from __future__ import annotations
 import numpy as np
 import torch
 import torch.nn as nn
+
+EPSILON_STABILITY = 1e-12
+RATIO_MIN_CLIP = 1e-12
+RATIO_MAX_CLIP = 1.0 - 1e-12
+
 class TransferMatrixMethod:
     def __init__(self, top_k: int = 2) -> None:
         if top_k < 2:
@@ -10,13 +15,13 @@ class TransferMatrixMethod:
     def compute_from_jacobian(
         self, J: torch.Tensor
     ) -> float:
-        J_np  = J.detach().cpu().numpy()
+        J_np  = J.detach().cpu().float().numpy()
         svs   = np.linalg.svd(J_np, compute_uv=False)
-        if len(svs) < 2 or svs[0] < 1e-12:
+        if len(svs) < 2 or svs[0] < EPSILON_STABILITY:
             return float("inf")
-        ratio = svs[1] / (svs[0] + 1e-12)
-        ratio = np.clip(ratio, 1e-12, 1.0 - 1e-12)
-        return float(-1.0 / np.log(ratio + 1e-12))
+        ratio = float(svs[1]) / (float(svs[0]) + EPSILON_STABILITY)
+        ratio = np.clip(ratio, RATIO_MIN_CLIP, RATIO_MAX_CLIP)
+        return float(-1.0 / np.log(ratio))
     def compute_depth_profile(
         self,
         model: nn.Module,
@@ -43,8 +48,8 @@ class TransferMatrixMethod:
     def gap_ratio(
         self, J: torch.Tensor, k: int = 2
     ) -> float:
-        J_np = J.detach().cpu().numpy()
+        J_np = J.detach().cpu().float().numpy()
         svs  = np.linalg.svd(J_np, compute_uv=False)
-        if len(svs) < k or svs[0] < 1e-12:
+        if len(svs) < k or svs[0] < EPSILON_STABILITY:
             return 0.0
-        return float(svs[k - 1] / (svs[0] + 1e-12))
+        return float(svs[k - 1] / (svs[0] + EPSILON_STABILITY))
