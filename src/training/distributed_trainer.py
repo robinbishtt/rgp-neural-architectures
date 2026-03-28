@@ -43,14 +43,14 @@ def init_distributed(backend: str = "nccl", timeout_minutes: int = 30) -> Dict[s
             raise RuntimeError(
                 "torch.distributed is not available; cannot initialize distributed training."
             )
-        if backend == "nccl" and env["n_gpus_node"] == 0:
+        if backend == "nccl" and env["n_gpus"] == 0:
             warnings.warn("No GPUs found; falling back from nccl to gloo.", stacklevel=2)
             backend = "gloo"
         dist.init_process_group(
             backend=backend,
             timeout=torch.distributed.timedelta(minutes=timeout_minutes),
         )
-        if env["n_gpus_node"] > 0:
+        if env["n_gpus"] > 0:
             torch.cuda.set_device(env["local_rank"])
         logger.info(
             "Distributed: rank=%d/%d  local_rank=%d  backend=%s",
