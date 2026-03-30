@@ -1,0 +1,15 @@
+remote_theme: just-the-docs/just-the-docs
+
+title: RGP Neural Architectures
+description: Renormalization-Group Principles for Deep Neural Architectures.
+
+search_enabled: true
+heading_anchors: true
+nav_sort: case_insensitive
+
+# Keep deep navigation visible in the sidebar for theorem/proof drill-down
+nav_external_links_new_tab: true
+
+# GitHub Pages compatibility for remote_theme
+plugins:
+  - jekyll-remote-theme
