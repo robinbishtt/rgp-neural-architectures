@@ -23,7 +23,7 @@ G^{(\ell)} = \left(J^{(\ell)}\right)^\top G^{(\ell-1)} J^{(\ell)},
 \]
 with \(\chi_1 \le 1\) in the ordered/critical regime (`src/core/fisher/fisher_metric.py`, `src/core/correlation/two_point.py`).
 
-The H1 empirical correspondence is documented as
+The H1 hypothesis (scale correspondence) empirical result is documented as
 \[
 \xi(k)=\xi_0\exp\!\left(-\frac{k}{k_c}\right), \qquad R^2 = 0.997\pm 0.001,
 \]
@@ -34,11 +34,11 @@ with repository-level claim in `README.md` and table mappings in `docs/PAPER_COD
 | Constant | Value (code-grounded) | Extraction path |
 |---|---:|---|
 | \(\chi_1\) | \(0.894\) (default asymptotic contraction) | `src/core/rg_flow_solver.py` (`RGFlowSolver.__init__(chi_infty=0.894)`) |
-| \(\xi_{\text{depth}}\) | \(-1/\log(\chi_1)\) | `src/core/rg_flow_solver.py` (`self.k_c = -1/log(chi_infty)`) |
+| \(\xi_{\text{depth}}\) (formula) | \(-1/\log(\chi_1)\) | `src/core/rg_flow_solver.py` (`self.k_c = -1/log(chi_infty)`) |
 | \(\xi_{\text{depth}}\) at \(\chi_1=0.894\) | \(8.925\) | computed from code formula |
 | \(\sigma_w\) | \(1.4\) (critical-theorem setting) | `src/proofs/theorem1_fisher_transform.py` (`sigma_w = 1.4`) |
 | \(\sigma_b\) | \(0.3\) | `config/architectures/rg_net.yaml` |
-| \(\alpha\) (H2 log-law slope) | fitted OLS coefficient in \(L_{\min}=\alpha\log(\xi_{\text{data}}/\xi_{\text{target}})+\beta\) | `experiments/h2_depth_scaling/statistical_analysis.py` (`fit_log_scaling`) |
+| \(\alpha\) (H2 depth-scaling log-law slope) | fitted OLS coefficient in \(L_{\min}=\alpha\log(\xi_{\text{data}}/\xi_{\text{target}})+\beta\) | `experiments/h2_depth_scaling/statistical_analysis.py` (`fit_log_scaling`) |
 | \(\alpha\) reference value | \(1.0\) (null used in `test_alpha_equals_one`) | `experiments/h2_depth_scaling/statistical_analysis.py` |
 | \(\epsilon_0\) | \(1-\chi_1\) | `src/core/rg_flow_solver.py` (`BetaFunctionSolver.eps_0`) |
 | \(\epsilon_0\) at \(\chi_1=0.894\) | \(0.106\) | computed from code formula |

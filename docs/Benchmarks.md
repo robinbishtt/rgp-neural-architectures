@@ -34,7 +34,7 @@ The test suite enforces:
 
 ## Approximate effect sizes from fixture means/stds
 
-Using pooled standard deviation approximation from listed std values:
+Using a simplified pooled-standard-deviation approximation from listed std values (equal-sample-size approximation for quick fixture-scale interpretation):
 \[
 d_{\text{RG,ResNet}} \approx \frac{78.9-65.3}{\sqrt{(1.2^2+1.5^2)/2}} \approx 10.0,
 \]

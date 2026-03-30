@@ -42,9 +42,9 @@ we obtain
 \]
 This exact parameterization is mirrored in `BetaFunctionSolver`:
 \[
-\epsilon_0 = \max(1-\chi_\infty,0).
+\epsilon_0 = \max(1-\chi_1,0).
 \]
-For default \(\chi_\infty=0.894\),
+For default \(\chi_1=0.894\),
 \[
 \epsilon_0 = 0.106,
 \qquad

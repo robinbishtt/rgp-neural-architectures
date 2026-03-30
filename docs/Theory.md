@@ -32,7 +32,7 @@ implemented via Gauss-Hermite quadrature in `src/core/correlation/two_point.py`.
 \eta^{(\ell)} \le \chi_1\eta^{(\ell-1)} = (1-\epsilon_0)\eta^{(\ell-1)}, \quad \epsilon_0 := 1-\chi_1.
 \]
 
-`verify_pushforward_numerically()` in `src/proofs/theorem1_fisher_transform.py` enforces contraction empirically (e.g., \(\eta_{50}<0.5\), negative top Lyapunov estimate).
+`verify_pushforward_numerically()` (historical function name retained in file) and the explicit alias `verify_pullback_numerically()` in `src/proofs/theorem1_fisher_transform.py` both run the same pullback-contraction numerical check (e.g., \(\eta_{50}<0.5\), negative top Lyapunov estimate).
 
 ## Theorem 2 (exponential two-point decay)
 
