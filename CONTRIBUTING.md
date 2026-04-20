@@ -15,7 +15,7 @@ All contributors are expected to follow the [Code of Conduct](CODE_OF_CONDUCT.md
 Fork the repository on GitHub, then clone your fork locally.
 
 ```bash
-git clone https://github.com/<your-username>/rgp-neural-architectures.git
+git clone https://anonymous.4open.science/r/rgp-neural-architectures-BB30.git
 cd rgp-neural-architectures
 git remote add upstream https://anonymous.4open.science/r/rgp-neural-architectures-BB30
 ```
