@@ -115,77 +115,542 @@ make reproduce_h3     # H3 only: 6-8 hours
 ## Repository Structure
 
 ```
-rgp-neural-architectures/
-│
-├── src/                        Source code - 137 Python modules
-│   ├── core/                     Tier 1: Mathematical foundations
-│   │   ├── fisher/                 Fisher information geometry (pullback g=J^T G J)
-│   │   ├── jacobian/               Jacobian computation (autograd, JVP, VJP, FD)
-│   │   ├── spectral/               RMT: Marchenko-Pastur, Wigner, Tracy-Widom
-│   │   ├── correlation/            Two-point functions, chi1, exponential decay fit
-│   │   └── lyapunov/               Lyapunov spectrum via Benettin QR algorithm
-│   ├── rg_flow/operators/          Standard, Residual, Attention, Wavelet, Learned
-│   ├── proofs/                     SymPy + numerical theorem verification
-│   ├── architectures/            Tier 2: Neural architectures
-│   │   ├── rg_net/                 7 RG-Net variants (shallow to ultra-deep)
-│   │   └── baselines/              ResNet-50, DenseNet-121, Wavelet-CNN, Tensor-Net
-│   ├── training/                   Trainer, optimizers, schedulers, mixed precision
-│   ├── scaling/                    FSS analysis, critical exponents, AIC model selection
-│   ├── datasets/                   Hierarchical datasets (Hier-1..5), OOD loaders
-│   └── utils/                    ICL: SeedRegistry, DeviceManager, checkpointing
-│
-├── experiments/                Hypothesis validation pipelines
-│   ├── h1_scale_correspondence/    H1: xi(k) exponential decay validation
-│   ├── h2_depth_scaling/           H2: L_min ~ log(xi_data) validation
-│   └── h3_multiscale_generalization/ H3: RG-Net vs baselines comparison
-│
-├── ablation/                   8 ablation study scripts
-│   ├── run_activation_ablation.py       Tanh vs ReLU vs GELU
-│   ├── run_initialization_ablation.py   5 init configs vs paper critical
-│   ├── run_width_ablation.py            1/N corrections vs mean-field
-│   ├── run_depth_ablation.py            L vs L_min threshold test
-│   ├── run_operator_ablation.py         Standard vs Residual vs Wavelet vs Attention
-│   ├── run_skip_connection_ablation.py  Skip interval effect
-│   ├── run_off_critical_ablation.py     H1 falsification at off-critical init
-│   └── run_all_ablations.py             Master runner
-│
-├── notebooks/                  21 Jupyter notebooks
-│
-├── tests/                      83 test files across 8 categories
-│   ├── unit/          19 files - core mathematics (Fisher, Jacobian, Lyapunov, RMT)
-│   ├── stability/     11 files - critical initialization, gradient flow, weight norms
-│   ├── scaling/        9 files - H1/H2/H3 quantitative, FSS, scaling law fit
-│   ├── spectral/       7 files - Marchenko-Pastur, Wigner, Tracy-Widom, level spacing
-│   ├── validation/     7 files - determinism, reproducibility, hypothesis checks
-│   ├── integration/    7 files - checkpoint, training convergence, full pipeline
-│   ├── robustness/     9 files - adversarial, OOD, noise, corruption
-│   └── ablation/      14 files - per-component ablation validation
-│
-├── figures/                    Figure generators + 15 PNG outputs
-│   ├── manuscript/               5 manuscript figures (generate_figure1.py – 5.py)
-│   ├── extended_data/            11 extended data figures (run_extended_figure1.py – 11.py)
-│   ├── supplementary/            Supplementary figures and tables
-│   ├── styles/                   Publication stylesheet, color palette
-│   └── out/                      Generated PNGs (15 figures)
-│
-├── config/                     Hydra hierarchical configuration
-│   ├── architectures/            RG-Net configs, baseline configs
-│   ├── experiments/              Per-hypothesis experiment configs
-│   ├── training/                 Optimizer, scheduler, fast-track overrides
-│   └── scaling/, telemetry/, datasets/
-│
-├── containers/                 Docker + Singularity containers, HPC job scripts
-├── scripts/                    23 shell + Python automation scripts
-├── docs/                       9 documentation files
-│   └── API.md, ARCHITECTURE.md, DATASETS.md, HPC_GUIDE.md, INSTALLATION.md,
-│       MODULES.md, PAPER_CODE_CORRESPONDENCE.md, QUICKSTART.md, REPRODUCIBILITY.md
-├── .github/workflows/          6 CI workflows (Tests, Lint, Experiments,
-│                               Model Validator, Notebooks, Reproduce)
-├── CITATION.cff
-├── LICENSE (MIT)
-├── CONTRIBUTING.md
-├── requirements.txt (pinned, Python 3.11)
-└── pyproject.toml
+robinbishtt-rgp-neural-architectures/
+    ├── README.md
+    ├── CHANGELOG.md
+    ├── CITATION.cff
+    ├── CODE_OF_CONDUCT.md
+    ├── CONTRIBUTING.md
+    ├── environment.yml
+    ├── LICENSE
+    ├── Makefile
+    ├── pyproject.toml
+    ├── reproduce.sh
+    ├── requirements.txt
+    ├── SECURITY.md
+    ├── setup.cfg
+    ├── ablation/
+    │   ├── __init__.py
+    │   ├── run_activation_ablation.py
+    │   ├── run_all_ablations.py
+    │   ├── run_depth_ablation.py
+    │   ├── run_initialization_ablation.py
+    │   ├── run_off_critical_ablation.py
+    │   ├── run_operator_ablation.py
+    │   ├── run_skip_connection_ablation.py
+    │   └── run_width_ablation.py
+    ├── config/
+    │   ├── __init__.py
+    │   ├── architectures/
+    │   │   ├── baselines.yaml
+    │   │   ├── operator_configs.yaml
+    │   │   └── rg_net.yaml
+    │   ├── datasets/
+    │   │   ├── __init__.py
+    │   │   └── datasets.yaml
+    │   ├── experiments/
+    │   │   ├── __init__.py
+    │   │   ├── ablation_studies.yaml
+    │   │   ├── baseline_comparison.yaml
+    │   │   ├── extended_data_reproduction.yaml
+    │   │   ├── finite_size_scaling.yaml
+    │   │   ├── h1_scale_correspondence.yaml
+    │   │   ├── h2_depth_scaling.yaml
+    │   │   ├── h3_multiscale_generalization.yaml
+    │   │   └── robustness_evaluation.yaml
+    │   ├── fast_track/
+    │   │   ├── __init__.py
+    │   │   ├── h1_override.yaml
+    │   │   ├── h2_override.yaml
+    │   │   ├── h3_override.yaml
+    │   │   └── override.yaml
+    │   ├── scaling/
+    │   │   ├── __init__.py
+    │   │   └── fss.yaml
+    │   ├── telemetry/
+    │   │   ├── __init__.py
+    │   │   └── backends.yaml
+    │   └── training/
+    │       ├── base_training.yaml
+    │       ├── deep_training.yaml
+    │       ├── distributed_training.yaml
+    │       ├── fast_track_training.yaml
+    │       └── optimizer_configs.yaml
+    ├── containers/
+    │   ├── README.md
+    │   ├── docker-compose.yml
+    │   ├── Dockerfile
+    │   ├── Dockerfile.cpu
+    │   ├── Singularity.cpu.def
+    │   ├── Singularity.def
+    │   ├── singularity_build.sh
+    │   ├── .dockerignore
+    │   └── hpc_jobs/
+    │       ├── pbs_rgp_fast.pbs
+    │       ├── pbs_rgp_h1.pbs
+    │       ├── slurm_rgp_fast.sh
+    │       ├── slurm_rgp_full.sh
+    │       ├── slurm_rgp_h1.sh
+    │       ├── slurm_rgp_h2.sh
+    │       └── slurm_rgp_h3.sh
+    ├── data/
+    │   ├── README.md
+    │   └── generation_script.py
+    ├── docs/
+    │   ├── API.md
+    │   ├── ARCHITECTURE.md
+    │   ├── DATASETS.md
+    │   ├── HPC_GUIDE.md
+    │   ├── INSTALLATION.md
+    │   ├── MODULES.md
+    │   ├── PAPER_CODE_CORRESPONDENCE.md
+    │   ├── QUICKSTART.md
+    │   └── REPRODUCIBILITY.md
+    ├── experiments/
+    │   ├── __init__.py
+    │   ├── h1_scale_correspondence/
+    │   │   ├── __init__.py
+    │   │   ├── analyze_correlation_decay.py
+    │   │   ├── compute_fisher_spectrum.py
+    │   │   ├── generate_figure3.py
+    │   │   ├── run_h1_validation.py
+    │   │   └── statistical_tests.py
+    │   ├── h2_depth_scaling/
+    │   │   ├── __init__.py
+    │   │   ├── analyze_depth_scaling.py
+    │   │   ├── generate_figure4.py
+    │   │   ├── minimum_depth_extractor.py
+    │   │   ├── run_h2_validation.py
+    │   │   └── statistical_analysis.py
+    │   └── h3_multiscale_generalization/
+    │       ├── __init__.py
+    │       ├── compare_architectures.py
+    │       ├── generate_figure5_table1.py
+    │       ├── ood_evaluation.py
+    │       ├── run_h3_validation.py
+    │       └── statistical_tests.py
+    ├── figures/
+    │   ├── __init__.py
+    │   ├── generate_all.py
+    │   ├── extended_data/
+    │   │   ├── __init__.py
+    │   │   ├── generate_extended_table1.py
+    │   │   ├── generate_extended_table2.py
+    │   │   ├── generate_extended_table3.py
+    │   │   ├── run_extended_figure1.py
+    │   │   ├── run_extended_figure10.py
+    │   │   ├── run_extended_figure11.py
+    │   │   ├── run_extended_figure2.py
+    │   │   ├── run_extended_figure3.py
+    │   │   ├── run_extended_figure4.py
+    │   │   ├── run_extended_figure5.py
+    │   │   ├── run_extended_figure6.py
+    │   │   ├── run_extended_figure7.py
+    │   │   ├── run_extended_figure8.py
+    │   │   └── run_extended_figure9.py
+    │   ├── manuscript/
+    │   │   ├── __init__.py
+    │   │   ├── generate_figure1.py
+    │   │   ├── generate_figure2.py
+    │   │   ├── generate_figure3.py
+    │   │   ├── generate_figure4.py
+    │   │   └── generate_figure5.py
+    │   ├── styles/
+    │   │   ├── __init__.py
+    │   │   ├── color_palette.py
+    │   │   ├── font_config.py
+    │   │   ├── latex_preamble.tex
+    │   │   └── publication.mplstyle
+    │   └── supplementary/
+    │       ├── __init__.py
+    │       ├── generate_figureS1.py
+    │       ├── generate_figureS2.py
+    │       ├── generate_figureS3.py
+    │       ├── generate_figureS4.py
+    │       ├── generate_tableS1.py
+    │       ├── generate_tableS2.py
+    │       ├── generate_tableS3.py
+    │       └── generate_tableS4.py
+    ├── notebooks/
+    │   ├── 00_overview.ipynb
+    │   ├── __init__.py
+    │   ├── ablation_activation_functions.ipynb
+    │   ├── critical_initialization.ipynb
+    │   ├── extended_data_overview.ipynb
+    │   ├── finite_size_scaling.ipynb
+    │   ├── fisher_information_geometry.ipynb
+    │   ├── h1_scale_correspondence.ipynb
+    │   ├── h2_depth_scaling.ipynb
+    │   ├── h3_generalization.ipynb
+    │   ├── h3_multiscale_generalization.ipynb
+    │   ├── lyapunov_spectrum.ipynb
+    │   ├── phase_diagram.ipynb
+    │   ├── phase_overview.ipynb
+    │   ├── quick_start_demo.ipynb
+    │   ├── random_matrix_theory.ipynb
+    │   ├── reproducibility_check.ipynb
+    │   ├── rg_operators.ipynb
+    │   ├── scaling_law_analysis.ipynb
+    │   ├── theorem1_metric_contraction.ipynb
+    │   ├── theorem2_exponential_decay.ipynb
+    │   ├── theorem3_depth_scaling.ipynb
+    │   └── tutorial_fast_track.py
+    ├── results/
+    │   └── tables/
+    │       ├── README.md
+    │       ├── table1_h3_architecture_comparison.csv
+    │       ├── table2_h1_r2_by_width_seed.csv
+    │       ├── table3_h2_lmin_by_xi.csv
+    │       ├── table4_h2_statistical_summary.csv
+    │       ├── table5_h3_statistical_tests.csv
+    │       ├── table6_ablation_activations.csv
+    │       ├── table7_ablation_initialization.csv
+    │       └── table8_width_ablation_finite_size.csv
+    ├── scripts/
+    │   ├── __init__.py
+    │   ├── cleanup_artifacts.sh
+    │   ├── download_pretrained_checkpoints.sh
+    │   ├── generate_figures.sh
+    │   ├── proof_of_life_training.py
+    │   ├── reproduce_all_figures.sh
+    │   ├── reproduce_extended_data.sh
+    │   ├── reproduce_fast.sh
+    │   ├── reproduce_fast_h1.sh
+    │   ├── reproduce_fast_h2.sh
+    │   ├── reproduce_fast_h3.sh
+    │   ├── reproduce_supplementary.sh
+    │   ├── reproduce_tables.sh
+    │   ├── run_ablations.sh
+    │   ├── run_full_validation.sh
+    │   ├── run_h1.sh
+    │   ├── run_h2.sh
+    │   ├── run_h3.sh
+    │   ├── setup_environment.sh
+    │   ├── train_and_validate_h1.py
+    │   ├── validate_determinism.sh
+    │   ├── validate_hypotheses.sh
+    │   ├── verify_pipeline.py
+    │   └── verify_pipeline.sh
+    ├── src/
+    │   ├── __init__.py
+    │   ├── architectures/
+    │   │   ├── __init__.py
+    │   │   ├── baselines/
+    │   │   │   ├── __init__.py
+    │   │   │   ├── attention_baseline.py
+    │   │   │   ├── densenet_baseline.py
+    │   │   │   ├── inception_baseline.py
+    │   │   │   ├── mlp_baseline.py
+    │   │   │   ├── resnet_baseline.py
+    │   │   │   ├── tensor_net_baseline.py
+    │   │   │   ├── transformer_baseline.py
+    │   │   │   ├── vgg_baseline.py
+    │   │   │   └── wavelet_baseline.py
+    │   │   ├── blocks/
+    │   │   │   ├── __init__.py
+    │   │   │   ├── rgp_attention.py
+    │   │   │   ├── rgp_bottleneck_v2.py
+    │   │   │   └── rgp_moe_block.py
+    │   │   ├── equivariant/
+    │   │   │   ├── __init__.py
+    │   │   │   └── symmetry_equivariance_engine.py
+    │   │   ├── layers/
+    │   │   │   ├── __init__.py
+    │   │   │   └── renormalized_norm.py
+    │   │   └── rg_net/
+    │   │       ├── __init__.py
+    │   │       ├── rg_net.py
+    │   │       ├── rg_net_deep.py
+    │   │       ├── rg_net_factory.py
+    │   │       ├── rg_net_multiscale.py
+    │   │       ├── rg_net_shallow.py
+    │   │       ├── rg_net_standard.py
+    │   │       ├── rg_net_template.py
+    │   │       ├── rg_net_ultra_deep.py
+    │   │       └── rg_net_variable_width.py
+    │   ├── checkpoint/
+    │   │   ├── __init__.py
+    │   │   ├── async_writer.py
+    │   │   ├── checkpoint_manager.py
+    │   │   ├── checkpoint_verifier.py
+    │   │   ├── distributed_checkpoint.py
+    │   │   ├── metric_serializer.py
+    │   │   ├── model_serializer.py
+    │   │   └── rng_serializer.py
+    │   ├── core/
+    │   │   ├── __init__.py
+    │   │   ├── correlation.py
+    │   │   ├── correlation_length.py
+    │   │   ├── fisher_metric.py
+    │   │   ├── jacobian.py
+    │   │   ├── lyapunov.py
+    │   │   ├── rg_flow_solver.py
+    │   │   ├── spectral.py
+    │   │   ├── correlation/
+    │   │   │   ├── __init__.py
+    │   │   │   ├── estimators.py
+    │   │   │   ├── exponential_decay_fitter.py
+    │   │   │   ├── transfer_matrix.py
+    │   │   │   └── two_point.py
+    │   │   ├── fisher/
+    │   │   │   ├── __init__.py
+    │   │   │   ├── analytic.py
+    │   │   │   ├── condition_tracker.py
+    │   │   │   ├── effective_dimension.py
+    │   │   │   ├── eigenvalue_analyzer.py
+    │   │   │   ├── fisher_base.py
+    │   │   │   ├── fisher_dynamic_router.py
+    │   │   │   ├── fisher_metric.py
+    │   │   │   ├── fisher_metric_fixed.py
+    │   │   │   └── monte_carlo.py
+    │   │   ├── jacobian/
+    │   │   │   ├── __init__.py
+    │   │   │   ├── autograd_jacobian.py
+    │   │   │   ├── finite_difference_jacobian.py
+    │   │   │   ├── jacobian.py
+    │   │   │   ├── jvp_jacobian.py
+    │   │   │   ├── symbolic_jacobian.py
+    │   │   │   └── vjp_jacobian.py
+    │   │   ├── lyapunov/
+    │   │   │   ├── __init__.py
+    │   │   │   ├── adaptive_qr.py
+    │   │   │   ├── lyapunov.py
+    │   │   │   ├── parallel_qr.py
+    │   │   │   └── standard_qr.py
+    │   │   └── spectral/
+    │   │       ├── __init__.py
+    │   │       ├── empirical_density.py
+    │   │       ├── level_spacing.py
+    │   │       ├── marchenko_pastur.py
+    │   │       ├── spectral.py
+    │   │       ├── tracy_widom.py
+    │   │       └── wigner_semicircle.py
+    │   ├── datasets/
+    │   │   ├── __init__.py
+    │   │   ├── hierarchical_cifar.py
+    │   │   ├── hierarchical_dataset.py
+    │   │   ├── hierarchical_mnist.py
+    │   │   ├── imagenet_hierarchy.py
+    │   │   ├── medical_hierarchy.py
+    │   │   ├── synthetic_hierarchy.py
+    │   │   └── loaders/
+    │   │       ├── __init__.py
+    │   │       ├── cached_loader.py
+    │   │       ├── deterministic_loader.py
+    │   │       ├── distributed_loader.py
+    │   │       └── streaming_loader.py
+    │   ├── ops/
+    │   │   ├── __init__.py
+    │   │   └── triton/
+    │   │       ├── __init__.py
+    │   │       └── triton_custom_kernels.py
+    │   ├── orchestration/
+    │   │   ├── __init__.py
+    │   │   ├── dag_executor.py
+    │   │   ├── hydra_config.py
+    │   │   ├── pipeline.py
+    │   │   └── slurm_executor.py
+    │   ├── proofs/
+    │   │   ├── __init__.py
+    │   │   ├── lemma_critical_init.py
+    │   │   ├── proof_utils.py
+    │   │   ├── theorem1_fisher_transform.py
+    │   │   ├── theorem2_exponential_decay.py
+    │   │   ├── theorem3_depth_scaling.py
+    │   │   └── verification_runner.py
+    │   ├── provenance/
+    │   │   ├── __init__.py
+    │   │   ├── checksum_registry.py
+    │   │   ├── data_auditor.py
+    │   │   ├── master_hashes.py
+    │   │   └── provenance_logger.py
+    │   ├── rg_flow/
+    │   │   ├── __init__.py
+    │   │   ├── continuous_rg_flow.py
+    │   │   └── operators/
+    │   │       ├── __init__.py
+    │   │       ├── attention_rg_operator.py
+    │   │       ├── learned_rg_operator.py
+    │   │       ├── operators.py
+    │   │       └── wavelet_rg_operator.py
+    │   ├── scaling/
+    │   │   ├── __init__.py
+    │   │   ├── bootstrap.py
+    │   │   ├── canonical_scaling_handler.py
+    │   │   ├── collapse_quality.py
+    │   │   ├── critical_exponents.py
+    │   │   ├── data_collapse.py
+    │   │   ├── depth_width_analyzer.py
+    │   │   ├── exponent_comparison.py
+    │   │   ├── fss_analysis.py
+    │   │   ├── phase_diagram.py
+    │   │   ├── scaling_law_fitter.py
+    │   │   ├── spectral_scaling.py
+    │   │   └── width_scaling.py
+    │   ├── telemetry/
+    │   │   ├── __init__.py
+    │   │   ├── hdf5_storage.py
+    │   │   ├── jsonl_storage.py
+    │   │   ├── notifiers.py
+    │   │   ├── parquet_storage.py
+    │   │   └── telemetry_logger.py
+    │   ├── training/
+    │   │   ├── __init__.py
+    │   │   ├── batch_sampler.py
+    │   │   ├── curriculum_trainer.py
+    │   │   ├── distributed_trainer.py
+    │   │   ├── early_stopping.py
+    │   │   ├── evaluation.py
+    │   │   ├── gradient_checkpoint_trainer.py
+    │   │   ├── learning_rate_scheduler.py
+    │   │   ├── loss_tracker.py
+    │   │   ├── mixed_precision_trainer.py
+    │   │   ├── progressive_trainer.py
+    │   │   ├── trainer.py
+    │   │   ├── training_monitor.py
+    │   │   ├── training_utils.py
+    │   │   ├── warmup_trainer.py
+    │   │   ├── distributed/
+    │   │   │   ├── __init__.py
+    │   │   │   └── fsdp_orchestrator.py
+    │   │   ├── losses/
+    │   │   │   ├── __init__.py
+    │   │   │   └── topological_loss.py
+    │   │   └── optimizers/
+    │   │       ├── __init__.py
+    │   │       ├── adam_variants.py
+    │   │       ├── cosine_annealing.py
+    │   │       ├── fisher_optimizer.py
+    │   │       ├── layer_wise.py
+    │   │       ├── learning_rate_finder.py
+    │   │       ├── natural_gradient.py
+    │   │       ├── second_order.py
+    │   │       ├── sgd_momentum.py
+    │   │       └── warmup_scheduler.py
+    │   └── utils/
+    │       ├── __init__.py
+    │       ├── bit_exact_verifier.py
+    │       ├── determinism.py
+    │       ├── determinism_auditor.py
+    │       ├── device_manager.py
+    │       ├── error_handler.py
+    │       ├── fast_track_validator.py
+    │       ├── hardware_dispatch.py
+    │       ├── memory_utils.py
+    │       ├── provenance.py
+    │       ├── seed_registry.py
+    │       ├── telemetry_logger.py
+    │       └── logging/
+    │           ├── __init__.py
+    │           └── complexity_tracker.py
+    ├── tests/
+    │   ├── __init__.py
+    │   ├── conftest.py
+    │   ├── ablation/
+    │   │   ├── __init__.py
+    │   │   ├── test_attention_operator_ablation.py
+    │   │   ├── test_baseline_comparison.py
+    │   │   ├── test_critical_init_ablation.py
+    │   │   ├── test_depth_ablation.py
+    │   │   ├── test_inception_baseline_ablation.py
+    │   │   ├── test_learned_operator_ablation.py
+    │   │   ├── test_multiscale_fusion.py
+    │   │   ├── test_phase_diagram.py
+    │   │   ├── test_rg_operators.py
+    │   │   ├── test_scale_awareness.py
+    │   │   ├── test_skip_connections.py
+    │   │   ├── test_transformer_baseline_ablation.py
+    │   │   ├── test_wavelet_operator_ablation.py
+    │   │   └── test_width_scaling_ablation.py
+    │   ├── integration/
+    │   │   ├── __init__.py
+    │   │   ├── test_checkpoint_save_load.py
+    │   │   ├── test_data_to_model.py
+    │   │   ├── test_distributed_training.py
+    │   │   ├── test_full_hypothesis_pipeline.py
+    │   │   ├── test_mixed_precision.py
+    │   │   ├── test_model_to_metrics.py
+    │   │   └── test_training_convergence.py
+    │   ├── robustness/
+    │   │   ├── __init__.py
+    │   │   ├── test_adversarial_robustness.py
+    │   │   ├── test_checkpoint_robustness.py
+    │   │   ├── test_distribution_shift.py
+    │   │   ├── test_gradient_clipping_effect.py
+    │   │   ├── test_input_corruption.py
+    │   │   ├── test_label_noise.py
+    │   │   ├── test_noise_robustness.py
+    │   │   ├── test_ood_generalization.py
+    │   │   └── test_partial_occlusion.py
+    │   ├── scaling/
+    │   │   ├── __init__.py
+    │   │   ├── test_collapse_quality.py
+    │   │   ├── test_data_collapse.py
+    │   │   ├── test_exponential_decay.py
+    │   │   ├── test_fss_analysis_extended.py
+    │   │   ├── test_h1_scale_correspondence.py
+    │   │   ├── test_h2_depth_scaling.py
+    │   │   ├── test_h3_generalization.py
+    │   │   ├── test_logarithmic_scaling.py
+    │   │   └── test_scaling_law_fit.py
+    │   ├── spectral/
+    │   │   ├── __init__.py
+    │   │   ├── test_level_spacing.py
+    │   │   ├── test_marchenko_pastur_fit.py
+    │   │   ├── test_number_variance.py
+    │   │   ├── test_spectral_scaling_analysis.py
+    │   │   ├── test_tracy_widom.py
+    │   │   ├── test_tracy_widom_edge.py
+    │   │   └── test_wigner_semicircle.py
+    │   ├── stability/
+    │   │   ├── __init__.py
+    │   │   ├── test_activation_statistics.py
+    │   │   ├── test_critical_initialization.py
+    │   │   ├── test_gradient_flow_depth.py
+    │   │   ├── test_gradient_norm_stability.py
+    │   │   ├── test_initialization_variance.py
+    │   │   ├── test_loss_monotonicity.py
+    │   │   ├── test_mixed_precision_stability.py
+    │   │   ├── test_no_exploding_gradients.py
+    │   │   ├── test_no_vanishing_gradients.py
+    │   │   ├── test_numerical_precision.py
+    │   │   └── test_weight_norms.py
+    │   ├── unit/
+    │   │   ├── __init__.py
+    │   │   ├── test_correlation_exponential.py
+    │   │   ├── test_device_manager.py
+    │   │   ├── test_exp_decay_fitter.py
+    │   │   ├── test_fisher_correctness.py
+    │   │   ├── test_fisher_psd.py
+    │   │   ├── test_fisher_symmetry.py
+    │   │   ├── test_jacobian_chain_rule.py
+    │   │   ├── test_jacobian_finite_diff.py
+    │   │   ├── test_jacobian_jvp.py
+    │   │   ├── test_jacobian_svd.py
+    │   │   ├── test_jacobian_vjp.py
+    │   │   ├── test_lyapunov_correctness.py
+    │   │   ├── test_lyapunov_qr.py
+    │   │   ├── test_marchenko_pastur_properties.py
+    │   │   ├── test_rg_operator_shapes.py
+    │   │   ├── test_seed_registry.py
+    │   │   ├── test_spectral_mp.py
+    │   │   ├── test_transfer_matrix.py
+    │   │   └── test_wigner_semicircle_properties.py
+    │   └── validation/
+    │       ├── __init__.py
+    │       ├── test_determinism.py
+    │       ├── test_hypothesis_h1.py
+    │       ├── test_hypothesis_h2.py
+    │       ├── test_hypothesis_h3.py
+    │       ├── test_phase_diagram_validation.py
+    │       ├── test_reproducibility.py
+    │       └── test_scaling_law_consistency.py
+    └── .github/
+        └── workflows/
+            ├── lint-and-format.yml
+            ├── reproduce-fast.yml
+            └── validate-notebooks.yml
+
 ```
 
 ---
